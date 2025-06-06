@@ -1,5 +1,9 @@
 name: Auto-add to Project
 
+permissions:
+  contents: read
+  repository-projects: write
+
 on:
   issues:
     types: [opened]
