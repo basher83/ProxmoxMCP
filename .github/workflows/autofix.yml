@@ -30,7 +30,7 @@ jobs:
           # Removed cache: 'pip' - conflicts with UV dependency management
 
       - name: Install UV
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
           cache-dependency-glob: "pyproject.toml"
@@ -74,7 +74,7 @@ jobs:
           # Removed cache: 'pip' - conflicts with UV dependency management
 
       - name: Install UV
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
           cache-dependency-glob: "pyproject.toml"
@@ -119,7 +119,7 @@ jobs:
 
       - name: Install UV
         if: steps.check-tests.outputs.tests-exist == 'true'
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
           cache-dependency-glob: "pyproject.toml"
