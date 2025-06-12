@@ -12,8 +12,6 @@ updates:
       time: "09:00"
       timezone: "UTC"
     open-pull-requests-limit: 10
-    reviewers:
-      - "basher83"
     assignees:
       - "basher83"
     commit-message:
@@ -60,8 +58,6 @@ updates:
       time: "09:00"
       timezone: "UTC"
     open-pull-requests-limit: 5
-    reviewers:
-      - "basher83"
     assignees:
       - "basher83"
     commit-message:
@@ -80,8 +76,6 @@ updates:
       time: "09:00"
       timezone: "UTC"
     open-pull-requests-limit: 5
-    reviewers:
-      - "basher83"
     assignees:
       - "basher83"
     commit-message:
