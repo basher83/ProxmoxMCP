@@ -16,7 +16,7 @@ setup(
     package_dir={"": "src"},
     python_requires=">=3.9",
     install_requires=[
-        "modelcontextprotocol-sdk>=1.0.0,<2.0.0",
+        "mcp @ git+https://github.com/modelcontextprotocol/python-sdk.git",
         "proxmoxer>=2.0.1,<3.0.0",
         "requests>=2.31.0,<3.0.0",
         "pydantic>=2.0.0,<3.0.0",
