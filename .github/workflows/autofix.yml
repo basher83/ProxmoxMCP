@@ -38,6 +38,7 @@ jobs:
       # Cache UV virtual environment
       - name: Cache UV venv
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
@@ -80,6 +81,7 @@ jobs:
 
       - name: Cache UV venv
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
@@ -125,6 +127,7 @@ jobs:
       - name: Cache UV venv
         if: steps.check-tests.outputs.tests-exist == 'true'
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
