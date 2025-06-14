@@ -272,7 +272,7 @@ Important:
 
 The server provides the following MCP tools for interacting with Proxmox:
 
-#### get_nodes
+### get_nodes
 
 Lists all nodes in the Proxmox cluster.
 
@@ -295,7 +295,7 @@ Lists all nodes in the Proxmox cluster.
     • Memory: 201.3 GB / 512.0 GB (39.3%)
   ```
 
-#### get_node_status
+### get_node_status
 
 Get detailed status of a specific node.
 
@@ -314,7 +314,7 @@ Get detailed status of a specific node.
     • Temperature: 38°C
   ```
 
-#### get_vms
+### get_vms
 
 List all VMs across the cluster.
 
@@ -337,7 +337,7 @@ List all VMs across the cluster.
     • Memory: 12.8 GB / 32.0 GB (40.0%)
   ```
 
-#### get_storage
+### get_storage
 
 List available storage.
 
@@ -360,7 +360,7 @@ List available storage.
     • IOPS: ⬆️ 42.8k ⬇️ 35.6k
   ```
 
-#### get_cluster_status
+### get_cluster_status
 
 Get overall cluster status.
 
@@ -387,7 +387,7 @@ Get overall cluster status.
       - Average Memory Usage: 42.8%
   ```
 
-#### execute_vm_command
+### execute_vm_command
 
 Execute a command in a VM's console using QEMU Guest Agent.
 
