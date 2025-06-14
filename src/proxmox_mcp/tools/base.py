@@ -58,29 +58,50 @@ class ProxmoxTool:
         Returns:
             List of Content objects formatted according to resource type
         """
-        if resource_type == "nodes":
-            formatted = ProxmoxTemplates.node_list(data)
-        elif resource_type == "node_status":
-            # For node_status, data should be a tuple of (node_name, status_dict)
-            if isinstance(data, tuple) and len(data) == 2:
-                formatted = ProxmoxTemplates.node_status(data[0], data[1])
-            else:
-                formatted = ProxmoxTemplates.node_status("unknown", data)
-        elif resource_type == "vms":
-            formatted = ProxmoxTemplates.vm_list(data)
-        elif resource_type == "storage":
-            formatted = ProxmoxTemplates.storage_list(data)
-        elif resource_type == "containers":
-            formatted = ProxmoxTemplates.container_list(data)
-        elif resource_type == "cluster":
-            formatted = ProxmoxTemplates.cluster_status(data)
-        else:
-            # Fallback to JSON formatting for unknown types
-            import json
-
-            formatted = json.dumps(data, indent=2)
-
+        formatted = self._get_formatted_content(data, resource_type)
         return [Content(type="text", text=formatted)]
+
+    def _get_formatted_content(self, data: Any, resource_type: Optional[str]) -> str:
+        """Get formatted content for the specified resource type.
+        
+        Args:
+            data: Raw data from Proxmox API to format
+            resource_type: Type of resource for template selection
+            
+        Returns:
+            Formatted string content
+        """
+        if resource_type == "node_status":
+            return self._format_node_status(data)
+        
+        # Use dictionary lookup for simple template mappings
+        template_mapping = {
+            "nodes": ProxmoxTemplates.node_list,
+            "vms": ProxmoxTemplates.vm_list,
+            "storage": ProxmoxTemplates.storage_list,
+            "containers": ProxmoxTemplates.container_list,
+            "cluster": ProxmoxTemplates.cluster_status,
+        }
+        
+        if resource_type in template_mapping:
+            return template_mapping[resource_type](data)
+        
+        # Fallback to JSON formatting for unknown types
+        import json
+        return json.dumps(data, indent=2)
+
+    def _format_node_status(self, data: Any) -> str:
+        """Format node status data with special handling for tuple format.
+        
+        Args:
+            data: Node status data (either tuple or dict)
+            
+        Returns:
+            Formatted node status string
+        """
+        if isinstance(data, tuple) and len(data) == 2:
+            return ProxmoxTemplates.node_status(data[0], data[1])
+        return ProxmoxTemplates.node_status("unknown", data)
 
     def _handle_error(self, operation: str, error: Exception) -> None:
         """Handle and log errors from Proxmox operations.
