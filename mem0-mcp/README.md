@@ -48,13 +48,14 @@ http://0.0.0.0:8080/sse
 
 ## Demo with Cursor
 
-https://github.com/user-attachments/assets/56670550-fb11-4850-9905-692d3496231c
+<https://github.com/user-attachments/assets/56670550-fb11-4850-9905-692d3496231c>
 
 ## Features
 
 The server provides three main tools for managing code preferences:
 
 1. `add_coding_preference`: Store code snippets, implementation details, and coding patterns with comprehensive context including:
+
    - Complete code with dependencies
    - Language/framework versions
    - Setup instructions
@@ -84,4 +85,3 @@ uv run main.py --host <your host> --port <your port>
 ```
 
 The server exposes an SSE endpoint at `/sse` that MCP clients can connect to for accessing the coding preferences management tools.
-

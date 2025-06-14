@@ -45,6 +45,7 @@ Please include the following information:
 When using ProxmoxMCP, please follow these security guidelines:
 
 #### Authentication & Authorization
+
 - ✅ Use dedicated API tokens (never root password)
 - ✅ Enable SSL/TLS verification (`verify_ssl: true`)
 - ✅ Use least-privilege API tokens
@@ -53,6 +54,7 @@ When using ProxmoxMCP, please follow these security guidelines:
 - ❌ Don't commit tokens to version control
 
 #### Deployment Security
+
 - ✅ Run in containerized environments when possible
 - ✅ Use non-root users in containers
 - ✅ Keep dependencies updated
@@ -61,6 +63,7 @@ When using ProxmoxMCP, please follow these security guidelines:
 - ❌ Don't run as root in production
 
 #### Network Security
+
 - ✅ Use secure networks for Proxmox communication
 - ✅ Implement network segmentation
 - ✅ Use VPNs for remote access
@@ -77,6 +80,7 @@ When using ProxmoxMCP, please follow these security guidelines:
 ### Security Updates
 
 Security updates will be:
+
 - Released as patch versions (e.g., 1.0.1)
 - Documented in release notes with CVE numbers when applicable
 - Announced via GitHub Releases and Security Advisories

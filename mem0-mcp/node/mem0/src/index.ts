@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MEM0_API_KEY = process?.env?.MEM0_API_KEY || '';
+const MEM0_API_KEY = process.env?.MEM0_API_KEY || '';
 
 // Initialize mem0ai client
 const memoryClient = new MemoryClient({ apiKey: MEM0_API_KEY });
@@ -127,7 +127,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case 'search-memories': {
         const { query, userId } = args as { query: string, userId: string };
         const results = await searchMemories(query, userId);
-        const formattedResults = results.map((result: any) => 
+        const formattedResults = results.map((result: unknown) => 
           `Memory: ${result.memory}\nRelevance: ${result.score}\n---`
         ).join('\n');
         
@@ -166,7 +166,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 // Function to log safely
 function safeLog(
   level: 'error' | 'debug' | 'info' | 'notice' | 'warning' | 'critical' | 'alert' | 'emergency',
-  data: any
+  data: unknown
 ): void {
   // For stdio transport, log to stderr to avoid protocol interference
   console.error(`[${level}] ${typeof data === 'object' ? JSON.stringify(data) : data}`);
@@ -195,7 +195,7 @@ async function main() {
   }
 }
 
-main().catch((error) => {
+main().catch((error: unknown) => {
   console.error('Fatal error in main():', error);
   process.exit(1);
 });

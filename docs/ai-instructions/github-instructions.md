@@ -7,10 +7,12 @@ This document provides guidelines for Claude Code when working with Git operatio
 The repository uses the following Git configuration from `/workspaces/ProxmoxMCP/example.gitconfig`:
 
 ### User Information
+
 - **Name**: basher83
-- **Email**: crashoverride6545@gmail.com
+- **Email**: <crashoverride6545@gmail.com>
 
 ### Repository Settings
+
 - **Default Branch**: `main`
 - **Pull Strategy**: `rebase` (maintains linear history)
 - **Push Strategy**: `current` with auto-setup of remote tracking
@@ -18,9 +20,10 @@ The repository uses the following Git configuration from `/workspaces/ProxmoxMCP
 - **Commit Template**: `.gitmessage` (enforces consistent commit formatting)
 
 ### Useful Git Aliases
+
 ```bash
 git st          # status
-git co          # checkout  
+git co          # checkout
 git br          # branch
 git cm          # commit
 git lg          # enhanced log with graph
@@ -39,6 +42,7 @@ git tree        # graphical tree log
 The repository uses a commit template at `/workspaces/ProxmoxMCP/.gitmessage`. All commits must follow these conventions:
 
 ### Structure
+
 ```
 type: brief description (max 50 chars)
 
@@ -51,6 +55,7 @@ Co-authored-by: Name <email@example.com>
 ```
 
 ### Commit Types for ProxmoxMCP
+
 - **feat**: New feature or tool implementation
 - **fix**: Bug fix or issue resolution
 - **security**: Security-related changes (encryption, validation, etc.)
@@ -63,6 +68,7 @@ Co-authored-by: Name <email@example.com>
 - **perf**: Performance improvements
 
 ### Required Information in Commit Body
+
 - **Affected Components**: Mention specific ProxmoxMCP components (tools, formatting, config, core)
 - **MCP Protocol Impact**: Include MCP protocol or Proxmox API impact if applicable
 - **Breaking Changes**: Note configuration updates or breaking changes required
@@ -71,6 +77,7 @@ Co-authored-by: Name <email@example.com>
 - **File References**: Include specific file paths when relevant (e.g., core/proxmox.py)
 
 ### Example Commits
+
 ```
 security: implement token encryption at rest
 
@@ -96,12 +103,15 @@ registration and extends VM tool capabilities.
 ## Branch Management
 
 ### Main Branch Protection
+
 - **Branch**: `main` (default)
 - **Protection**: Direct pushes discouraged; use pull requests
 - **History**: Linear history maintained via rebase strategy
 
 ### Feature Branch Naming
+
 Use descriptive branch names following the pattern:
+
 - `feature/component-functionality-description`
 - `fix/component-issue-description`
 - `security/component-security-improvement`
@@ -109,6 +119,7 @@ Use descriptive branch names following the pattern:
 - `config/configuration-update-description`
 
 Examples:
+
 ```bash
 feature/vm-console-management
 fix/proxmox-api-timeout-handling
@@ -122,17 +133,22 @@ docs/installation-guide-update
 ## Pull Request Guidelines
 
 ### PR Title Format
+
 Follow the same conventions as commit messages:
+
 ```
 type: brief description of the change
 ```
 
 ### PR Description Template
+
 ```markdown
 ## Summary
+
 Brief overview of the change and its purpose.
 
 ## ProxmoxMCP Impact
+
 - **Affected Components**: List of impacted ProxmoxMCP components (tools, config, core, formatting)
 - **MCP Protocol Changes**: Any MCP protocol or tool registration modifications
 - **Proxmox API Impact**: Changes to Proxmox API usage or authentication
@@ -140,6 +156,7 @@ Brief overview of the change and its purpose.
 - **Security Implications**: Security-related considerations
 
 ## Testing
+
 - [ ] Unit tests pass (`pytest`)
 - [ ] Type checking passes (`mypy .`)
 - [ ] Code formatting applied (`black .`)
@@ -148,6 +165,7 @@ Brief overview of the change and its purpose.
 - [ ] MCP tools function correctly
 
 ## Deployment Notes
+
 - Configuration file updates required
 - Environment variable changes needed
 - Docker image rebuild necessary
@@ -157,13 +175,16 @@ Brief overview of the change and its purpose.
 ## GitHub Integration Best Practices
 
 ### Issue Linking
+
 - Always link commits to GitHub issues when applicable
 - Use `Fixes #123` or `Closes #123` in commit messages
 - Reference issues in PR descriptions for tracking
 - Link to roadmap phases when implementing planned features
 
 ### Development Validation Commands
+
 Before committing ProxmoxMCP changes, verify with:
+
 ```bash
 # Run all quality checks
 pytest && black . && mypy .
@@ -180,6 +201,7 @@ python -c "from proxmox_mcp.config.loader import load_config; load_config()"
 ```
 
 ### Security Considerations
+
 - **Never commit secrets**: Use environment variables or external config files
 - **Validate token encryption**: Test encryption/decryption functionality
 - **Verify SSL settings**: Ensure proper SSL configuration
@@ -189,6 +211,7 @@ python -c "from proxmox_mcp.config.loader import load_config; load_config()"
 ## Workflow Integration
 
 ### Pre-commit Checklist
+
 1. Run development validation commands
 2. Check commit message follows `.gitmessage` template
 3. Verify no secrets in tracked files
@@ -198,6 +221,7 @@ python -c "from proxmox_mcp.config.loader import load_config; load_config()"
 7. Check roadmap alignment for new features
 
 ### Post-commit Actions
+
 1. Monitor MCP server health after deployment
 2. Verify Proxmox API connectivity
 3. Test MCP tool functionality
@@ -208,6 +232,7 @@ python -c "from proxmox_mcp.config.loader import load_config; load_config()"
 ## Repository Structure Considerations
 
 When making changes, consider the ProxmoxMCP architecture:
+
 - **Core Components**: Server implementation in `src/proxmox_mcp/server.py`
 - **Configuration**: Config handling in `src/proxmox_mcp/config/`
 - **Tools**: MCP tool implementations in `src/proxmox_mcp/tools/`
