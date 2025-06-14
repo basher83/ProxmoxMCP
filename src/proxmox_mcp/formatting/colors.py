@@ -101,9 +101,7 @@ class ProxmoxColors:
         return cls.BLUE
 
     @classmethod
-    def metric_color(
-        cls, value: float, warning: float = 80.0, critical: float = 90.0
-    ) -> str:
+    def metric_color(cls, value: float, warning: float = 80.0, critical: float = 90.0) -> str:
         """Get appropriate color for a metric value based on thresholds.
 
         Args:

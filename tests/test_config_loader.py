@@ -28,9 +28,7 @@ class TestEnhancedDecryptionErrors:
     def test_handle_decryption_error_invalid_format(self):
         """Test error handling for invalid encryption format."""
         with pytest.raises(ValueError) as exc_info:
-            _handle_decryption_error(
-                "auth.token_value", "not_encrypted", Exception("test")
-            )
+            _handle_decryption_error("auth.token_value", "not_encrypted", Exception("test"))
 
         error_msg = str(exc_info.value)
         assert "auth.token_value" in error_msg
@@ -42,9 +40,7 @@ class TestEnhancedDecryptionErrors:
         """Test error handling for corrupted encryption format."""
         original_error = Exception("invalid encrypted token format")
         with pytest.raises(ValueError) as exc_info:
-            _handle_decryption_error(
-                "auth.token_value", "enc:corrupted", original_error
-            )
+            _handle_decryption_error("auth.token_value", "enc:corrupted", original_error)
 
         error_msg = str(exc_info.value)
         assert "auth.token_value" in error_msg
@@ -56,9 +52,7 @@ class TestEnhancedDecryptionErrors:
         """Test error handling for master key mismatch."""
         original_error = Exception("Failed to decrypt token")
         with pytest.raises(ValueError) as exc_info:
-            _handle_decryption_error(
-                "auth.token_value", "enc:valid_format", original_error
-            )
+            _handle_decryption_error("auth.token_value", "enc:valid_format", original_error)
 
         error_msg = str(exc_info.value)
         assert "auth.token_value" in error_msg
@@ -70,9 +64,7 @@ class TestEnhancedDecryptionErrors:
         """Test error handling for base64 decoding errors."""
         original_error = Exception("Invalid base64 padding")
         with pytest.raises(ValueError) as exc_info:
-            _handle_decryption_error(
-                "auth.token_value", "enc:invalid_base64", original_error
-            )
+            _handle_decryption_error("auth.token_value", "enc:invalid_base64", original_error)
 
         error_msg = str(exc_info.value)
         assert "auth.token_value" in error_msg
@@ -84,9 +76,7 @@ class TestEnhancedDecryptionErrors:
         """Test error handling for generic decryption failures."""
         original_error = Exception("Unknown encryption error")
         with pytest.raises(ValueError) as exc_info:
-            _handle_decryption_error(
-                "auth.token_value", "enc:some_token", original_error
-            )
+            _handle_decryption_error("auth.token_value", "enc:some_token", original_error)
 
         error_msg = str(exc_info.value)
         assert "auth.token_value" in error_msg
@@ -155,9 +145,7 @@ class TestEnhancedDecryptionErrors:
         sensitive_token = "enc:very_sensitive_secret_token_data"
 
         with pytest.raises(ValueError) as exc_info:
-            _handle_decryption_error(
-                "auth.token_value", sensitive_token, Exception("test")
-            )
+            _handle_decryption_error("auth.token_value", sensitive_token, Exception("test"))
 
         error_msg = str(exc_info.value)
 
@@ -176,9 +164,7 @@ class TestConfigLoaderIntegration:
     """Integration tests for config loader with enhanced error handling."""
 
     @patch("proxmox_mcp.config.loader.TokenEncryption")
-    def test_load_config_with_decryption_error_provides_context(
-        self, mock_encryption_class
-    ):
+    def test_load_config_with_decryption_error_provides_context(self, mock_encryption_class):
         """Test that load_config provides enhanced error context when decryption fails."""
         # Setup mock to raise an exception during decryption
         mock_encryptor = MagicMock()

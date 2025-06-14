@@ -53,9 +53,9 @@ class TestSecureKeyGeneration:
         written_key = mock_write_text.call_args[0][0]
         # Key should be base64 encoded string, not prefixed with PROXMOX_MCP_MASTER_KEY=
         assert len(written_key) > 0, "Key should be written"
-        assert not written_key.startswith(
-            "PROXMOX_MCP_MASTER_KEY="
-        ), "Key should be stored without prefix"
+        assert not written_key.startswith("PROXMOX_MCP_MASTER_KEY="), (
+            "Key should be stored without prefix"
+        )
 
         # Verify file permissions were set to 600 (owner read/write only)
         mock_chmod.assert_called_once_with(0o600)
@@ -74,9 +74,7 @@ class TestSecureKeyGeneration:
             for call in printed_calls
             if "PROXMOX_MCP_MASTER_KEY=" in call and "$(cat" not in call
         ]
-        assert (
-            len(key_displays) == 0
-        ), "Raw key should NOT be displayed in console output"
+        assert len(key_displays) == 0, "Raw key should NOT be displayed in console output"
 
     @patch("pathlib.Path.write_text")
     @patch("pathlib.Path.chmod")
@@ -104,9 +102,7 @@ class TestSecureKeyGeneration:
 
         # Verify error message was displayed
         printed_calls = [str(call) for call in mock_print.call_args_list]
-        error_messages = [
-            call for call in printed_calls if "Error saving key file" in call
-        ]
+        error_messages = [call for call in printed_calls if "Error saving key file" in call]
         assert len(error_messages) > 0
 
     @patch("pathlib.Path.write_text")
@@ -133,15 +129,13 @@ class TestSecureKeyGeneration:
 
         # Verify that no actual key value appears in the output
         # The key should only be written to file, not displayed
-        assert (
-            "PROXMOX_MCP_MASTER_KEY=AAAA" not in all_output
-        ), "Actual key values should not appear in output"
+        assert "PROXMOX_MCP_MASTER_KEY=AAAA" not in all_output, (
+            "Actual key values should not appear in output"
+        )
 
         # The only reference should be in the export command template
         export_commands = [
-            call
-            for call in printed_calls
-            if "export PROXMOX_MCP_MASTER_KEY=$(cat" in call
+            call for call in printed_calls if "export PROXMOX_MCP_MASTER_KEY=$(cat" in call
         ]
         assert len(export_commands) == 1, "Should show export command template"
 
@@ -411,9 +405,7 @@ class TestKeyRotation:
 
                 # Verify backups were created for rotated configs
                 backup_files = [f for f in os.listdir(temp_dir) if ".backup." in f]
-                assert (
-                    len(backup_files) == 2
-                )  # Only encrypted configs should have backups
+                assert len(backup_files) == 2  # Only encrypted configs should have backups
 
     def test_rotate_master_key_all_no_configs(self) -> None:
         """Test bulk rotation with no configuration files."""
@@ -511,9 +503,7 @@ class TestTerminalClearing:
 
         # Verify manual instruction was printed
         printed_calls = [str(call) for call in mock_print.call_args_list]
-        manual_instructions = [
-            call for call in printed_calls if "clear terminal manually" in call
-        ]
+        manual_instructions = [call for call in printed_calls if "clear terminal manually" in call]
         assert len(manual_instructions) > 0
 
     @patch("subprocess.run")
@@ -602,15 +592,11 @@ class TestTerminalClearing:
 
         # Verify error message was printed
         printed_calls = [str(call) for call in mock_print.call_args_list]
-        error_messages = [
-            call for call in printed_calls if "Could not clear terminal" in call
-        ]
+        error_messages = [call for call in printed_calls if "Could not clear terminal" in call]
         assert len(error_messages) > 0
 
         # Verify manual instruction was printed
-        manual_instructions = [
-            call for call in printed_calls if "clear terminal manually" in call
-        ]
+        manual_instructions = [call for call in printed_calls if "clear terminal manually" in call]
         assert len(manual_instructions) > 0
 
     @patch("proxmox_mcp.utils.encrypt_config.clear_terminal_if_requested")
@@ -648,9 +634,7 @@ class TestTerminalClearing:
                 clear_terminal_if_requested()
 
                 # Should call subprocess for all positive responses
-                mock_subprocess.assert_called_once_with(
-                    ["clear"], shell=True, check=True
-                )
+                mock_subprocess.assert_called_once_with(["clear"], shell=True, check=True)
                 mock_subprocess.reset_mock()
 
     @patch("platform.system")
@@ -673,7 +657,5 @@ class TestTerminalClearing:
                 clear_terminal_if_requested()
 
                 # Should call subprocess after stripping whitespace
-                mock_subprocess.assert_called_once_with(
-                    ["clear"], shell=True, check=True
-                )
+                mock_subprocess.assert_called_once_with(["clear"], shell=True, check=True)
                 mock_subprocess.reset_mock()
