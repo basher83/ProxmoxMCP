@@ -63,17 +63,17 @@ class ProxmoxTool:
 
     def _get_formatted_content(self, data: Any, resource_type: Optional[str]) -> str:
         """Get formatted content for the specified resource type.
-        
+
         Args:
             data: Raw data from Proxmox API to format
             resource_type: Type of resource for template selection
-            
+
         Returns:
             Formatted string content
         """
         if resource_type == "node_status":
             return self._format_node_status(data)
-        
+
         # Use dictionary lookup for simple template mappings
         template_mapping = {
             "nodes": ProxmoxTemplates.node_list,
@@ -82,20 +82,21 @@ class ProxmoxTool:
             "containers": ProxmoxTemplates.container_list,
             "cluster": ProxmoxTemplates.cluster_status,
         }
-        
+
         if resource_type in template_mapping:
             return template_mapping[resource_type](data)
-        
+
         # Fallback to JSON formatting for unknown types
         import json
+
         return json.dumps(data, indent=2)
 
     def _format_node_status(self, data: Any) -> str:
         """Format node status data with special handling for tuple format.
-        
+
         Args:
             data: Node status data (either tuple or dict)
-            
+
         Returns:
             Formatted node status string
         """
