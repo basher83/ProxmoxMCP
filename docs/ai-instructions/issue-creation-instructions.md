@@ -250,7 +250,7 @@ How to address the security concern.
 - `status:review` - Ready for code review
 - `status:testing` - In testing phase
 
-#### Community Labels:
+#### Community Labels
 
 - `good first issue` - Suitable for new contributors
 - `help wanted` - Community assistance appreciated
