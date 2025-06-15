@@ -449,8 +449,8 @@ class TestTerminalClearing:
 
         clear_terminal_if_requested()
 
-        # Verify correct command was called
-        mock_subprocess.assert_called_once_with(["clear"], shell=True, check=True)
+        # Verify correct command was called with secure parameters
+        mock_subprocess.assert_called_once_with(["clear"], check=True, timeout=5)
 
         # Verify success message was printed
         printed_calls = [str(call) for call in mock_print.call_args_list]
@@ -478,8 +478,8 @@ class TestTerminalClearing:
 
         clear_terminal_if_requested()
 
-        # Verify correct command was called
-        mock_subprocess.assert_called_once_with(["cls"], shell=True, check=True)
+        # Verify correct command was called with secure parameters
+        mock_subprocess.assert_called_once_with(["cls"], check=True, timeout=5)
 
         # Verify success message was printed
         printed_calls = [str(call) for call in mock_print.call_args_list]
@@ -647,9 +647,9 @@ class TestTerminalClearing:
 
                 clear_terminal_if_requested()
 
-                # Should call subprocess for all positive responses
+                # Should call subprocess for all positive responses with secure parameters
                 mock_subprocess.assert_called_once_with(
-                    ["clear"], shell=True, check=True
+                    ["clear"], check=True, timeout=5
                 )
                 mock_subprocess.reset_mock()
 
@@ -672,8 +672,8 @@ class TestTerminalClearing:
 
                 clear_terminal_if_requested()
 
-                # Should call subprocess after stripping whitespace
+                # Should call subprocess after stripping whitespace with secure parameters
                 mock_subprocess.assert_called_once_with(
-                    ["clear"], shell=True, check=True
+                    ["clear"], check=True, timeout=5
                 )
                 mock_subprocess.reset_mock()

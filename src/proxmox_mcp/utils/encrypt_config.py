@@ -43,10 +43,28 @@ def clear_terminal_if_requested() -> None:
     try:
         response = input("🧹 Clear terminal for security? (y/n): ").strip().lower()
         if response in ["y", "yes"]:
-            clear_cmd = "cls" if platform.system() == "Windows" else "clear"
-            subprocess.run([clear_cmd], shell=True, check=True)
-            print("✅ Terminal cleared for security")
-            print("💡 Consider also clearing your shell history if needed")
+            # Security fix: Use safer subprocess call without shell=True
+            # and validate the command to prevent injection
+            if platform.system() == "Windows":
+                clear_cmd = ["cls"]
+            else:
+                clear_cmd = ["clear"]
+            
+            try:
+                # Use subprocess.run without shell=True for security
+                # This prevents command injection vulnerabilities
+                subprocess.run(clear_cmd, check=True, timeout=5)
+                print("✅ Terminal cleared for security")
+                print("💡 Consider also clearing your shell history if needed")
+            except subprocess.TimeoutExpired:
+                print("⚠️  Terminal clear command timed out")
+                print("💡 Please clear terminal manually for security")
+            except subprocess.CalledProcessError as e:
+                print(f"⚠️  Could not clear terminal (exit code {e.returncode})")
+                print("💡 Please clear terminal manually for security")
+            except FileNotFoundError:
+                print("⚠️  Terminal clear command not found")
+                print("💡 Please clear terminal manually for security")
         else:
             print(
                 "💡 Remember to clear terminal manually: clear (Linux/Mac) or cls (Windows)"
