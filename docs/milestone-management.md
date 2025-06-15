@@ -3,12 +3,14 @@
 ## 🎯 What Milestones Should Represent
 
 **Milestones should be:**
+
 - **Release-focused**: Tied to specific software releases (v1.0, v1.1, etc.)
 - **Time-bound**: Have clear due dates
 - **Goal-oriented**: Represent meaningful project achievements
 - **User-facing**: Deliver value to end users
 
 **Examples for ProxmoxMCP:**
+
 - `v1.0.0 - Stable Release`
 - `v1.1.0 - Enhanced Security`
 - `v2.0.0 - Breaking Changes`
@@ -17,6 +19,7 @@
 ## 📋 Milestone Planning Best Practices
 
 ### 1. **Use Semantic Versioning**
+
 ```
 v1.0.0 - Major release
 v1.1.0 - Minor features  
@@ -24,16 +27,19 @@ v1.0.1 - Bug fixes
 ```
 
 ### 2. **Set Realistic Due Dates**
+
 - Based on team capacity and complexity
 - Allow buffer time for testing and documentation
 - Review and adjust dates as needed
 
 ### 3. **Scope Appropriately**
+
 - **Small milestones** (2-4 weeks): 5-15 issues
 - **Medium milestones** (1-2 months): 15-30 issues
 - **Large milestones** (quarterly): 30+ issues
 
 ### 4. **Balance Issue Types**
+
 ```
 Typical milestone composition:
 - 60% Features/Enhancements
@@ -47,24 +53,28 @@ Typical milestone composition:
 ### For ProxmoxMCP Project:
 
 **Current State Assessment:**
+
 - You're at an early stage (pre-v1.0)
 - Focus should be on stability and core features
 
 **Recommended Milestones:**
 
 #### 1. `v0.9.0 - Pre-Release Stabilization` (Due: July 15, 2025)
+
 - Security improvements (#41 type issues)
 - Core functionality testing
 - Documentation completion
 - Docker optimization
 
 #### 2. `v1.0.0 - First Stable Release` (Due: August 30, 2025)
+
 - All critical security issues resolved
 - Comprehensive documentation
 - Production-ready Docker setup
 - Basic monitoring/health checks
 
 #### 3. `v1.1.0 - Enhanced Features` (Due: October 31, 2025)
+
 - Additional Proxmox tools
 - Improved error handling
 - Performance optimizations
@@ -73,6 +83,7 @@ Typical milestone composition:
 ## 📊 Milestone Management Workflow
 
 ### 1. **Creation Process**
+
 ```bash
 # Using GitHub CLI
 # Install the milestones extension
@@ -136,16 +147,19 @@ Target Users: Enterprise IT, DevOps teams, production deployments"
 ```
 
 ### 2. **Issue Assignment**
+
 - Assign issues during sprint planning
 - Use labels to categorize: `priority:high`, `effort:medium`
 - Review assignments weekly
 
 ### 3. **Progress Tracking**
+
 - Monitor completion percentage
 - Identify blockers early
 - Adjust scope if needed
 
 ### 4. **Release Preparation**
+
 - 90% complete: Feature freeze
 - 95% complete: Code freeze
 - 100% complete: Release and close milestone
@@ -161,12 +175,14 @@ Target Users: Enterprise IT, DevOps teams, production deployments"
 ## 📈 Tracking and Metrics
 
 ### Key Metrics to Monitor:
+
 - **Burn-down rate**: Issues closed over time
 - **Scope creep**: Issues added after milestone start
 - **Velocity**: Average issues completed per week
 - **Quality**: Bug rate in releases
 
 ### GitHub Insights:
+
 - Use milestone progress bar
 - Filter issues by milestone
 - Generate release notes from closed issues
@@ -174,6 +190,7 @@ Target Users: Enterprise IT, DevOps teams, production deployments"
 ## 🚀 ProxmoxMCP Specific Recommendations
 
 ### Immediate Actions:
+
 1. **Create your first milestone**: `v1.0.0 - Stable Release`
 2. **Set realistic timeline**: 2-3 months from now
 3. **Assign existing issues**: Start with security and core features
@@ -204,16 +221,19 @@ Target Users: Enterprise IT, DevOps teams, production deployments"
 ## 🔄 Regular Review Process
 
 ### Weekly Reviews:
+
 - Check milestone progress
 - Identify blocked issues
 - Adjust priorities if needed
 
 ### Monthly Reviews:
+
 - Assess timeline feasibility
 - Consider scope adjustments
 - Plan next milestone
 
 ### Post-Release Reviews:
+
 - Analyze what worked/didn't work
 - Improve estimation accuracy
 - Update process based on learnings

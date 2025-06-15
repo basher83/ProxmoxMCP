@@ -5,12 +5,14 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ## Pre-PR Analysis Phase
 
 ### 1. Memory and Context Research
+
 - **ALWAYS start** by using `get_all_coding_preferences` to retrieve stored coding patterns
 - Use `search_coding_preferences` to find specific implementations related to PR changes
 - Use `resolve-library-id` and `get-library-docs` for external library research when needed
 - Review existing architectural patterns and implementation styles
 
 ### 2. Pull Request Assessment
+
 - **Read the complete PR description** carefully, including all comments and updates
 - Identify the **PR type** from labels (bug fix, enhancement, feature, security, etc.)
 - Determine **affected components** (server, config, tools, formatting, docker, etc.)
@@ -19,6 +21,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 - Assess **breaking changes** and backward compatibility impact
 
 ### 3. Codebase Integration Analysis
+
 - Use `Glob` and `Grep` tools to understand how changes fit into existing code structure
 - Review related implementations and architectural patterns
 - Identify integration points and potential conflicts
@@ -30,6 +33,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ### 4. Code Quality Assessment
 
 #### Code Implementation Review
+
 - **Follow existing architectural patterns** from the codebase
 - Ensure **consistency** with ProxmoxMCP design principles:
   - MCP protocol compliance and tool registration patterns
@@ -39,6 +43,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
   - Comprehensive error handling with specific exceptions
 
 #### Security Review
+
 - **Verify no secrets exposure** in code, logs, or outputs
 - Check **input validation** for all user inputs and API parameters
 - Review **authentication flows** and token handling
@@ -47,6 +52,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 - Check **SSL/TLS configurations** for network communications
 
 #### ProxmoxMCP-Specific Pattern Compliance
+
 - **Tool inheritance**: New tools inherit from ProxmoxTool base class
 - **Pydantic validation**: All configuration and API parameters use Pydantic models
 - **Rich formatting**: Consistent use of ProxmoxTheme and ProxmoxFormatters
@@ -57,6 +63,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ### 5. Testing and Validation Requirements
 
 #### Automated Testing Review
+
 - **Verify comprehensive test coverage** for new functionality
 - **Check existing test patterns** are followed from the test suite
 - **Ensure mocked Proxmox API calls** in tests to avoid live server dependencies
@@ -64,6 +71,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 - **Confirm backward compatibility** testing when modifying existing code
 
 #### Manual Testing Requirements
+
 - **Test MCP tool functionality** individually with realistic scenarios
 - **Verify Proxmox API integration** if applicable (connection, authentication, operations)
 - **Test error handling paths** and fallback mechanisms
@@ -73,12 +81,14 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ### 6. Documentation and Communication Review
 
 #### Documentation Updates
+
 - **Verify relevant documentation** updates in `docs/` directory
 - **Check tool descriptions** in `tools/definitions.py` for new MCP tools
 - **Validate README.md updates** if adding user-facing features
 - **Ensure examples demonstrate** new functionality appropriately
 
 #### Commit Message Quality
+
 - **Follow commit message template** from `.gitmessage`
 - **Use appropriate commit type**: feat, fix, security, config, docker, refactor, test, docs, ci, perf
 - **Include detailed commit body** explaining what and why (not how)
