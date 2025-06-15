@@ -1,20 +1,7 @@
 {
-  "agentCanUpdateSnapshot": true,
-  "snapshot": "POPULATED_FROM_SETTINGS",
-  "install": "pip install uv && uv sync --extra dev",
+  "snapshot": "snapshot-20250615-e7f7d640-e8e6-463f-94b5-76075ed1ef34",
+  "install": "sh -c \"$(curl --location https://taskfile.dev/install.sh)\" -- -d -b ~/.local/bin",
   "terminals": [
-    {
-      "name": "Run Tests",
-      "command": "uv run pytest -v"
-    },
-    {
-      "name": "Type Check",
-      "command": "uv run mypy . --exclude mem0-mcp"
-    },
-    {
-      "name": "Lint & Format",
-      "command": "uv run ruff check . --fix && uv run black ."
-    },
     {
       "name": "Pre-commit Checks",
       "command": "task pre-commit"
@@ -22,6 +9,26 @@
     {
       "name": "CI Checks",
       "command": "task ci"
+    },
+    {
+      "name": "Start development environment",
+      "command": "task dev"
+    },
+    {
+      "name": "Run pre-commit checks (format, lint, type-check, yaml)",
+      "command": "task pre-commit"
+    },
+    {
+      "name": "Auto-fix all fixable issues (Python + YAML)",
+      "command": "task fix"
+    },
+    {
+      "name": "Run all code quality checks",
+      "command": "task check"
+    },
+    {
+      "name": "Run all tests",
+      "command": "task test"
     }
   ]
 }
