@@ -217,17 +217,17 @@ The workflow automatically runs these checks:
    Assignee: basher83
    ```
 
-2. **Automatic Processing**: 
+2. **Automatic Processing**:
    - Workflow triggers on assignment
    - Creates branch `claude/issue-123-add-vm-backup-scheduling-feature`
    - Adds comment to issue with progress updates
 
-3. **Implementation**: 
+3. **Implementation**:
    - Code is analyzed, written, and tested
    - All quality checks must pass
    - Multiple commits with descriptive messages
 
-4. **Pull Request**: 
+4. **Pull Request**:
    - PR #124 created automatically
    - Links to issue #123 with "Closes #123"
    - Includes implementation summary

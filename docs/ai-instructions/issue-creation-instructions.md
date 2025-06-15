@@ -55,7 +55,7 @@ Brief description of the bug and its impact.
 
 ## Environment
 - **ProxmoxMCP Version**: [version]
-- **Proxmox VE Version**: [version] 
+- **Proxmox VE Version**: [version]
 - **Platform**: [Linux/Windows/macOS/Docker]
 - **Python Version**: [version]
 
@@ -311,7 +311,7 @@ Body includes:
 
 ### Common Mistakes:
 - **Vague titles** like "Fix the bug" or "Add feature"
-- **Missing component identification** 
+- **Missing component identification**
 - **No acceptance criteria** for enhancements
 - **Including sensitive information** in public issues
 - **Duplicate issues** without checking existing ones

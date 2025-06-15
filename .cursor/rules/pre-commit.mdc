@@ -1,11 +1,11 @@
 ---
 description: Commiting to github
-globs: 
+globs:
 alwaysApply: false
 ---
 This must be performed prior to commiting to github.
 
-Conduct a pre-commit check to ensure code quality and consistency. 
+Conduct a pre-commit check to ensure code quality and consistency.
 
 To complete this task, follow these steps:
 1. Use the command `task pre-commit` to run the pre-commit checks.

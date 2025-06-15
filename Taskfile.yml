@@ -251,3 +251,64 @@ tasks:
       - task: lint:fix
       - task: test
       - echo "✅ Quick check completed!"
+
+
+  # ==========================================
+  # Branch Management Tasks
+  # ==========================================
+
+  # Interactive branch creation
+  branch:
+    desc: Create a new branch interactively
+    cmds:
+      - echo "🌿 Creating new branch interactively..."
+      - ./scripts/branch-templates/interactive.sh
+
+  # Quick branch creation shortcuts
+  branch:feature:
+    desc: Create a feature branch
+    cmds:
+      - echo "🚀 Creating feature branch..."
+      - ./scripts/branch-templates/feature.sh {{.CLI_ARGS}}
+
+  branch:fix:
+    desc: Create a fix branch
+    cmds:
+      - echo "🐛 Creating fix branch..."
+      - ./scripts/branch-templates/fix.sh {{.CLI_ARGS}}
+
+  branch:security:
+    desc: Create a security branch
+    cmds:
+      - echo "🔒 Creating security branch..."
+      - ./scripts/branch-templates/security.sh {{.CLI_ARGS}}
+
+  # Branch validation and management
+  branch:validate:
+    desc: Validate current branch name
+    cmds:
+      - echo "🔍 Validating branch name..."
+      - ./scripts/branch-templates/validate.sh
+
+  branch:status:
+    desc: Show current branch and git status
+    cmds:
+      - echo "📊 Current branch and status:"
+      - git branch --show-current
+      - git status --porcelain
+
+  # Development workflows
+  work:start:
+    desc: Start working on a new issue (create branch + setup)
+    cmds:
+      - echo "🎯 Starting work on new issue..."
+      - task: branch
+      - task: setup
+
+  work:finish:
+    desc: Finish current work (checks + PR guidance)
+    cmds:
+      - echo "🏁 Finishing current work..."
+      - task: check
+      - task: branch:validate
+      - echo "🚀 Ready for PR! Push with git push"
