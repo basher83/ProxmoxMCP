@@ -83,8 +83,8 @@ async def test_execute_command_vm_not_running(vm_console, mock_proxmox):
 @pytest.mark.asyncio
 async def test_execute_command_vm_not_found(vm_console, mock_proxmox):
     """Test command execution on non-existent VM."""
-    mock_proxmox.nodes.return_value.qemu.return_value.status.current.get.side_effect = (
-        Exception("VM not found")
+    mock_proxmox.nodes.return_value.qemu.return_value.status.current.get.side_effect = Exception(
+        "VM not found"
     )
 
     with pytest.raises(ValueError, match="not found"):

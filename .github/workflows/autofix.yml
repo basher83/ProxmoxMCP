@@ -1,9 +1,9 @@
-name: autofix.ci  # needed to securely identify the workflow
+name: autofix.ci # needed to securely identify the workflow
 
 on:
   pull_request:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install UV
         uses: astral-sh/setup-uv@v6
@@ -48,6 +48,9 @@ jobs:
       - name: Auto-fix YAML spacing issues
         run: |
           ./scripts/yaml-autofix.sh || true
+
+      - name: Run security checks
+        run: uv run bandit -r src/ --format custom --skip B101,B601
 
       # Apply all fixes - this must be the last step
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27

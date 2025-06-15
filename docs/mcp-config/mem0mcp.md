@@ -96,28 +96,28 @@ run_mem0() {
     local project_dir="/workspaces/ProxmoxMCP/mem0-mcp"  # Update this path as needed
     local port="${1:-8080}"
     local host="${2:-0.0.0.0}"
-    
+
     echo "🚀 Starting Mem0-MCP..."
     echo "📁 Project directory: $project_dir"
     echo "🌐 Host: $host"
     echo "🔌 Port: $port"
-    
+
     # Navigate to project directory
     cd "$project_dir" || { echo "❌ Cannot access $project_dir"; return 1; }
-    
+
     # Create virtual environment if it doesn't exist
-    [[ ! -d .venv ]] && { 
+    [[ ! -d .venv ]] && {
         echo "🔨 Creating virtual environment..."
         uv venv || return 1
     }
-    
+
     # Activate virtual environment
     source .venv/bin/activate || { echo "❌ Failed to activate virtual environment"; return 1; }
-    
+
     # Install package dependencies  
     echo "📦 Installing package..."
     uv pip install -e . || { echo "❌ Failed to install package"; return 1; }
-    
+
     # Start the application
     echo "🚀 Starting Mem0-MCP server..."
     uv run main.py --host "$host" --port "$port"

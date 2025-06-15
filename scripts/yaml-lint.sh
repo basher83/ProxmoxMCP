@@ -39,7 +39,7 @@ check_yamllint() {
         print_error "UV is not installed. Please install UV first."
         exit 1
     fi
-    
+
     print_status "Checking yamllint availability..."
     if ! uv run yamllint --version &> /dev/null; then
         print_error "yamllint is not available. Installing dependencies..."
@@ -64,38 +64,37 @@ find_yaml_files() {
 lint_yaml() {
     local fix_mode="${1:-false}"
     local exit_code=0
-    
+
     print_status "Running yamllint on YAML files..."
-    
+
     if [ "$fix_mode" = "true" ]; then
         print_status "Auto-fix mode enabled"
     fi
-    
+
     print_status "Finding YAML files..."
     local yaml_files
     yaml_files=$(find_yaml_files)
-    
+
     if [ -z "$yaml_files" ]; then
         print_warning "No YAML files found to lint"
         return 0
     fi
-    
+
     local file_count
     file_count=$(echo "$yaml_files" | wc -l)
     print_status "Found $file_count YAML files to check"
-    
+
     local failed_files=()
-    local fixed_files=()
-    
+
     while IFS= read -r file; do
         printf "Checking %-60s " "$(basename "$file")..."
-        
+
         if uv run yamllint -c "$YAMLLINT_CONFIG" "$file" 2>/dev/null; then
             echo -e "${GREEN}✓${NC}"
         else
             echo -e "${RED}✗${NC}"
             failed_files+=("$file")
-            
+
             if [ "$fix_mode" = "true" ]; then
                 # For now, yamllint doesn't have auto-fix, so we'll show the errors
                 print_warning "Showing issues for $file:"
@@ -104,7 +103,7 @@ lint_yaml() {
             fi
         fi
     done <<< "$yaml_files"
-    
+
     # Summary
     echo ""
     if [ ${#failed_files[@]} -eq 0 ]; then
@@ -114,15 +113,15 @@ lint_yaml() {
         for file in "${failed_files[@]}"; do
             echo "  - $(basename "$file")"
         done
-        
+
         if [ "$fix_mode" != "true" ]; then
             echo ""
             print_status "Run with --fix to see detailed issues"
         fi
-        
+
         exit_code=1
     fi
-    
+
     return $exit_code
 }
 
@@ -146,7 +145,7 @@ EXAMPLES:
 
 CONFIGURATION:
     YAML linting rules are configured in .yamllint.yml
-    
+
 EOF
 }
 
@@ -154,7 +153,7 @@ EOF
 main() {
     local action="lint"
     local fix_mode="false"
-    
+
     # Parse command line arguments
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -182,13 +181,13 @@ main() {
                 ;;
         esac
     done
-    
+
     # Change to repo root
     cd "$REPO_ROOT"
-    
+
     # Check dependencies
     check_yamllint
-    
+
     # Run the requested action
     case $action in
         lint)

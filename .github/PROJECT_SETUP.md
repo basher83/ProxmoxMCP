@@ -34,7 +34,7 @@ Configure these automation rules in Project Settings:
 ### Step 4: Configure Labels
 Ensure these labels are added to the project:
 - `bug`
-- `enhancement` 
+- `enhancement`
 - `documentation`
 - `security`
 - `priority:critical`
@@ -50,7 +50,7 @@ Ensure these labels are added to the project:
 ```
 Title: [SECURITY] Implement token encryption at rest
 Labels: security, priority:critical, component:config, effort:medium
-Description: 
+Description:
 Implement token encryption for sensitive data in configuration files.
 
 **Implementation:**

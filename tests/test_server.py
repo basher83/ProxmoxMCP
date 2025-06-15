@@ -157,9 +157,7 @@ async def test_get_node_status(server, mock_proxmox):
 @pytest.mark.asyncio
 async def test_get_vms(server, mock_proxmox):
     """Test get_vms tool."""
-    mock_proxmox.return_value.nodes.get.return_value = [
-        {"node": "node1", "status": "online"}
-    ]
+    mock_proxmox.return_value.nodes.get.return_value = [{"node": "node1", "status": "online"}]
     mock_proxmox.return_value.nodes.return_value.qemu.get.return_value = [
         {
             "vmid": "100",
@@ -197,9 +195,7 @@ async def test_get_vms(server, mock_proxmox):
 @pytest.mark.asyncio
 async def test_get_containers(server, mock_proxmox):
     """Test get_containers tool."""
-    mock_proxmox.return_value.nodes.get.return_value = [
-        {"node": "node1", "status": "online"}
-    ]
+    mock_proxmox.return_value.nodes.get.return_value = [{"node": "node1", "status": "online"}]
     mock_proxmox.return_value.nodes.return_value.lxc.get.return_value = [
         {
             "vmid": "200",
@@ -359,6 +355,4 @@ async def test_execute_vm_command_with_error(server, mock_proxmox):
 
     # The response should be formatted text, not JSON
     assert len(response) == 1
-    assert (
-        "Command Output" in response[0].text or "command not found" in response[0].text
-    )
+    assert "Command Output" in response[0].text or "command not found" in response[0].text

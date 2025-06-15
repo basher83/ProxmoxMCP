@@ -104,11 +104,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     const { name, arguments: args } = request.params;
-    
+
     if (!args) {
       throw new Error('No arguments provided');
     }
-    
+
     switch (name) {
       case 'add-memory': {
         const { content, userId } = args as { content: string, userId: string };
@@ -123,14 +123,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           isError: false,
         };
       }
-      
+
       case 'search-memories': {
         const { query, userId } = args as { query: string, userId: string };
         const results = await searchMemories(query, userId);
-        const formattedResults = results.map((result: unknown) => 
+        const formattedResults = results.map((result: unknown) =>
           `Memory: ${result.memory}\nRelevance: ${result.score}\n---`
         ).join('\n');
-        
+
         return {
           content: [
             {
@@ -141,7 +141,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           isError: false,
         };
       }
-      
+
       default:
         return {
           content: [
@@ -170,7 +170,7 @@ function safeLog(
 ): void {
   // For stdio transport, log to stderr to avoid protocol interference
   console.error(`[${level}] ${typeof data === 'object' ? JSON.stringify(data) : data}`);
-  
+
   // Send to logging capability if available
   try {
     server.sendLoggingMessage({ level, data });
@@ -183,10 +183,10 @@ function safeLog(
 async function main() {
   try {
     console.error('Initializing Mem0 Memory MCP Server...');
-    
+
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    
+
     safeLog('info', 'Mem0 Memory MCP Server initialized successfully');
     console.error('Memory MCP Server running on stdio');
   } catch (error) {

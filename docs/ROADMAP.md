@@ -12,7 +12,7 @@ These items address critical security vulnerabilities and must be implemented im
   # Add cryptography.fernet for token encryption
   import os
   from cryptography.fernet import Fernet
-  
+
   def encrypt_token(token: str, key: bytes) -> str:
       """Encrypt sensitive tokens"""
       f = Fernet(key)
@@ -39,7 +39,7 @@ These items address critical security vulnerabilities and must be implemented im
   {
       "auth": {
           "user": "mcp@pve",
-          "token_name": "mcp-token", 
+          "token_name": "mcp-token",
           "token_value": "${PROXMOX_TOKEN}"
       }
   }
@@ -54,7 +54,7 @@ Enhance Docker security and deployment:
   ```dockerfile
   # Enhanced Dockerfile with security best practices
   FROM python:3.10-slim AS base
-  
+
   # Security: Run as non-root from the start
   RUN groupadd -r mcp && useradd -r -g mcp mcp
   ```
@@ -68,7 +68,7 @@ Enhance Docker security and deployment:
         - proxmox_token
       environment:
         PROXMOX_TOKEN_FILE: /run/secrets/proxmox_token
-  
+
   secrets:
     proxmox_token:
       external: true
@@ -100,11 +100,11 @@ Standardize error handling across the codebase:
   class ProxmoxError(Exception):
       """Base exception for Proxmox operations"""
       pass
-  
+
   class ProxmoxAuthError(ProxmoxError):
       """Authentication-related errors"""
       pass
-  
+
   class ProxmoxResourceNotFoundError(ProxmoxError):
       """Resource not found errors"""
       pass
@@ -140,12 +140,12 @@ Optimize performance for production workloads:
   ```python
   from functools import lru_cache
   import asyncio
-  
+
   class ProxmoxManager:
       def __init__(self, ...):
           self._connection_pool = {}
           self._cache = {}
-          
+
       @lru_cache(maxsize=100)
       def get_cached_node_status(self, node: str):
           """Cache frequently accessed data"""

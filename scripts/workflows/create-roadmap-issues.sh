@@ -32,7 +32,7 @@ create_issue() {
     local title="$1"
     local labels="$2"
     local body="$3"
-    
+
     if gh issue create --title "$title" --label "$labels" --body "$body"; then
         echo -e "${GREEN}✓ Created issue: $title${NC}"
     else
@@ -151,16 +151,16 @@ class CommandValidator:
     ALLOWED_COMMANDS: Set[str] = {
         'systemctl', 'ls', 'ps', 'df', 'free', 'uname', 'cat', 'grep'
     }
-    
+
     def validate_command(self, command: str) -> str:
         # Validate and sanitize shell commands
         if not command or len(command) > 1000:
             raise ValueError(\"Invalid command length\")
-        
+
         # Check for dangerous patterns
         if re.search(r'[;&|`$()]', command):
             raise ValueError(\"Command contains dangerous characters\")
-        
+
         # Sanitize command
         return shlex.quote(command)
 ```
@@ -324,13 +324,13 @@ def health_check():
     try:
         version = self.proxmox.version.get()
         return {
-            \"status\": \"healthy\", 
+            \"status\": \"healthy\",
             \"proxmox_version\": version,
             \"timestamp\": datetime.utcnow().isoformat()
         }
     except Exception as e:
         return {
-            \"status\": \"unhealthy\", 
+            \"status\": \"unhealthy\",
             \"error\": str(e),
             \"timestamp\": datetime.utcnow().isoformat()
         }

@@ -60,4 +60,3 @@ ignore: |
   # Ignore template files that may have special formatting
   .github/ISSUE_TEMPLATE/
   .github/DISCUSSION_TEMPLATE/
-

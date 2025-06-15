@@ -40,13 +40,9 @@ class ProxmoxTool:
             proxmox_api: Initialized ProxmoxAPI instance
         """
         self.proxmox = proxmox_api
-        self.logger = logging.getLogger(
-            f"proxmox-mcp.{self.__class__.__name__.lower()}"
-        )
+        self.logger = logging.getLogger(f"proxmox-mcp.{self.__class__.__name__.lower()}")
 
-    def _format_response(
-        self, data: Any, resource_type: Optional[str] = None
-    ) -> List[Content]:
+    def _format_response(self, data: Any, resource_type: Optional[str] = None) -> List[Content]:
         """Format response data into MCP content using templates.
 
         This method handles formatting of various Proxmox resource types into

@@ -5,7 +5,7 @@ The Context7 server provides tools for conducting research and fetching up-to-da
 ## Tools
 
 `resolve-library-id`: Resolves a general library name into a Context7-compatible library ID.
-    
+
     - libraryName (required): The name of the library to search for
 
 `get-library-docs`: Fetches documentation for a library using a Context7-compatible library ID.

@@ -32,7 +32,7 @@ create_or_update_label() {
     local name="$1"
     local color="$2"
     local description="$3"
-    
+
     # Try to create the label, if it exists, update it
     if gh label create "$name" --color "$color" --description "$description" 2>/dev/null; then
         echo -e "${GREEN}✓ Created label: $name${NC}"

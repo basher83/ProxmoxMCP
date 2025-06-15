@@ -8,7 +8,7 @@ ARG BUILD_ENV=production
 # ---- Base image (for both builder and final) ----
 FROM python:${PYTHON_VERSION}-slim AS base
 
-# Set environment variables for Python 
+# Set environment variables for Python
 # PYTHONDONTWRITEBYTECODE: Prevents Python from writing .pyc files
 # PYTHONUNBUFFERED: Ensures Python output is sent straight to terminal without buffering
 ENV PYTHONDONTWRITEBYTECODE=1 \

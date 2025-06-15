@@ -131,7 +131,7 @@ python -m proxmox_mcp.utils.encrypt_config --rotate-key-all proxmox-config/
 {
   "auth": {
     "user": "root@pam",
-    "token_name": "my-token", 
+    "token_name": "my-token",
     "token_value": "enc:Z0FBQUFBQm9QYjUz..."
   }
 }
@@ -555,28 +555,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      
+
       - name: Install dependencies
         run: |
           pip install -e .
-          
+
       - name: Rotate staging keys
         env:
           PROXMOX_MCP_MASTER_KEY: ${{ secrets.STAGING_MASTER_KEY }}
         run: |
           python -m proxmox_mcp.utils.encrypt_config --rotate-key staging-config/config.encrypted.json
-          
+
       - name: Test rotated configuration
         env:
           PROXMOX_MCP_MASTER_KEY: ${{ secrets.NEW_STAGING_KEY }}
         run: |
           python -m proxmox_mcp.server --test
-          
+
       - name: Update secrets
         run: |
           # Update GitHub secrets with new key
@@ -636,7 +636,7 @@ if [ -f "$KEY_FILE" ]; then
     LAST_ROTATION=$(jq -r '.last_rotation' "$KEY_FILE")
     CURRENT_DATE=$(date +%s)
     DAYS_SINCE_ROTATION=$(( (CURRENT_DATE - LAST_ROTATION) / 86400 ))
-    
+
     if [ $DAYS_SINCE_ROTATION -gt $MAX_AGE_DAYS ]; then
         echo "Key rotation required: $DAYS_SINCE_ROTATION days since last rotation"
         # Trigger automated rotation
