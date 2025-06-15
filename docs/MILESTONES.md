@@ -17,12 +17,12 @@ This document outlines the release milestones for ProxmoxMCP, including goals, s
 
 ---
 
-#4  v1.0.0 - First Stable Release       https://github.com/basher83/ProxmoxMCP/milestone/4 
-#5  v1.1.0 - Enhanced Features          https://github.com/basher83/ProxmoxMCP/milestone/5 
-#6  v1.2.0 - Production Hardening       https://github.com/basher83/ProxmoxMCP/milestone/6 
-#7  v0.9.0 - Pre-Release Stabilization  https://github.com/basher83/ProxmoxMCP/milestone/7 
+#4  v1.0.0 - First Stable Release       https://github.com/basher83/ProxmoxMCP/milestone/4
+#5  v1.1.0 - Enhanced Features          https://github.com/basher83/ProxmoxMCP/milestone/5
+#6  v1.2.0 - Production Hardening       https://github.com/basher83/ProxmoxMCP/milestone/6
+#7  v0.9.0 - Pre-Release Stabilization  https://github.com/basher83/ProxmoxMCP/milestone/7
 
----            
+---  
 
 ## v0.9.0 - Pre-Release Stabilization
 **Due by August 15, 2025** | **Current Progress: 0%**

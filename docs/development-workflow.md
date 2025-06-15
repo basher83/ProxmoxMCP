@@ -163,7 +163,7 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 #### MyPy (Type Checking)
 - **Version**: 1.x
 - **Configuration**: Strict type checking enabled
-- **Features**: 
+- **Features**:
   - Disallows untyped definitions
   - Warns on unused ignores and redundant casts
   - Checks untyped definitions

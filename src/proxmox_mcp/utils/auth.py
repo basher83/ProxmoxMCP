@@ -43,9 +43,7 @@ def load_auth_from_env() -> ProxmoxAuth:
             missing.append("PROXMOX_TOKEN_NAME")
         if not token_value:
             missing.append("PROXMOX_TOKEN_VALUE")
-        raise ValueError(
-            f"Missing required environment variables: {', '.join(missing)}"
-        )
+        raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
 
     # At this point we know they're not None due to the check above
     assert user is not None

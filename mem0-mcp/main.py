@@ -19,20 +19,20 @@ mcp = FastMCP("mem0-mcp")
 mem0_client = MemoryClient()
 DEFAULT_USER_ID = "cursor_mcp"
 CUSTOM_INSTRUCTIONS = """
-Extract the Following Information:  
+Extract the Following Information:
 
-- Code Snippets: Save the actual code for future reference.  
+- Code Snippets: Save the actual code for future reference.
 - Explanation: Document a clear description of what the code does and how it works.
-- Related Technical Details: Include information about the programming language, 
-  dependencies, and system specifications.  
+- Related Technical Details: Include information about the programming language,
+  dependencies, and system specifications.
 - Key Features: Highlight the main functionalities and important aspects of the snippet.
 """
 mem0_client.update_project(custom_instructions=CUSTOM_INSTRUCTIONS)
 
 
 @mcp.tool(
-    description="""Add a new coding preference to mem0. This tool stores code snippets, 
-    implementation details, and coding patterns for future reference. Store every code snippet. 
+    description="""Add a new coding preference to mem0. This tool stores code snippets,
+    implementation details, and coding patterns for future reference. Store every code snippet.
     When storing code, you should include:
     - Complete code with all necessary imports and dependencies
     - Language/framework version information (e.g., "Python 3.9", "React 18")
@@ -44,7 +44,7 @@ mem0_client.update_project(custom_instructions=CUSTOM_INSTRUCTIONS)
     - Links to relevant documentation or resources
     - Environment setup requirements (if applicable)
     - Error handling and debugging tips
-    The preference will be indexed for semantic search and can be retrieved later using 
+    The preference will be indexed for semantic search and can be retrieved later using
     natural language queries."""
 )
 async def add_coding_preference(text: str) -> str:
@@ -70,7 +70,7 @@ async def add_coding_preference(text: str) -> str:
 
 
 @mcp.tool(
-    description="""Retrieve all stored coding preferences for the default user. Call this tool 
+    description="""Retrieve all stored coding preferences for the default user. Call this tool
     when you need complete context of all previously stored preferences. This is useful when:
     - You need to analyze all available code patterns
     - You want to check all stored implementation examples
@@ -102,8 +102,8 @@ async def get_all_coding_preferences() -> str:
 
 
 @mcp.tool(
-    description="""Search through stored coding preferences using semantic search. This tool 
-    should be called for EVERY user query to find relevant code and implementation details. 
+    description="""Search through stored coding preferences using semantic search. This tool
+    should be called for EVERY user query to find relevant code and implementation details.
     It helps find:
     - Specific code implementations or patterns
     - Solutions to programming problems
@@ -111,7 +111,7 @@ async def get_all_coding_preferences() -> str:
     - Setup and configuration guides
     - Technical documentation and examples
     The search uses natural language understanding to find relevant matches, so you can
-    describe what you're looking for in plain English. Always search the preferences before 
+    describe what you're looking for in plain English. Always search the preferences before
     providing answers to ensure you leverage existing knowledge."""
 )
 async def search_coding_preferences(query: str) -> str:
@@ -129,9 +129,7 @@ async def search_coding_preferences(query: str) -> str:
               or specific technical terms.
     """
     try:
-        memories = mem0_client.search(
-            query, user_id=DEFAULT_USER_ID, output_format="v1.1"
-        )
+        memories = mem0_client.search(query, user_id=DEFAULT_USER_ID, output_format="v1.1")
         flattened_memories = [memory["memory"] for memory in memories["results"]]
         return json.dumps(flattened_memories, indent=2)
     except Exception as e:

@@ -1,0 +1,158 @@
+# ProxmoxMCP Pre-commit Configuration
+# This configuration addresses all issues identified by Codacy analysis
+# Run: pre-commit install to set up hooks
+
+default_language_version:
+  python: python3.13
+
+repos:
+  # Code formatting (addresses trailing whitespace, style issues)
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        language_version: python3.13
+        args: [--line-length=88]
+
+  # Linting and import sorting (addresses code style)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.2
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # Type checking (already working well)
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.2
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - types-requests
+          - types-PyYAML
+        exclude: "mem0-mcp/"
+        args: [--strict, --ignore-missing-imports]
+
+  # Security scanning (addresses critical security issues)
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.10
+    hooks:
+      - id: bandit
+        args: [
+          "-r", "src/",
+          "--format", "custom",
+          "--skip", "B101,B601",  # Skip assert and shell=True in tests
+        ]
+        pass_filenames: false
+
+  # Dependency vulnerability scanning (addresses CVEs)
+  # NOTE: Temporarily disabled due to hook configuration issues
+  # - repo: https://github.com/pyupio/safety
+  #   rev: 3.2.8
+  #   hooks:
+  #     - id: safety
+  #       args: [--full-report, --output, text]
+  #       stages: [manual]  # Run manually: pre-commit run safety --hook-stage manual
+
+  # YAML linting (already configured)
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [-c=.yamllint.yml]
+
+  # Dockerfile linting (addresses Docker security issues)
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        args: [--ignore, DL3008, --ignore, SC2028]  # Will fix these in separate PR
+        files: Dockerfile.*
+
+  # Shell script linting
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        files: \.(sh|bash)$
+        exclude: scripts/workflows/create-roadmap-issues.sh  # Contains Python code examples
+        args: [--severity=warning]
+
+  # Generic checks (addresses various formatting issues)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Fix trailing whitespace (critical for your Codacy issues)
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      # Fix end of file issues
+      - id: end-of-file-fixer
+      # Prevent large files
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      # YAML validation
+      - id: check-yaml
+        exclude: "mem0-mcp/node/mem0/pnpm-lock.yaml"  # pnpm lock is special
+      # JSON validation
+      - id: check-json
+      # Merge conflict detection
+      - id: check-merge-conflict
+      # Python syntax check
+      - id: check-ast
+      # Prevent commits to main
+      - id: no-commit-to-branch
+        args: [--branch, main, --branch, master]
+      # Check for secrets (basic)
+      - id: detect-private-key
+      # Fix mixed line endings
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # Commit message formatting
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.6.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [optional-scope]
+
+  # Python security and code quality
+  - repo: local
+    hooks:
+      # Custom hook to check for subprocess shell=True
+      - id: check-subprocess-shell
+        name: Check for dangerous subprocess calls
+        entry: bash -c 'if grep -r "shell=True" src/ --include="*.py"; then echo "❌ Found shell=True in source code!"; exit 1; fi'
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      # Custom hook to validate test credentials
+      - id: check-test-credentials
+        name: Check test files for hardcoded credentials
+        entry: bash -c 'if grep -r "password.*=.*["\x27][^"\x27]*["\x27]" tests/ --include="*.py" | grep -v "TEST_ONLY\|test-\|mock"; then echo "⚠️ Found potential hardcoded credentials in tests!"; exit 1; fi'
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [manual]  # Run manually since it might have false positives
+
+      # Complexity check using radon
+      - id: complexity-check
+        name: Check code complexity
+        entry: python3
+        args: ["-c", "import subprocess, sys; exec(open('scripts/check_complexity.py').read()) if __import__('pathlib').Path('scripts/check_complexity.py').exists() else print('Complexity checking requires radon: pip install radon')"]
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [manual]
+
+ci:
+  autofix_prs: true
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+    for more information, see https://pre-commit.ci
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: [safety, complexity-check, check-test-credentials]  # Skip manual/slow hooks in CI

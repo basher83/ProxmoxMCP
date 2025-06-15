@@ -39,9 +39,9 @@ assignees: ''
 
 ## Steps to Reproduce
 <!-- Detailed steps to reproduce the performance issue -->
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## Performance Impact
 <!-- How does this affect your usage? -->
@@ -88,7 +88,7 @@ Paste profiling data here
 - [ ] ProxmoxMCP inefficient API calls
 - [ ] Memory leaks
 - [ ] Database/cache issues
-- [ ] Other: 
+- [ ] Other:
 
 ## Additional Context
 <!-- Add any other context about the performance issue -->

@@ -23,9 +23,9 @@
 # ci:       CI/CD pipeline changes
 # perf:     Performance improvements
 
-# At the end: Include Co-authored-by for all contributors. 
+# At the end: Include Co-authored-by for all contributors.
 # Include "Fixes #issue" or "Closes #issue" for GitHub issues.
-# Format: 
+# Format:
 # Co-authored-by: name <user@users.noreply.github.com>
 #
 # ProxmoxMCP Examples:
