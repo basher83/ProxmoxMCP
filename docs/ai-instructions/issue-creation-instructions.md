@@ -378,7 +378,7 @@ Add batch operation support to existing VM management tools with proper error ha
 
 ### 15. Anti-Patterns to Avoid
 
-#### Poor Examples:
+#### Poor Examples
 
 ❌ **Vague Title**: "VM stuff broken"
 ❌ **Missing Context**: "It doesn't work on my system"
