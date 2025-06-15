@@ -235,7 +235,7 @@ How to address the security concern.
 - `component:api` - Proxmox API integration
 - `component:testing` - Test suite and testing infrastructure
 
-#### Effort Estimation Labels (Choose One):
+#### Effort Estimation Labels (Choose One)
 
 - `effort:small` - 1-2 hours of work
 - `effort:medium` - Half day to 1 day of work
