@@ -242,7 +242,7 @@ How to address the security concern.
 - `effort:large` - 2-3 days of work
 - `effort:xl` - More than 3 days of work
 
-#### Status Labels (Applied Automatically):
+#### Status Labels (Applied Automatically)
 
 - `status:triage` - Needs initial review and classification
 - `status:blocked` - Cannot proceed due to dependencies
