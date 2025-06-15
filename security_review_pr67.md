@@ -6,6 +6,7 @@ This report addresses the security vulnerabilities identified in PR #67 "feat: i
 ## Security Issues Identified
 
 ### 1. Unsafe Subprocess Execution (HIGH SEVERITY)
+
 **File:** `src/proxmox_mcp/utils/encrypt_config.py`  
 **Line:** 46 (original)  
 **Issue:** B603 - subprocess call with shell=True  
