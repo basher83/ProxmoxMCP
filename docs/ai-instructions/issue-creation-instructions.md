@@ -224,7 +224,7 @@ How to address the security concern.
 - `priority:medium` - Standard priority, address in upcoming iterations
 - `priority:low` - Nice to have, address when time permits
 
-#### Component Labels (Choose All That Apply):
+#### Component Labels (Choose All That Apply)
 
 - `component:server` - Core MCP server implementation
 - `component:config` - Configuration system and loading
