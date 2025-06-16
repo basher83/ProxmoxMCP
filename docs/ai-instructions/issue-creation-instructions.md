@@ -54,7 +54,7 @@ Use clear, descriptive titles following these patterns:
 
 ### 5. Issue Body Template
 
-#### For Bug Reports:
+#### For Bug Reports
 
 ```markdown
 ## Summary
@@ -104,7 +104,7 @@ What actually happens.
 [If you have ideas for fixing the issue]
 ```
 
-#### For Enhancement Requests:
+#### For Enhancement Requests
 
 ````markdown
 ## Summary
@@ -162,7 +162,7 @@ def new_feature():
 
 ```
 
-#### For Security Issues:
+#### For Security Issues
 
 ```markdown
 ## Security Issue Summary
@@ -209,7 +209,7 @@ How to address the security concern.
 
 ### 6. Label Assignment Guidelines
 
-#### Required Labels (Choose One Primary Type):
+#### Required Labels (Choose One Primary Type)
 
 - `bug` - For defects and issues
 - `enhancement` - For new features and improvements
@@ -217,7 +217,7 @@ How to address the security concern.
 - `documentation` - For documentation improvements
 - `performance` - For performance issues
 
-#### Priority Labels (Choose One):
+#### Priority Labels (Choose One)
 
 - `priority:critical` - Immediate attention required, blocks critical functionality
 - `priority:high` - Important issue, should be addressed in current iteration

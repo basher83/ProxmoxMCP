@@ -367,10 +367,10 @@ EXAMPLES:
 BRANCH NAMING CONVENTIONS:
     Modern format: <type>/<component>-<description>
     Legacy format: <type>/[issue-]<description>
-    
+
     Types: ${BRANCH_PREFIX_FEATURE}, ${BRANCH_PREFIX_FIX}, ${BRANCH_PREFIX_SECURITY}, ${BRANCH_PREFIX_DOCKER}, etc.
     Components: vm, api, config, docker, proxmox, etc.
-    
+
     Examples:
     - ${BRANCH_PREFIX_FEATURE}/vm-console-management
     - ${BRANCH_PREFIX_FIX}/api-timeout-handling
