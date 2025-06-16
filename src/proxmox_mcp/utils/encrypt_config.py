@@ -222,6 +222,135 @@ def verify_config_decryption(config_path: str, old_key: str) -> bool:
         return False
 
 
+def _validate_rotation_environment(config_path: str) -> str:
+    """Validate environment for key rotation and return old key.
+
+    Args:
+        config_path: Path to the configuration file
+
+    Returns:
+        The current master key from environment
+
+    Raises:
+        SystemExit: If validation fails
+    """
+    # Check if config file exists
+    if not os.path.exists(config_path):
+        print(f"❌ Error: Configuration file not found: {config_path}")
+        sys.exit(1)
+
+    # Get current master key from environment
+    old_key = os.getenv("PROXMOX_MCP_MASTER_KEY")
+    if not old_key:
+        print("❌ Error: No master key found in environment variable PROXMOX_MCP_MASTER_KEY")
+        print("   Set the current master key before rotation")
+        sys.exit(1)
+
+    # Verify old key works with current config
+    print("🔍 Verifying current master key...")
+    if not verify_config_decryption(config_path, old_key):
+        print("❌ Error: Current master key cannot decrypt the configuration")
+        print("   Please ensure PROXMOX_MCP_MASTER_KEY is set correctly")
+        sys.exit(1)
+    print("✅ Current master key verified")
+
+    return old_key
+
+
+def _handle_new_key_generation(new_key: Optional[str]) -> str:
+    """Handle new key generation or validation.
+
+    Args:
+        new_key: Optional new master key. If None, will generate one.
+
+    Returns:
+        The new master key to use
+    """
+    if new_key is None:
+        print("🔑 Generating new master key...")
+        new_key = TokenEncryption.generate_master_key()
+        print("✅ New master key generated")
+
+        # Save new key to secure file
+        key_file = Path.home() / ".proxmox_mcp_key"
+        try:
+            key_file.write_text(new_key)
+            key_file.chmod(0o600)  # Owner read/write only
+            print(f"🔐 New key saved securely to: {key_file}")
+        except Exception as e:
+            print(f"⚠️  Warning: Could not save key file: {e}")
+            print("   Please save the key manually after rotation")
+    else:
+        print("🔑 Using provided new master key...")
+
+    return new_key
+
+
+def _perform_token_rotation(config_path: str, old_key: str, new_key: str) -> List[str]:
+    """Perform the actual token rotation in a configuration file.
+
+    Args:
+        config_path: Path to the configuration file
+        old_key: Current master key for decryption
+        new_key: New master key for encryption
+
+    Returns:
+        List of rotated field names
+    """
+    # Create encryptors
+    old_encryptor = TokenEncryption(master_key=old_key)
+    new_encryptor = TokenEncryption(master_key=new_key)
+
+    # Load configuration
+    with open(config_path) as f:
+        config_data = json.load(f)
+
+    # Track what was rotated
+    rotated_fields: List[str] = []
+
+    # Rotate token_value if encrypted
+    if "auth" in config_data and "token_value" in config_data["auth"]:
+        token_value = config_data["auth"]["token_value"]
+        if isinstance(token_value, str) and token_value.startswith("enc:"):
+            # Decrypt with old key and re-encrypt with new key
+            decrypted_token = old_encryptor.decrypt_token(token_value)
+            config_data["auth"]["token_value"] = new_encryptor.encrypt_token(decrypted_token)
+            rotated_fields.append("auth.token_value")
+
+    # Save rotated configuration
+    with open(config_path, "w") as f:
+        json.dump(config_data, f, indent=2)
+
+    return rotated_fields
+
+
+def _display_rotation_summary(config_path: str, backup_path: str, rotated_fields: List[str]) -> None:
+    """Display rotation summary and next steps.
+
+    Args:
+        config_path: Path to the configuration file that was rotated
+        backup_path: Path to the backup file created
+        rotated_fields: List of field names that were rotated
+    """
+    print()
+    print("🔒 Key rotation completed successfully!")
+    print(f"   Configuration: {config_path}")
+    print(f"   Backup: {backup_path}")
+    if rotated_fields:
+        print(f"   Rotated fields: {', '.join(rotated_fields)}")
+    else:
+        print("   No encrypted fields found to rotate")
+    print()
+    print("📋 Next steps:")
+    print("   1. Update your environment with the new master key:")
+    print("      export PROXMOX_MCP_MASTER_KEY=$(cat ~/.proxmox_mcp_key)")
+    print("   2. Test the configuration:")
+    print(f"      PROXMOX_MCP_CONFIG={config_path} python -m proxmox_mcp.server --test")
+    print("   3. If successful, you can safely delete the backup file")
+    print("   4. Update any other systems using the old key")
+    print()
+
+
 def rotate_master_key(config_path: str, new_key: Optional[str] = None) -> None:
     """Rotate master key for a single encrypted configuration file.
 
@@ -230,93 +359,25 @@ def rotate_master_key(config_path: str, new_key: Optional[str] = None) -> None:
         new_key: Optional new master key. If not provided, will generate one.
     """
     try:
-        # Check if config file exists
-        if not os.path.exists(config_path):
-            print(f"❌ Error: Configuration file not found: {config_path}")
-            sys.exit(1)
-
-        # Get current master key from environment
-        old_key = os.getenv("PROXMOX_MCP_MASTER_KEY")
-        if not old_key:
-            print("❌ Error: No master key found in environment variable PROXMOX_MCP_MASTER_KEY")
-            print("   Set the current master key before rotation")
-            sys.exit(1)
-
         print(f"🔄 Starting key rotation for: {config_path}")
         print()
 
-        # Verify old key works with current config
-        print("🔍 Verifying current master key...")
-        if not verify_config_decryption(config_path, old_key):
-            print("❌ Error: Current master key cannot decrypt the configuration")
-            print("   Please ensure PROXMOX_MCP_MASTER_KEY is set correctly")
-            sys.exit(1)
-        print("✅ Current master key verified")
+        # Validate environment and get old key
+        old_key = _validate_rotation_environment(config_path)
 
         # Create backup
         print("💾 Creating backup...")
         backup_path = create_backup(config_path)
         print(f"✅ Backup created: {backup_path}")
 
-        # Generate or use provided new key
-        if new_key is None:
-            print("🔑 Generating new master key...")
-            new_key = TokenEncryption.generate_master_key()
-            print("✅ New master key generated")
+        # Handle new key generation or validation
+        new_key = _handle_new_key_generation(new_key)
 
-            # Save new key to secure file
-            key_file = Path.home() / ".proxmox_mcp_key"
-            try:
-                key_file.write_text(new_key)
-                key_file.chmod(0o600)  # Owner read/write only
-                print(f"🔐 New key saved securely to: {key_file}")
-            except Exception as e:
-                print(f"⚠️  Warning: Could not save key file: {e}")
-                print("   Please save the key manually after rotation")
-        else:
-            print("🔑 Using provided new master key...")
+        # Perform the actual token rotation
+        rotated_fields = _perform_token_rotation(config_path, old_key, new_key)
 
-        # Create encryptors
-        old_encryptor = TokenEncryption(master_key=old_key)
-        new_encryptor = TokenEncryption(master_key=new_key)
-
-        # Load configuration
-        with open(config_path) as f:
-            config_data = json.load(f)
-
-        # Track what was rotated
-        rotated_fields: List[str] = []
-
-        # Rotate token_value if encrypted
-        if "auth" in config_data and "token_value" in config_data["auth"]:
-            token_value = config_data["auth"]["token_value"]
-            if isinstance(token_value, str) and token_value.startswith("enc:"):
-                # Decrypt with old key and re-encrypt with new key
-                decrypted_token = old_encryptor.decrypt_token(token_value)
-                config_data["auth"]["token_value"] = new_encryptor.encrypt_token(decrypted_token)
-                rotated_fields.append("auth.token_value")
-
-        # Save rotated configuration
-        with open(config_path, "w") as f:
-            json.dump(config_data, f, indent=2)
-
-        print()
-        print("🔒 Key rotation completed successfully!")
-        print(f"   Configuration: {config_path}")
-        print(f"   Backup: {backup_path}")
-        if rotated_fields:
-            print(f"   Rotated fields: {', '.join(rotated_fields)}")
-        else:
-            print("   No encrypted fields found to rotate")
-        print()
-        print("📋 Next steps:")
-        print("   1. Update your environment with the new master key:")
-        print("      export PROXMOX_MCP_MASTER_KEY=$(cat ~/.proxmox_mcp_key)")
-        print("   2. Test the configuration:")
-        print(f"      PROXMOX_MCP_CONFIG={config_path} python -m proxmox_mcp.server --test")
-        print("   3. If successful, you can safely delete the backup file")
-        print("   4. Update any other systems using the old key")
-        print()
+        # Display summary and next steps
+        _display_rotation_summary(config_path, backup_path, rotated_fields)
 
         # Offer to clear terminal for security
         clear_terminal_if_requested()
@@ -324,6 +385,137 @@ def rotate_master_key(config_path: str, new_key: Optional[str] = None) -> None:
     except Exception as e:
         print(f"❌ Error during key rotation: {e}")
         sys.exit(1)
+
+
+def _find_config_files(directory: str) -> List[str]:
+    """Find all configuration files in a directory.
+
+    Args:
+        directory: Path to directory to search
+
+    Returns:
+        List of configuration file paths
+
+    Raises:
+        SystemExit: If directory doesn't exist or no files found
+    """
+    if not os.path.exists(directory):
+        print(f"❌ Error: Directory not found: {directory}")
+        sys.exit(1)
+
+    if not os.path.isdir(directory):
+        print(f"❌ Error: Path is not a directory: {directory}")
+        sys.exit(1)
+
+    # Find all JSON files in directory
+    config_files: List[str] = []
+    for file_path in Path(directory).rglob("*.json"):
+        if not file_path.name.startswith("config.example"):  # Skip example files
+            config_files.append(str(file_path))
+
+    if not config_files:
+        print(f"❌ No configuration files found in: {directory}")
+        sys.exit(1)
+
+    return config_files
+
+
+def _prepare_bulk_rotation(new_key: Optional[str]) -> str:
+    """Prepare for bulk key rotation by generating or validating the new key.
+
+    Args:
+        new_key: Optional new master key. If None, will generate one.
+
+    Returns:
+        The new master key to use for all files
+    """
+    # Generate single new key for all files if not provided
+    if new_key is None:
+        print("🔑 Generating new master key for all configurations...")
+        new_key = TokenEncryption.generate_master_key()
+        print("✅ New master key generated")
+
+        # Save new key to secure file
+        key_file = Path.home() / ".proxmox_mcp_key"
+        try:
+            key_file.write_text(new_key)
+            key_file.chmod(0o600)  # Owner read/write only
+            print(f"🔐 New key saved securely to: {key_file}")
+        except Exception as e:
+            print(f"⚠️  Warning: Could not save key file: {e}")
+            print("   Please save the key manually after rotation")
+
+    return new_key
+
+
+def _process_single_config(config_file: str, new_key: str) -> bool:
+    """Process a single configuration file for bulk rotation.
+
+    Args:
+        config_file: Path to the configuration file
+        new_key: New master key to use
+
+    Returns:
+        True if rotation was successful, False otherwise
+    """
+    try:
+        print(f"📝 Processing: {os.path.basename(config_file)}")
+
+        # Check if file has encrypted content
+        with open(config_file) as f:
+            config_data = json.load(f)
+
+        has_encrypted_content = False
+        if "auth" in config_data and "token_value" in config_data["auth"]:
+            token_value = config_data["auth"]["token_value"]
+            if isinstance(token_value, str) and token_value.startswith("enc:"):
+                has_encrypted_content = True
+
+        if not has_encrypted_content:
+            print("   ⏭️  Skipping (no encrypted content)")
+            return True  # Not an error, just nothing to do
+
+        # Perform rotation
+        rotate_master_key(config_file, new_key)
+        print("   ✅ Rotated successfully")
+        return True
+
+    except Exception as e:
+        print(f"   ❌ Failed: {e}")
+        return False
+
+
+def _display_bulk_summary(successful_rotations: List[str], failed_rotations: List[tuple[str, str]]) -> None:
+    """Display summary of bulk rotation results and next steps.
+
+    Args:
+        successful_rotations: List of successfully rotated file paths
+        failed_rotations: List of tuples containing (file_path, error_message) for failed rotations
+    """
+    # Summary
+    print("📊 Bulk rotation summary:")
+    print(f"   ✅ Successful: {len(successful_rotations)}")
+    print(f"   ❌ Failed: {len(failed_rotations)}")
+
+    if successful_rotations:
+        print("   Rotated files:")
+        for rotated_file in successful_rotations:
+            print(f"     • {rotated_file}")
+
+    if failed_rotations:
+        print("   Failed files:")
+        for failed_file, error in failed_rotations:
+            print(f"     • {failed_file}: {error}")
+
+    if successful_rotations:
+        print()
+        print("📋 Next steps:")
+        print("   1. Update your environment with the new master key:")
+        print("      export PROXMOX_MCP_MASTER_KEY=$(cat ~/.proxmox_mcp_key)")
+        print("   2. Test each rotated configuration")
+        print("   3. If successful, delete backup files")
+        print("   4. Update any other systems using the old key")
+        print()
 
 
 def rotate_master_key_all(directory: str, new_key: Optional[str] = None) -> None:
@@ -334,39 +526,12 @@ def rotate_master_key_all(directory: str, new_key: Optional[str] = None) -> None
         new_key: Optional new master key. If not provided, will generate one.
     """
     try:
-        if not os.path.exists(directory):
-            print(f"❌ Error: Directory not found: {directory}")
-            sys.exit(1)
+        # Find all configuration files
+        config_files = _find_config_files(directory)
 
-        if not os.path.isdir(directory):
-            print(f"❌ Error: Path is not a directory: {directory}")
-            sys.exit(1)
+        # Prepare for bulk rotation
+        new_key = _prepare_bulk_rotation(new_key)
 
-        # Find all JSON files in directory
-        config_files: List[str] = []
-        for file_path in Path(directory).rglob("*.json"):
-            if not file_path.name.startswith("config.example"):  # Skip example files
-                config_files.append(str(file_path))
-
-        if not config_files:
-            print(f"❌ No configuration files found in: {directory}")
-            sys.exit(1)
-
-        # Generate single new key for all files if not provided
-        if new_key is None:
-            print("🔑 Generating new master key for all configurations...")
-            new_key = TokenEncryption.generate_master_key()
-            print("✅ New master key generated")
-
-            # Save new key to secure file
-            key_file = Path.home() / ".proxmox_mcp_key"
-            try:
-                key_file.write_text(new_key)
-                key_file.chmod(0o600)  # Owner read/write only
-                print(f"🔐 New key saved securely to: {key_file}")
-            except Exception as e:
-                print(f"⚠️  Warning: Could not save key file: {e}")
-                print("   Please save the key manually after rotation")
         print(f"🔄 Starting bulk key rotation in: {directory}")
         print(f"   Found {len(config_files)} configuration files")
         print()
@@ -374,62 +539,20 @@ def rotate_master_key_all(directory: str, new_key: Optional[str] = None) -> None
         successful_rotations: List[str] = []
         failed_rotations: List[tuple[str, str]] = []
 
-        # Rotate each file
+        # Process each file
         for config_file in config_files:
-            try:
-                print(f"📝 Processing: {os.path.basename(config_file)}")
-
-                # Check if file has encrypted content
-                with open(config_file) as f:
-                    config_data = json.load(f)
-
-                has_encrypted_content = False
-                if "auth" in config_data and "token_value" in config_data["auth"]:
-                    token_value = config_data["auth"]["token_value"]
-                    if isinstance(token_value, str) and token_value.startswith("enc:"):
-                        has_encrypted_content = True
-
-                if not has_encrypted_content:
-                    print("   ⏭️  Skipping (no encrypted content)")
-                    continue
-
-                # Perform rotation
-                rotate_master_key(config_file, new_key)
+            if _process_single_config(config_file, new_key):
                 successful_rotations.append(config_file)
-                print("   ✅ Rotated successfully")
-
-            except Exception as e:
-                print(f"   ❌ Failed: {e}")
-                failed_rotations.append((config_file, str(e)))
-
+            else:
+                # Error details already printed by _process_single_config
+                failed_rotations.append((config_file, "Processing failed"))
             print()
 
-        # Summary
-        print("📊 Bulk rotation summary:")
-        print(f"   ✅ Successful: {len(successful_rotations)}")
-        print(f"   ❌ Failed: {len(failed_rotations)}")
+        # Display results summary
+        _display_bulk_summary(successful_rotations, failed_rotations)
 
+        # Offer to clear terminal for security if any files were rotated
         if successful_rotations:
-            print("   Rotated files:")
-            for rotated_file in successful_rotations:
-                print(f"     • {rotated_file}")
-
-        if failed_rotations:
-            print("   Failed files:")
-            for failed_file, error in failed_rotations:
-                print(f"     • {failed_file}: {error}")
-
-        if successful_rotations:
-            print()
-            print("📋 Next steps:")
-            print("   1. Update your environment with the new master key:")
-            print("      export PROXMOX_MCP_MASTER_KEY=$(cat ~/.proxmox_mcp_key)")
-            print("   2. Test each rotated configuration")
-            print("   3. If successful, delete backup files")
-            print("   4. Update any other systems using the old key")
-            print()
-
-            # Offer to clear terminal for security
             clear_terminal_if_requested()
 
     except Exception as e:
@@ -437,8 +560,12 @@ def rotate_master_key_all(directory: str, new_key: Optional[str] = None) -> None
         sys.exit(1)
 
 
-def main() -> None:
-    """Main command-line interface."""
+def _setup_argument_parser() -> argparse.ArgumentParser:
+    """Set up and configure the command-line argument parser.
+
+    Returns:
+        Configured ArgumentParser instance
+    """
     parser = argparse.ArgumentParser(
         description="Encrypt sensitive values in Proxmox MCP configuration files",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -485,8 +612,16 @@ Examples:
         help="Rotate master key for all configuration files in a directory",
     )
 
-    args = parser.parse_args()
+    return parser
 
+
+def _handle_command(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
+    """Handle the parsed command-line arguments and execute appropriate action.
+
+    Args:
+        args: Parsed command-line arguments
+        parser: Argument parser instance for error reporting
+    """
     # Handle generate key command
     if args.generate_key:
         generate_master_key()
@@ -516,6 +651,13 @@ Examples:
 
     # Handle encryption
     encrypt_config(args.config_file, args.output)
+
+
+def main() -> None:
+    """Main command-line interface."""
+    parser = _setup_argument_parser()
+    args = parser.parse_args()
+    _handle_command(args, parser)
 
 
 if __name__ == "__main__":
