@@ -39,10 +39,9 @@ validate_branch_name() {
     local branch_name="$1"
     local is_valid=false
     local branch_type=""
-    local suggestions=""
 
     # Remove origin/ prefix if present
-    branch_name=$(echo "$branch_name" | sed 's|^origin/||')
+    branch_name=${branch_name#origin/}
 
     # Skip main and development branches
     if [[ "$branch_name" == "main" || "$branch_name" == "master" || "$branch_name" == "develop" ]]; then
@@ -98,7 +97,6 @@ validate_branch_name() {
 
 suggest_corrections() {
     local branch_name="$1"
-    local suggestions=""
 
     # Extract potential type and description
     if [[ $branch_name =~ ^([^/]+)/(.+)$ ]]; then
@@ -106,41 +104,43 @@ suggest_corrections() {
         local desc="${BASH_REMATCH[2]}"
 
         # Clean up description
-        local clean_desc=$(echo "$desc" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+        local clean_desc
+        clean_desc=$(echo "$desc" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
 
         echo -e "${YELLOW}Suggestions:${NC}"
 
         # Check if type is valid
         case $type in
-            feature|fix|security|chore|release|hotfix)
-                if [[ "$clean_desc" != "$desc" ]]; then
-                    echo "  ${type}/${clean_desc}"
-                fi
-                ;;
-            feat)
-                echo "  feature/${clean_desc}"
-                ;;
-            bugfix|bug)
-                echo "  fix/${clean_desc}"
-                ;;
-            sec)
-                echo "  security/${clean_desc}"
-                ;;
-            maintenance|maint)
-                echo "  chore/${clean_desc}"
-                ;;
-            rel)
-                echo "  release/${clean_desc}"
-                ;;
-            *)
-                echo "  feature/${clean_desc}  (if this is a new feature)"
-                echo "  fix/${clean_desc}      (if this is a bug fix)"
-                echo "  chore/${clean_desc}    (if this is maintenance)"
-                ;;
+        feature | fix | security | chore | release | hotfix)
+            if [[ "$clean_desc" != "$desc" ]]; then
+                echo "  ${type}/${clean_desc}"
+            fi
+            ;;
+        feat)
+            echo "  feature/${clean_desc}"
+            ;;
+        bugfix | bug)
+            echo "  fix/${clean_desc}"
+            ;;
+        sec)
+            echo "  security/${clean_desc}"
+            ;;
+        maintenance | maint)
+            echo "  chore/${clean_desc}"
+            ;;
+        rel)
+            echo "  release/${clean_desc}"
+            ;;
+        *)
+            echo "  feature/${clean_desc}  (if this is a new feature)"
+            echo "  fix/${clean_desc}      (if this is a bug fix)"
+            echo "  chore/${clean_desc}    (if this is maintenance)"
+            ;;
         esac
     else
         # No slash found, suggest adding type
-        local clean_name=$(echo "$branch_name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+        local clean_name
+        clean_name=$(echo "$branch_name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
         echo -e "${YELLOW}Suggestions:${NC}"
         echo "  feature/${clean_name}  (if this is a new feature)"
         echo "  fix/${clean_name}      (if this is a bug fix)"
@@ -161,13 +161,14 @@ check_all_branches() {
     echo
 
     local all_valid=true
-    local branches=$(git branch --format='%(refname:short)' | grep -v '^remotes/')
+    local branches
+    branches=$(git branch --format='%(refname:short)' | grep -v '^remotes/')
 
     while IFS= read -r branch; do
         if ! validate_branch_name "$branch"; then
             all_valid=false
         fi
-    done <<< "$branches"
+    done <<<"$branches"
 
     echo
     if $all_valid; then
@@ -183,7 +184,8 @@ check_all_branches() {
 main() {
     if [[ $# -eq 0 ]]; then
         # Validate current branch
-        local current_branch=$(get_current_branch)
+        local current_branch
+        current_branch=$(get_current_branch)
         echo -e "${BLUE}Validating current branch: ${current_branch}${NC}"
         echo
         validate_branch_name "$current_branch"

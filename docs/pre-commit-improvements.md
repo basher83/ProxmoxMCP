@@ -15,7 +15,7 @@ We've enhanced your existing task-based workflow with proper pre-commit hooks th
 ✅ **Shell script linting** (shellcheck)  
 ✅ **Custom security checks** (shell=True detection)  
 ✅ **Complexity analysis** (radon)  
-✅ **Enhanced task commands** (security, complexity, hooks management)  
+✅ **Enhanced task commands** (security, complexity, hooks management)
 
 ## 🛠️ **Quick Setup**
 
@@ -30,46 +30,52 @@ task hooks:setup
 
 ## 📊 **Coverage Matrix - Codacy Issues Addressed**
 
-| Codacy Issue Category | Tool/Hook | Status | Priority |
-|----------------------|-----------|--------|---------|
-| **🚨 shell=True vulnerabilities** | bandit, custom hook | ✅ Active | Critical |
-| **🔒 Hardcoded credentials** | bandit | ✅ Active | Medium |
-| **📐 Code complexity** | radon | ✅ Active | Medium |
-| **🎨 Trailing whitespace** | trailing-whitespace | ✅ Active | Low |
-| **🎨 Dead code** | ruff | ✅ Active | Low |
-| **📦 Dependency CVEs** | safety | ✅ Active | Critical |
-| **🐳 Dockerfile issues** | hadolint | ✅ Active | Medium |
-| **📝 YAML formatting** | yamllint | ✅ Enhanced | Low |
+| Codacy Issue Category             | Tool/Hook           | Status      | Priority |
+| --------------------------------- | ------------------- | ----------- | -------- |
+| **🚨 shell=True vulnerabilities** | bandit, custom hook | ✅ Active   | Critical |
+| **🔒 Hardcoded credentials**      | bandit              | ✅ Active   | Medium   |
+| **📐 Code complexity**            | radon               | ✅ Active   | Medium   |
+| **🎨 Trailing whitespace**        | trailing-whitespace | ✅ Active   | Low      |
+| **🎨 Dead code**                  | ruff                | ✅ Active   | Low      |
+| **📦 Dependency CVEs**            | safety              | ✅ Active   | Critical |
+| **🐳 Dockerfile issues**          | hadolint            | ✅ Active   | Medium   |
+| **📝 YAML formatting**            | yamllint            | ✅ Enhanced | Low      |
 
 ## 🔧 **Tools Configuration**
 
 ### **Security Tools**
 
 #### **Bandit** (Python Security)
+
 ```yaml
 - repo: https://github.com/PyCQA/bandit
   hooks:
     - id: bandit
       args: [
-        "-r", ".",
-        "--skip", "B101,B601",  # Skip assert and shell=True in tests
-        "--exclude", "tests/,mem0-mcp/"
-      ]
+          "-r",
+          ".",
+          "--skip",
+          "B101,B601", # Skip assert and shell=True in tests
+          "--exclude",
+          "tests/,mem0-mcp/",
+        ]
 ```
 
 **Addresses**: Issues #61 (shell=True), #64 (hardcoded credentials)
 
 #### **Safety** (Dependency Vulnerabilities)
+
 ```yaml
 - repo: https://github.com/pyupio/safety
   hooks:
     - id: safety
-      stages: [manual]  # Run: pre-commit run safety --hook-stage manual
+      stages: [manual] # Run: pre-commit run safety --hook-stage manual
 ```
 
 **Addresses**: Issue #65 (dependency CVEs)
 
 #### **Custom Shell=True Check**
+
 ```yaml
 - repo: local
   hooks:
@@ -82,6 +88,7 @@ task hooks:setup
 ### **Code Quality Tools**
 
 #### **Radon** (Complexity Analysis)
+
 ```yaml
 - id: complexity-check
   entry: bash -c 'radon cc src/ --min B --show-complexity'
@@ -91,6 +98,7 @@ task hooks:setup
 **Addresses**: Issue #62 (method complexity)
 
 #### **Hadolint** (Dockerfile)
+
 ```yaml
 - repo: https://github.com/hadolint/hadolint
   hooks:
@@ -110,7 +118,7 @@ task pre-commit
 
 # New security-focused commands
 task security          # Run security analysis
-task security:deps     # Check dependency vulnerabilities  
+task security:deps     # Check dependency vulnerabilities
 task complexity        # Analyze code complexity
 
 # Pre-commit hook management
@@ -154,6 +162,7 @@ pre-commit run check-test-credentials --hook-stage manual
 ## 📋 **Hook Categories**
 
 ### **🔴 Critical (Always Run)**
+
 - **black** - Code formatting
 - **ruff** - Linting and import sorting
 - **mypy** - Type checking
@@ -162,11 +171,13 @@ pre-commit run check-test-credentials --hook-stage manual
 - **trailing-whitespace** - Fix style issues
 
 ### **🟡 Manual (Run as Needed)**
+
 - **safety** - Dependency vulnerabilities
-- **complexity-check** - Code complexity analysis  
+- **complexity-check** - Code complexity analysis
 - **check-test-credentials** - Test credential validation
 
 ### **🟢 Informational**
+
 - **hadolint** - Dockerfile linting
 - **shellcheck** - Shell script linting
 - **yamllint** - YAML formatting
@@ -174,9 +185,11 @@ pre-commit run check-test-credentials --hook-stage manual
 ## 🎛️ **Configuration Files**
 
 ### **`.pre-commit-config.yaml`**
+
 Main configuration with all hooks and settings.
 
 ### **`pyproject.toml` (Enhanced)**
+
 ```toml
 [project.optional-dependencies]
 dev = [
@@ -193,6 +206,7 @@ dev = [
 ```
 
 ### **`Taskfile.yml` (Enhanced)**
+
 Added security, complexity, and hooks management tasks.
 
 ## 🔧 **Customization**
@@ -202,7 +216,7 @@ Added security, complexity, and hooks management tasks.
 ```yaml
 # To allow shell=True in specific files:
 - id: bandit
-  args: ["--skip", "B101,B601,B602"]  # Add B602 to skip more shell issues
+  args: ["--skip", "B101,B601,B602"] # Add B602 to skip more shell issues
 ```
 
 ### **Complexity Thresholds**
@@ -210,7 +224,7 @@ Added security, complexity, and hooks management tasks.
 ```yaml
 # Adjust complexity limits:
 - id: complexity-check
-  entry: bash -c 'radon cc src/ --min A --show-complexity'  # Stricter (A vs B)
+  entry: bash -c 'radon cc src/ --min A --show-complexity' # Stricter (A vs B)
 ```
 
 ### **Adding Custom Hooks**
@@ -227,11 +241,13 @@ Added security, complexity, and hooks management tasks.
 ## 🎯 **Next Steps**
 
 ### **Immediate Actions**
+
 1. **Run setup**: `./scripts/setup-precommit.sh`
 2. **Address critical issues**: Focus on GitHub issues #61 and #65
 3. **Test workflow**: Make a test commit to verify hooks work
 
 ### **Ongoing Maintenance**
+
 1. **Weekly**: `task hooks:update` to update hook versions
 2. **Monthly**: `pre-commit run safety --hook-stage manual` for dependency checks
 3. **Before releases**: `task complexity` to check code quality trends
@@ -244,11 +260,12 @@ Your existing autofix workflow will work seamlessly with these changes:
 # .github/workflows/autofix.yml already includes:
 - name: Run ruff linting with auto-fix
   run: uv run ruff check . --fix-only --exit-zero
-- name: Run ruff formatting  
+- name: Run ruff formatting
   run: uv run ruff format .
 ```
 
 Consider adding:
+
 ```yaml
 - name: Run security checks
   run: uv run bandit -r src/ --format custom --skip B101,B601
@@ -282,21 +299,25 @@ pre-commit run --hook-stage commit
 ## 📈 **Benefits**
 
 ### **Security**
+
 - **Automatic detection** of shell=True vulnerabilities
 - **Dependency scanning** for known CVEs
 - **Credential leak prevention** in test files
 
 ### **Code Quality**
+
 - **Complexity monitoring** to prevent technical debt
 - **Consistent formatting** across all files
 - **Type safety** enforcement
 
 ### **Developer Experience**
+
 - **Faster feedback** - catch issues before CI
 - **Automatic fixes** for many issues
 - **Clear error messages** with fix suggestions
 
 ### **Team Consistency**
+
 - **Standardized workflow** across all developers
 - **Automated enforcement** of coding standards
 - **Reduced code review overhead**
@@ -306,6 +327,7 @@ pre-commit run --hook-stage commit
 **🎉 Your pre-commit setup now addresses all Codacy issues while maintaining your existing workflow!**
 
 For questions or issues, refer to:
+
 - [Python Coding Standard](./python-coding-standard.md)
 - [GitHub Issues #61-66](https://github.com/basher83/ProxmoxMCP/issues) (Codacy issues)
 - [Pre-commit Documentation](https://pre-commit.com/)

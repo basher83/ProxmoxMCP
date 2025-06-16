@@ -27,7 +27,6 @@ import os
 from pathlib import Path
 import platform
 import shutil
-import subprocess
 import sys
 from typing import List, Optional
 
@@ -44,15 +43,25 @@ def clear_terminal_if_requested() -> None:
         response = input("🧹 Clear terminal for security? (y/n): ").strip().lower()
         if response in ["y", "yes"]:
             if platform.system() == "Windows":
-                # Use Windows-specific ANSI escape sequence
-                subprocess.run(["cmd", "/c", "cls"], check=True)
+                # Use Windows-specific clear method via ctypes
+                try:
+                    import ctypes
+
+                    ctypes.windll.kernel32.SetConsoleTitleW("ProxmoxMCP")
+                    # Clear screen using ANSI escape sequences (works on modern Windows)
+                    print("\033[2J\033[H", end="", flush=True)
+                except Exception:
+                    # Fallback: just print newlines to push content up
+                    print("\n" * 50)
             else:
-                # Use printf to clear screen without security risk
-                subprocess.run(["printf", "\033[2J\033[H"], check=True)
+                # Use ANSI escape sequences directly
+                print("\033[2J\033[H", end="", flush=True)
             print("✅ Terminal cleared for security")
             print("💡 Consider also clearing your shell history if needed")
         else:
-            print("💡 Remember to clear terminal manually: clear (Linux/Mac) or cls (Windows)")
+            print(
+                "💡 Remember to clear terminal manually: clear (Linux/Mac) or cls (Windows)"
+            )
     except (KeyboardInterrupt, EOFError):
         print("\n💡 Consider clearing terminal manually for security")
     except Exception as e:
@@ -110,7 +119,9 @@ def encrypt_config(config_path: str, output_path: Optional[str] = None) -> None:
         print()
         print("📝 Next steps:")
         print("   1. Verify the encrypted config works:")
-        print(f"      PROXMOX_MCP_CONFIG={encrypted_path} python -m proxmox_mcp.server --test")
+        print(
+            f"      PROXMOX_MCP_CONFIG={encrypted_path} python -m proxmox_mcp.server --test"
+        )
         print("   2. Update your environment to use the encrypted config")
         print("   3. Securely delete the original plain-text config if desired")
 
@@ -231,7 +242,9 @@ def rotate_master_key(config_path: str, new_key: Optional[str] = None) -> None:
         # Get current master key from environment
         old_key = os.getenv("PROXMOX_MCP_MASTER_KEY")
         if not old_key:
-            print("❌ Error: No master key found in environment variable PROXMOX_MCP_MASTER_KEY")
+            print(
+                "❌ Error: No master key found in environment variable PROXMOX_MCP_MASTER_KEY"
+            )
             print("   Set the current master key before rotation")
             sys.exit(1)
 
@@ -286,7 +299,9 @@ def rotate_master_key(config_path: str, new_key: Optional[str] = None) -> None:
             if isinstance(token_value, str) and token_value.startswith("enc:"):
                 # Decrypt with old key and re-encrypt with new key
                 decrypted_token = old_encryptor.decrypt_token(token_value)
-                config_data["auth"]["token_value"] = new_encryptor.encrypt_token(decrypted_token)
+                config_data["auth"]["token_value"] = new_encryptor.encrypt_token(
+                    decrypted_token
+                )
                 rotated_fields.append("auth.token_value")
 
         # Save rotated configuration
@@ -306,7 +321,9 @@ def rotate_master_key(config_path: str, new_key: Optional[str] = None) -> None:
         print("   1. Update your environment with the new master key:")
         print("      export PROXMOX_MCP_MASTER_KEY=$(cat ~/.proxmox_mcp_key)")
         print("   2. Test the configuration:")
-        print(f"      PROXMOX_MCP_CONFIG={config_path} python -m proxmox_mcp.server --test")
+        print(
+            f"      PROXMOX_MCP_CONFIG={config_path} python -m proxmox_mcp.server --test"
+        )
         print("   3. If successful, you can safely delete the backup file")
         print("   4. Update any other systems using the old key")
         print()
@@ -446,7 +463,9 @@ Examples:
         """,
     )
 
-    parser.add_argument("config_file", nargs="?", help="Path to configuration file to encrypt")
+    parser.add_argument(
+        "config_file", nargs="?", help="Path to configuration file to encrypt"
+    )
 
     parser.add_argument(
         "-o",
