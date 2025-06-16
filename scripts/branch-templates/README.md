@@ -1,8 +1,10 @@
-# Branch Templates
+# Branch Management System
 
-This directory contains scripts and templates to help create branches following the ProxmoxMCP branching strategy.
+A comprehensive branch management system for the ProxmoxMCP project that provides both automated branch templates and validation tools to enforce consistent branch naming conventions.
 
 ## 🚀 Quick Start
+
+### Using Branch Templates (Recommended)
 
 ```bash
 # Navigate to the scripts directory
@@ -11,7 +13,7 @@ cd scripts/branch-templates
 # Create a feature branch
 ./feature.sh "add-vm-monitoring-tools" 123
 
-# Create a fix branch  
+# Create a fix branch
 ./fix.sh "memory-leak-connection-pool" 58
 
 # Create a security branch
@@ -21,34 +23,90 @@ cd scripts/branch-templates
 ./hotfix.sh "critical-security-patch"
 ```
 
+### Using Branch Manager (Interactive)
+
+```bash
+# Interactive branch creation
+./scripts/branch-templates/branch-manager.sh create
+
+# Validate current branch
+./scripts/branch-templates/validate.sh --current
+
+# List all branches with validation status
+./scripts/branch-templates/branch-manager.sh list
+```
+
 ## 📁 Files Overview
 
-| File | Purpose |
-|------|---------|
-| `create-branch.sh` | Main branch creation script with full functionality |
-| `feature.sh` | Quick feature branch creation |
-| `fix.sh` | Quick fix branch creation |
-| `security.sh` | Quick security branch creation |
-| `hotfix.sh` | Quick hotfix branch creation |
-| `config.sh` | Configuration settings and templates |
-| `README.md` | This documentation |
+| File                | Purpose                                             |
+| ------------------- | --------------------------------------------------- |
+| `create-branch.sh`  | Main branch creation script with full functionality |
+| `branch-manager.sh` | Interactive branch management interface             |
+| `validate.sh`       | Branch name validation tool                         |
+| `feature.sh`        | Quick feature branch creation                       |
+| `fix.sh`            | Quick fix branch creation                           |
+| `security.sh`       | Quick security branch creation                      |
+| `hotfix.sh`         | Quick hotfix branch creation                        |
+| `config.sh`         | Configuration settings and shared functions         |
+| `README.md`         | This documentation                                  |
+
+## 🎯 Branch Naming Conventions
+
+All branches must follow the format: `<type>/<component>-<description>` or legacy format: `<type>/[issue-]<description>`
+
+### Valid Types
+
+| Type       | Purpose                          | Legacy Support   |
+| ---------- | -------------------------------- | ---------------- |
+| `feature`  | New features and enhancements    | ✅               |
+| `fix`      | Bug fixes and patches            | ✅               |
+| `security` | Security improvements            | ✅               |
+| `docker`   | Container and deployment updates | ✅               |
+| `config`   | Configuration changes            | ✅               |
+| `docs`     | Documentation updates            | ✅               |
+| `ci`       | CI/CD pipeline changes           | ✅               |
+| `perf`     | Performance improvements         | ✅               |
+| `chore`    | Maintenance tasks                | ✅ (legacy only) |
+| `release`  | Release preparation              | ✅ (legacy only) |
+| `hotfix`   | Critical production fixes        | ✅               |
+
+### Valid Components
+
+- `vm` - Virtual machine management
+- `container` - Container operations
+- `storage` - Storage management
+- `network` - Network configuration
+- `backup` - Backup operations
+- `auth` - Authentication/authorization
+- `encryption` - Security and encryption
+- `config` - Configuration management
+- `api` - API development
+- `mcp` - MCP protocol implementation
+- `core` - Core functionality
+- `tools` - Development tools
+- `formatting` - Code formatting
+- `docker` - Docker-specific changes
+- `proxmox` - Proxmox API integration
+- `console` - Console management
+- `management` - General management features
+
+### Branch Name Examples
+
+| Branch Type | Modern Format                         | Legacy Format                   |
+| ----------- | ------------------------------------- | ------------------------------- |
+| Feature     | `feature/vm-console-management`       | `feature/123-add-vm-monitoring` |
+| Fix         | `fix/api-timeout-handling`            | `fix/58-memory-leak-fix`        |
+| Security    | `security/encryption-key-rotation`    | `security/fix-shell-injection`  |
+| Docker      | `docker/container-security-hardening` | N/A                             |
+| Config      | `config/proxmox-connection-settings`  | N/A                             |
 
 ## 🔧 Usage
 
-### Main Script
+### Branch Templates (Quick Creation)
 
 ```bash
 ./create-branch.sh <type> <description> [issue-number]
 ```
-
-**Branch Types:**
-
-- `feature` - New feature development
-- `fix` - Bug fixes
-- `security` - Security-related changes
-- `chore` - Maintenance tasks
-- `release` - Release preparation
-- `hotfix` - Critical production fixes
 
 **Examples:**
 
@@ -83,18 +141,46 @@ For faster workflows, use the helper scripts:
 ./hotfix.sh "security-patch-immediate"
 ```
 
-## 🎯 Branch Naming Conventions
+### Validation Tool (`validate.sh`)
 
-The scripts automatically generate branch names following the established conventions:
+```bash
+# Validate current branch
+./scripts/branch-templates/validate.sh --current
 
-| Branch Type | Format | Example |
-|-------------|--------|---------|
-| Feature | `feature/[issue-]description` | `feature/123-add-vm-monitoring` |
-| Fix | `fix/[issue-]description` | `fix/58-memory-leak-fix` |
-| Security | `security/description` | `security/fix-shell-injection` |
-| Chore | `chore/description` | `chore/update-documentation` |
-| Release | `release/version` | `release/v1.0.0` |
-| Hotfix | `hotfix/description` | `hotfix/critical-patch` |
+# Validate a specific branch name
+./scripts/branch-templates/validate.sh --name "feature/vm-console"
+
+# Validate branch name (positional argument)
+./scripts/branch-templates/validate.sh "fix/api-timeout-handling"
+
+# Validate all local branches
+./scripts/branch-templates/validate.sh --check-all
+```
+
+### Branch Manager (`branch-manager.sh`)
+
+```bash
+# Interactive branch creation
+./scripts/branch-templates/branch-manager.sh create
+
+# Validate current branch
+./scripts/branch-templates/branch-manager.sh validate
+
+# List local branches with status
+./scripts/branch-templates/branch-manager.sh list
+
+# List all branches (including remote)
+./scripts/branch-templates/branch-manager.sh list --all
+
+# Clean up merged branches
+./scripts/branch-templates/branch-manager.sh cleanup
+
+# Dry run cleanup (show what would be deleted)
+./scripts/branch-templates/branch-manager.sh cleanup --dry-run
+
+# Show help
+./scripts/branch-templates/branch-manager.sh help
+```
 
 ## ✨ Script Features
 
@@ -104,6 +190,8 @@ The scripts automatically generate branch names following the established conven
 - ✅ Checks git repository status
 - ✅ Warns about uncommitted changes
 - ✅ Ensures main branch exists and is current
+- ✅ Validates component naming (modern format)
+- ✅ Backward compatibility with legacy patterns
 
 ### Smart Branch Management
 
@@ -111,6 +199,7 @@ The scripts automatically generate branch names following the established conven
 - 📤 Pushes branch to remote with upstream tracking
 - 🏷️ Generates clean, consistent branch names
 - 📋 Provides branch-specific guidance and next steps
+- 🧹 Automated cleanup of merged branches
 
 ### User Experience
 
@@ -118,6 +207,7 @@ The scripts automatically generate branch names following the established conven
 - 📖 Comprehensive help and usage information
 - ⚡ Quick helper scripts for common operations
 - 🛡️ Safety checks and confirmations
+- 💬 Interactive mode for guided branch creation
 
 ## 🔄 Workflow Integration
 
@@ -212,12 +302,123 @@ Critical security fix
 
 ## 🔧 Configuration
 
+### System Configuration
+
 Edit `config.sh` to customize:
 
 - **Branch prefixes**: Modify naming conventions
 - **Commit templates**: Customize commit message formats
 - **Review requirements**: Set reviewer counts by branch type
 - **Git settings**: Change main branch name or remote
+- **Validation rules**: Component requirements, naming patterns
+
+### User Configuration
+
+Create a `.branch-config` file in the repository root for personal overrides:
+
+```bash
+# Override default settings
+export MAX_BRANCH_NAME_LENGTH=100
+export REQUIRE_COMPONENT_IN_NAME=false
+export AUTO_DELETE_MERGED_BRANCHES=false
+
+# Add custom components
+VALID_COMPONENTS+=("custom-component")
+```
+
+## 🔗 Integration with Development Tools
+
+### Pre-commit Hooks
+
+Add branch validation to your pre-commit configuration:
+
+```yaml
+# .pre-commit-config.yaml
+repos:
+  - repo: local
+    hooks:
+      - id: branch-validation
+        name: Branch name validation
+        entry: ./scripts/branch-templates/validate.sh --current
+        language: script
+        pass_filenames: false
+        always_run: true
+```
+
+### Git Hooks
+
+#### Pre-push Hook
+
+```bash
+#!/bin/bash
+# .git/hooks/pre-push
+./scripts/branch-templates/validate.sh --current
+```
+
+### VS Code Integration
+
+Add to your VS Code settings for quick access:
+
+```json
+{
+  "terminal.integrated.profiles.osx": {
+    "Branch Creator": {
+      "path": "/Users/basher8383/dev/personal/ProxmoxMCP/scripts/branch-templates",
+      "args": ["./create-branch.sh"]
+    }
+  }
+}
+```
+
+### Git Aliases
+
+Add to your `.gitconfig`:
+
+```ini
+[alias]
+  new-feature = "!f() { ./scripts/branch-templates/feature.sh \"$1\" \"$2\"; }; f"
+  new-fix = "!f() { ./scripts/branch-templates/fix.sh \"$1\" \"$2\"; }; f"
+  new-security = "!f() { ./scripts/branch-templates/security.sh \"$1\"; }; f"
+  validate-branch = "!./scripts/branch-templates/validate.sh --current"
+```
+
+Usage:
+
+```bash
+git new-feature "add-monitoring" 123
+git new-fix "connection-issue" 58
+git validate-branch
+```
+
+### Task Integration
+
+Add to your `Taskfile.yml`:
+
+```yaml
+tasks:
+  branch:feature:
+    desc: Create a new feature branch
+    cmds:
+      - ./scripts/branch-templates/feature.sh "{{.CLI_ARGS}}"
+
+  branch:fix:
+    desc: Create a new fix branch
+    cmds:
+      - ./scripts/branch-templates/fix.sh "{{.CLI_ARGS}}"
+
+  branch:validate:
+    desc: Validate current branch name
+    cmds:
+      - ./scripts/branch-templates/validate.sh --current
+```
+
+Usage:
+
+```bash
+task branch:feature -- "add-monitoring" 123
+task branch:fix -- "connection-issue" 58
+task branch:validate
+```
 
 ## 🚨 Troubleshooting
 
@@ -253,6 +454,16 @@ git commit -m "WIP: save current work"
 git stash
 ```
 
+**Branch name validation errors:**
+
+```bash
+# Use the validation tool to check your branch name
+./scripts/branch-templates/validate.sh "my-branch-name"
+
+# Get suggestions for valid names
+./scripts/branch-templates/validate.sh "invalid-branch-name"
+```
+
 ### Manual Branch Creation
 
 If scripts fail, you can still create branches manually following the conventions:
@@ -263,67 +474,8 @@ git checkout main
 git pull origin main
 
 # Create and push branch
-git checkout -b feature/123-description
-git push -u origin feature/123-description
-```
-
-## 🔗 Integration with Existing Tools
-
-### VS Code
-
-Add to your VS Code settings for quick access:
-
-```json
-{
-  "terminal.integrated.profiles.osx": {
-    "Branch Creator": {
-      "path": "/Users/basher8383/dev/personal/ProxmoxMCP/scripts/branch-templates",
-      "args": ["./create-branch.sh"]
-    }
-  }
-}
-```
-
-### Git Aliases
-
-Add to your `.gitconfig`:
-
-```ini
-[alias]
-  new-feature = "!f() { ./scripts/branch-templates/feature.sh \"$1\" \"$2\"; }; f"
-  new-fix = "!f() { ./scripts/branch-templates/fix.sh \"$1\" \"$2\"; }; f"
-  new-security = "!f() { ./scripts/branch-templates/security.sh \"$1\"; }; f"
-```
-
-Usage:
-
-```bash
-git new-feature "add-monitoring" 123
-git new-fix "connection-issue" 58
-```
-
-### Task Integration
-
-Add to your `Taskfile.yml`:
-
-```yaml
-tasks:
-  branch:feature:
-    desc: Create a new feature branch
-    cmds:
-      - ./scripts/branch-templates/feature.sh "{{.CLI_ARGS}}"
-
-  branch:fix:
-    desc: Create a new fix branch
-    cmds:
-      - ./scripts/branch-templates/fix.sh "{{.CLI_ARGS}}"
-```
-
-Usage:
-
-```bash
-task branch:feature -- "add-monitoring" 123
-task branch:fix -- "connection-issue" 58
+git checkout -b feature/vm-console-management
+git push -u origin feature/vm-console-management
 ```
 
 ## 📚 Related Documentation
@@ -335,26 +487,46 @@ task branch:fix -- "connection-issue" 58
 
 ## 🔄 Updates and Maintenance
 
-To update the branch templates:
+To update the branch management system:
 
 1. Modify the scripts or configuration
 2. Test with a sample branch creation
 3. Update this README if needed
-4. Commit changes with:
+4. Run validation tests:
+
+   ```bash
+   ./scripts/branch-templates/validate.sh --check-all
+   ```
+
+5. Commit changes with:
 
    ```bash
    git add scripts/branch-templates/
-   git commit -m "chore: update branch templates"
+   git commit -m "chore: update branch management system"
    ```
 
 ## 💡 Tips and Best Practices
 
-1. **Use issue numbers**: Always include issue numbers for features and fixes
-2. **Keep descriptions short**: Use clear, hyphenated descriptions
-3. **Test locally**: Run quality checks before pushing
-4. **Follow conventions**: Use the provided commit message templates
-5. **Update documentation**: Keep docs in sync with code changes
+1. **Use issue numbers**: Always include issue numbers for features and fixes when available
+2. **Choose appropriate components**: Select the most relevant component for your branch
+3. **Keep descriptions short**: Use clear, hyphenated descriptions
+4. **Test locally**: Run quality checks before pushing
+5. **Follow conventions**: Use the provided commit message templates
+6. **Update documentation**: Keep docs in sync with code changes
+7. **Validate early**: Use the validation tools before creating branches
+8. **Clean up regularly**: Use the branch manager to clean up merged branches
+
+## 🎯 Migration Guide
+
+### From Legacy to Modern Format
+
+If you have existing branches using the legacy format, they will continue to work. For new branches, consider using the modern component-based format:
+
+**Legacy:** `feature/123-add-monitoring`  
+**Modern:** `feature/vm-monitoring-dashboard`
+
+The validation system supports both formats for backward compatibility.
 
 ---
 
-These templates are designed to work seamlessly with the ProxmoxMCP development workflow and existing automation. For questions or improvements, please create an issue or discussion in the repository.
+This branch management system is designed to work seamlessly with the ProxmoxMCP development workflow and existing automation. For questions or improvements, please create an issue or discussion in the repository.

@@ -74,17 +74,17 @@ class ProxmoxTool:
         if resource_type == "node_status":
             return self._format_node_status(data)
 
-        # Use explicit conditionals for better type checking
-        if resource_type == "nodes":
-            return ProxmoxTemplates.node_list(data)
-        elif resource_type == "vms":
-            return ProxmoxTemplates.vm_list(data)
-        elif resource_type == "storage":
-            return ProxmoxTemplates.storage_list(data)
-        elif resource_type == "containers":
-            return ProxmoxTemplates.container_list(data)
-        elif resource_type == "cluster":
-            return ProxmoxTemplates.cluster_status(data)
+        # Use dictionary lookup for simple template mappings
+        template_mapping = {
+            "nodes": ProxmoxTemplates.node_list,
+            "vms": ProxmoxTemplates.vm_list,
+            "storage": ProxmoxTemplates.storage_list,
+            "containers": ProxmoxTemplates.container_list,
+            "cluster": ProxmoxTemplates.cluster_status,
+        }
+
+        if resource_type in template_mapping:
+            return template_mapping[resource_type](data)
 
         # Fallback to JSON formatting for unknown types
         import json
