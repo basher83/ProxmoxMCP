@@ -324,7 +324,9 @@ def _perform_token_rotation(config_path: str, old_key: str, new_key: str) -> Lis
     return rotated_fields
 
 
-def _display_rotation_summary(config_path: str, backup_path: str, rotated_fields: List[str]) -> None:
+def _display_rotation_summary(
+    config_path: str, backup_path: str, rotated_fields: List[str]
+) -> None:
     """Display rotation summary and next steps.
 
     Args:
@@ -485,7 +487,9 @@ def _process_single_config(config_file: str, new_key: str) -> bool:
         return False
 
 
-def _display_bulk_summary(successful_rotations: List[str], failed_rotations: List[tuple[str, str]]) -> None:
+def _display_bulk_summary(
+    successful_rotations: List[str], failed_rotations: List[tuple[str, str]]
+) -> None:
     """Display summary of bulk rotation results and next steps.
 
     Args:
