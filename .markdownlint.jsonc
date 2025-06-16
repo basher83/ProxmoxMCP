@@ -1,0 +1,57 @@
+{
+  // Markdownlint configuration for ProxmoxMCP
+  // See: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+  // Default state for all rules
+  "default": true,
+
+  // Customize specific rules
+  "MD007": {
+    // Unordered list indentation
+    "indent": 2
+  },
+  "MD013": {
+    // Line length - be more permissive for documentation
+    "line_length": 120,
+    "headers": false,
+    "code_blocks": false,
+    "tables": false
+  },
+  "MD024": {
+    // Multiple headers with same content
+    "allow_different_nesting": true
+  },
+  "MD029": {
+    // Ordered list item prefix - use consistent numbering
+    "style": "ordered"
+  },
+  "MD033": {
+    // Allow inline HTML for badges, details, etc.
+    "allowed_elements": [
+      "details",
+      "summary",
+      "br",
+      "img",
+      "a",
+      "kbd",
+      "sub",
+      "sup"
+    ]
+  },
+  "MD041": {
+    // First line in file should be a top level header
+    "level": 1
+  },
+  "MD046": {
+    // Code block style - prefer fenced
+    "style": "fenced"
+  },
+
+  // Rules that are commonly problematic - keep enabled but configured
+  "MD032": true,  // Lists should be surrounded by blank lines
+  "MD022": true,  // Headers should be surrounded by blank lines
+
+  // Rules to disable for certain cases
+  "MD034": false, // Bare URL used - allow for quick notes
+  "MD040": false  // Fenced code blocks should have a language - not always needed
+}

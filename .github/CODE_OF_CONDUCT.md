@@ -47,18 +47,21 @@ Examples of unacceptable behavior include:
 In addition to the general standards above, our community values:
 
 ### Technical Excellence
+
 * **Quality over Speed**: We prioritize secure, well-tested code
 * **Documentation**: Clear documentation helps everyone contribute
 * **Security First**: Always consider security implications
 * **Best Practices**: Follow established patterns and conventions
 
 ### Collaboration
+
 * **Constructive Reviews**: Provide helpful, specific feedback
 * **Knowledge Sharing**: Help others learn and grow
 * **Inclusive Discussions**: Welcome diverse perspectives
 * **Patient Teaching**: Support newcomers to Proxmox and MCP
 
 ### Project Focus
+
 * **Relevant Contributions**: Keep discussions on-topic
 * **Production Ready**: Consider real-world deployment scenarios
 * **Proxmox Ecosystem**: Respect Proxmox community standards

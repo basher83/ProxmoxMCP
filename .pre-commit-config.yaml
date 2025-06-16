@@ -78,6 +78,14 @@ repos:
         exclude: scripts/workflows/create-roadmap-issues.sh  # Contains Python code examples
         args: [--severity=warning]
 
+  # Markdown linting and formatting (addresses documentation formatting)
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.14.0
+    hooks:
+      - id: markdownlint-cli2
+        args: [--fix]  # Auto-fix markdown issues
+        files: \.md$
+
   # Generic checks (addresses various formatting issues)
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0

@@ -45,6 +45,7 @@ The following secrets must be configured in your repository:
 ### Permissions
 
 The workflow requires the following permissions:
+
 - `contents: write` - To create branches and commits
 - `issues: write` - To comment on issues
 - `pull-requests: write` - To create pull requests
@@ -71,12 +72,14 @@ timeout_minutes: "120"  # Maximum execution time
 When creating issues for Claude Code, include:
 
 ### Clear Task Description
+
 ```markdown
 ## Task Description
 Add support for VM snapshot management in the Proxmox MCP server.
 ```
 
 ### Specific Requirements
+
 ```markdown
 ## Requirements
 - [ ] Add `create_vm_snapshot` tool
@@ -86,6 +89,7 @@ Add support for VM snapshot management in the Proxmox MCP server.
 ```
 
 ### Acceptance Criteria
+
 ```markdown
 ## Acceptance Criteria
 - [ ] All tools follow existing patterns in tools/ directory
@@ -95,6 +99,7 @@ Add support for VM snapshot management in the Proxmox MCP server.
 ```
 
 ### Technical Details
+
 ```markdown
 ## Technical Details
 - Use the existing ProxmoxManager pattern
@@ -105,12 +110,14 @@ Add support for VM snapshot management in the Proxmox MCP server.
 ## Best Practices
 
 ### For Issue Creation
+
 - Be specific about requirements
 - Provide examples of expected behavior
 - Include error cases to handle
 - Reference existing code patterns when applicable
 
 ### For Review
+
 - Check that the solution follows project conventions
 - Verify tests are comprehensive
 - Ensure documentation is updated if needed
@@ -121,29 +128,34 @@ Add support for VM snapshot management in the Proxmox MCP server.
 ### Common Issues
 
 **Workflow doesn't trigger:**
+
 - Ensure the issue has the `claude-code` label
 - Check that the assignee is in the `assignee_trigger` list (`basher83` or `claude-code-bot`)
 - Verify repository secrets are configured
 - Confirm the workflow file is on the main branch
 
 **Python dependency errors:**
+
 - The workflow requires Python 3.10+ for MCP SDK compatibility
 - Check that `pyproject.toml` specifies `requires-python = ">=3.10"`
 - Verify MCP dependencies are compatible with the Python version
 
 **Implementation fails:**
+
 - Check the workflow logs for detailed error messages
 - Ensure the task description is clear and actionable
 - Verify the requirements don't conflict with existing code
 - Check that the `ANTHROPIC_API_KEY` secret is properly configured
 
 **Quality checks fail:**
+
 - The workflow runs: `pytest && black . && mypy .`
 - Claude Code will attempt to fix issues automatically
 - Manual intervention may be needed for complex conflicts
 - Check individual tool logs for specific failures
 
 **Missing ASSIGNEE_TRIGGER error:**
+
 - Ensure `assignee_trigger` parameter is set in the workflow
 - Add your GitHub username to the trigger list
 - Verify the workflow configuration matches the action requirements
@@ -172,6 +184,7 @@ If you encounter issues with the automation:
 When an issue is assigned to trigger the automation, the following steps occur:
 
 1. **Branch Creation**
+
    ```bash
    # Creates branch name from issue number and title
    BRANCH_NAME="claude/issue-${ISSUE_NUMBER}-${CLEAN_TITLE}"
@@ -180,6 +193,7 @@ When an issue is assigned to trigger the automation, the following steps occur:
    ```
 
 2. **Environment Setup**
+
    ```bash
    # Set up Python 3.10 environment
    uv venv
@@ -202,6 +216,7 @@ When an issue is assigned to trigger the automation, the following steps occur:
 ### Quality Assurance
 
 The workflow automatically runs these checks:
+
 - **pytest**: All test suites must pass
 - **black**: Code formatting compliance
 - **mypy**: Type checking validation
@@ -210,6 +225,7 @@ The workflow automatically runs these checks:
 ## Example Workflow
 
 1. **Create Issue**: Use the Claude Code Task template
+
    ```
    Title: [CLAUDE] Add VM backup scheduling feature
    Description: Clear requirements and acceptance criteria

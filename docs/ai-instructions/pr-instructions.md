@@ -5,12 +5,14 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ## Pre-PR Analysis Phase
 
 ### 1. Memory and Context Research
+
 - **ALWAYS start** by using `get_all_coding_preferences` to retrieve stored coding patterns
 - Use `search_coding_preferences` to find specific implementations related to PR changes
 - Use `resolve-library-id` and `get-library-docs` for external library research when needed
 - Review existing architectural patterns and implementation styles
 
 ### 2. Pull Request Assessment
+
 - **Read the complete PR description** carefully, including all comments and updates
 - Identify the **PR type** from labels (bug fix, enhancement, feature, security, etc.)
 - Determine **affected components** (server, config, tools, formatting, docker, etc.)
@@ -19,6 +21,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 - Assess **breaking changes** and backward compatibility impact
 
 ### 3. Codebase Integration Analysis
+
 - Use `Glob` and `Grep` tools to understand how changes fit into existing code structure
 - Review related implementations and architectural patterns
 - Identify integration points and potential conflicts
@@ -30,6 +33,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ### 4. Code Quality Assessment
 
 #### Code Implementation Review
+
 - **Follow existing architectural patterns** from the codebase
 - Ensure **consistency** with ProxmoxMCP design principles:
   - MCP protocol compliance and tool registration patterns
@@ -39,6 +43,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
   - Comprehensive error handling with specific exceptions
 
 #### Security Review
+
 - **Verify no secrets exposure** in code, logs, or outputs
 - Check **input validation** for all user inputs and API parameters
 - Review **authentication flows** and token handling
@@ -47,6 +52,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 - Check **SSL/TLS configurations** for network communications
 
 #### ProxmoxMCP-Specific Pattern Compliance
+
 - **Tool inheritance**: New tools inherit from ProxmoxTool base class
 - **Pydantic validation**: All configuration and API parameters use Pydantic models
 - **Rich formatting**: Consistent use of ProxmoxTheme and ProxmoxFormatters
@@ -57,6 +63,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ### 5. Testing and Validation Requirements
 
 #### Automated Testing Review
+
 - **Verify comprehensive test coverage** for new functionality
 - **Check existing test patterns** are followed from the test suite
 - **Ensure mocked Proxmox API calls** in tests to avoid live server dependencies
@@ -64,6 +71,7 @@ This document provides comprehensive guidelines for Claude Code when working wit
 - **Confirm backward compatibility** testing when modifying existing code
 
 #### Manual Testing Requirements
+
 - **Test MCP tool functionality** individually with realistic scenarios
 - **Verify Proxmox API integration** if applicable (connection, authentication, operations)
 - **Test error handling paths** and fallback mechanisms
@@ -73,12 +81,14 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ### 6. Documentation and Communication Review
 
 #### Documentation Updates
+
 - **Verify relevant documentation** updates in `docs/` directory
 - **Check tool descriptions** in `tools/definitions.py` for new MCP tools
 - **Validate README.md updates** if adding user-facing features
 - **Ensure examples demonstrate** new functionality appropriately
 
 #### Commit Message Quality
+
 - **Follow commit message template** from `.gitmessage`
 - **Use appropriate commit type**: feat, fix, security, config, docker, refactor, test, docs, ci, perf
 - **Include detailed commit body** explaining what and why (not how)
@@ -90,7 +100,9 @@ This document provides comprehensive guidelines for Claude Code when working wit
 ### 7. Pre-Merge Quality Assurance
 
 #### Comprehensive Testing Execution
+
 Run all required quality checks in the PR environment:
+
 ```bash
 # Core quality checks (required for all PRs)
 pytest && black . && mypy .
@@ -104,6 +116,7 @@ docker compose build && docker compose up --build -d
 ```
 
 #### Integration Testing
+
 - **Test MCP tool integration** with realistic Proxmox environments
 - **Verify tool registration** and discovery in MCP server
 - **Test configuration loading** and environment variable handling
@@ -111,6 +124,7 @@ docker compose build && docker compose up --build -d
 - **Check formatting output** in various scenarios and themes
 
 #### Security Testing
+
 - **Review for secret exposure** in code changes and test outputs
 - **Test authentication mechanisms** if authentication is modified
 - **Validate input sanitization** for command execution features
@@ -120,12 +134,14 @@ docker compose build && docker compose up --build -d
 ### 8. Performance and Compatibility Assessment
 
 #### Performance Impact Analysis
+
 - **Assess performance implications** of code changes
 - **Check for potential memory leaks** or resource consumption issues
 - **Evaluate API call efficiency** and rate limiting considerations
 - **Test with realistic data volumes** (multiple VMs, large configurations)
 
 #### Compatibility Verification
+
 - **Test backward compatibility** with existing configurations
 - **Verify Python version compatibility** (3.10+)
 - **Check dependency compatibility** and version constraints
@@ -138,28 +154,34 @@ docker compose build && docker compose up --build -d
 #### Component-Specific Validation
 
 **Server Component** (`src/proxmox_mcp/server.py`):
+
 - Verify FastMCP patterns and tool registration
 - Check dependency injection and service management
 - Validate signal handling for new services
 
 **Tools Component** (`src/proxmox_mcp/tools/`):
+
 - Confirm ProxmoxTool inheritance and consistent error handling
 - Validate rich formatting implementation via templates
 - Check tool descriptions in `definitions.py`
 
 **Configuration** (`src/proxmox_mcp/config/`):
+
 - Verify Pydantic model validation and backward compatibility
 - Test environment variable fallbacks and field documentation
 
 **Formatting** (`src/proxmox_mcp/formatting/`):
+
 - Check ProxmoxTheme consistency and reusable formatting functions
 - Validate emoji and color toggle support
 
 **Docker** (`Dockerfile`, `compose.yaml`):
+
 - Verify security best practices and health checks
 - Test environment variable configuration and volume mounts
 
 #### Breaking Changes Assessment
+
 - **Document all breaking changes** clearly in PR description
 - **Provide migration guidance** for configuration or API changes
 - **Ensure proper versioning** if breaking changes are introduced
@@ -168,6 +190,7 @@ docker compose build && docker compose up --build -d
 ### 10. Merge Execution and Validation
 
 #### Pre-Merge Checklist
+
 - [ ] All automated tests pass consistently
 - [ ] Manual testing completed successfully
 - [ ] Documentation is updated appropriately
@@ -179,6 +202,7 @@ docker compose build && docker compose up --build -d
 - [ ] Commit messages follow project standards
 
 #### Merge Strategy
+
 - **Use squash and merge** for feature branches to maintain clean history
 - **Preserve individual commits** for complex changes that benefit from detailed history
 - **Follow linear history preference** from git configuration
@@ -189,6 +213,7 @@ docker compose build && docker compose up --build -d
 ### 11. Post-Merge Validation and Monitoring
 
 #### Immediate Validation
+
 - **Monitor MCP server health** after deployment changes
 - **Verify Proxmox API connectivity** and authentication
 - **Test affected MCP tools** in production-like environment
@@ -196,6 +221,7 @@ docker compose build && docker compose up --build -d
 - **Validate configuration loading** in deployed environment
 
 #### Knowledge Capture and Documentation
+
 - **Update coding patterns** in memory using `add_coding_preference`
 - **Document new architectural decisions** and implementation patterns
 - **Store security best practices** and configuration approaches
@@ -204,12 +230,14 @@ docker compose build && docker compose up --build -d
 ### 12. Continuous Improvement
 
 #### Feedback Integration
+
 - **Monitor for related issues** or bug reports after merge
 - **Collect performance metrics** if performance-related changes were made
 - **Document lessons learned** for future similar PRs
 - **Update PR template** if review process reveals gaps
 
 #### Roadmap Alignment
+
 - **Update roadmap progress** if milestones were achieved
 - **Identify follow-up tasks** or technical debt created
 - **Plan future improvements** based on implementation experience
@@ -217,30 +245,35 @@ docker compose build && docker compose up --build -d
 ## Component-Specific PR Guidelines
 
 ### Server Component PRs
+
 - Focus on FastMCP compliance and tool registration patterns
 - Verify proper dependency injection and configuration management
 - Test server startup, shutdown, and signal handling
 - Validate MCP protocol message handling and routing
 
 ### Tools Component PRs
+
 - Ensure all new tools inherit from ProxmoxTool base class
 - Implement comprehensive error handling and logging
 - Use rich formatting templates for consistent output
 - Add tool descriptions to `definitions.py` registry
 
 ### Configuration PRs
+
 - Use Pydantic models for all new configuration options
 - Maintain backward compatibility with existing config files
 - Support environment variable fallbacks
 - Document all new configuration fields
 
 ### Security-Related PRs
+
 - Follow responsible disclosure practices for vulnerability fixes
 - Implement defense-in-depth security measures
 - Add comprehensive security testing and validation
 - Document security implications and best practices
 
 ### Performance PRs
+
 - Include benchmarking data and performance analysis
 - Test with realistic workloads and data volumes
 - Consider memory usage and resource consumption
@@ -249,18 +282,21 @@ docker compose build && docker compose up --build -d
 ## Anti-Patterns to Avoid
 
 ### Code Quality Pitfalls
+
 - **Don't approve PRs** that bypass type checking or code formatting
 - **Don't merge PRs** without comprehensive test coverage
 - **Don't ignore security implications** of code changes
 - **Don't skip integration testing** for ProxmoxMCP-specific functionality
 
 ### Process Pitfalls
+
 - **Don't merge without thorough review** of all changed files
 - **Don't ignore CI/CD failures** or quality check issues
 - **Don't skip documentation updates** for user-facing changes
 - **Don't merge breaking changes** without proper versioning and migration guides
 
 ### ProxmoxMCP-Specific Pitfalls
+
 - **Don't bypass MCP protocol patterns** or tool registration requirements
 - **Don't ignore Proxmox API error handling** for network and authentication failures
 - **Don't skip rich formatting implementation** for output consistency

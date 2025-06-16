@@ -164,11 +164,13 @@ Search through stored memories to retrieve relevant information.
 
 1. Clone the repository
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the root directory and add your Mem0 API key:
+
 ```bash
 MEM0_API_KEY=your-api-key-here
 ```

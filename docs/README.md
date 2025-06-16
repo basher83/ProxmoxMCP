@@ -9,19 +9,23 @@ For installation and basic usage, see the [main README](../README.md).
 ## 📖 Documentation Structure
 
 ### **Getting Started**
+
 - **[Project Roadmap](ROADMAP.md)** - Development roadmap and feature planning
 - **[Contributing Guide](../CONTRIBUTING.md)** - How to contribute to the project
 
 ### **Architecture & Development**
+
 - **[Repository Review](repository-review.md)** - Comprehensive code analysis and structure
 - **[Claude Code Automation](claude-code-automation.md)** - Automated development workflow setup
 
 ### **Security**
+
 - **[Security & Encryption](security-encryption.md)** - Token encryption and security practices
 
 ## 🛠️ Development
 
 This project uses modern Python development practices:
+
 - **Python 3.10+** for MCP compatibility
 - **FastMCP** for the server framework
 - **Pydantic** for data validation
@@ -34,6 +38,7 @@ The server requires proper configuration for Proxmox API access. See the configu
 ## 🤖 Automation
 
 This project includes Claude Code automation for issue resolution. When you assign an issue with the `claude-code` label, it automatically:
+
 1. Creates a branch
 2. Implements the solution
 3. Runs tests and quality checks

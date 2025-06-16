@@ -116,6 +116,7 @@ python -m proxmox_mcp.utils.encrypt_config --rotate-key-all proxmox-config/
 ## Configuration Format
 
 ### Before Encryption
+
 ```json
 {
   "auth": {
@@ -127,6 +128,7 @@ python -m proxmox_mcp.utils.encrypt_config --rotate-key-all proxmox-config/
 ```
 
 ### After Encryption
+
 ```json
 {
   "auth": {
@@ -173,14 +175,17 @@ Existing configurations work without changes. To migrate:
 ### Common Issues
 
 **"Token decryption failed"**
+
 - Verify `PROXMOX_MCP_MASTER_KEY` environment variable is set correctly
 - Ensure the master key matches the one used for encryption
 
 **"Config file not found"**
+
 - Check `PROXMOX_MCP_CONFIG` environment variable points to correct file
 - Verify file permissions and path accessibility
 
 **"Invalid encrypted token format"**
+
 - Encrypted tokens must start with `enc:` prefix
 - Verify file wasn't corrupted during transfer or storage
 
@@ -430,11 +435,13 @@ If key compromise is suspected:
 **Symptoms**: Rotation fails during verification phase
 
 **Causes**:
+
 - Wrong `PROXMOX_MCP_MASTER_KEY` environment variable
 - Configuration file corrupted
 - Key truncated or modified
 
 **Solutions**:
+
 ```bash
 # Verify environment variable is set correctly
 echo $PROXMOX_MCP_MASTER_KEY | wc -c  # Should be 45 characters
@@ -456,11 +463,13 @@ python -m proxmox_mcp.utils.encrypt_config config.encrypted.json --status
 **Symptoms**: Backup creation fails during rotation
 
 **Causes**:
+
 - Insufficient disk space
 - Permission issues
 - File system errors
 
 **Solutions**:
+
 ```bash
 # Check disk space
 df -h
@@ -477,11 +486,13 @@ cp config.encrypted.json config.encrypted.json.manual.backup
 **Symptoms**: Server won't start after key rotation
 
 **Causes**:
+
 - Environment variable not updated
 - Configuration cache issues
 - Service configuration problems
 
 **Solutions**:
+
 ```bash
 # Verify new environment variable
 echo $PROXMOX_MCP_MASTER_KEY
@@ -776,6 +787,7 @@ WantedBy=multi-user.target
 ```
 
 Environment file (`/etc/proxmox-mcp/environment`):
+
 ```bash
 PROXMOX_MCP_MASTER_KEY=your-master-key
 ```

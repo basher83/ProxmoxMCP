@@ -125,21 +125,25 @@ This document explains the standardized label system used in the ProxmoxMCP repo
 ### Label Combinations
 
 **Bug Reports:**
+
 ```
 bug + priority:high + component:server + platform:linux
 ```
 
 **Feature Requests:**
+
 ```
 enhancement + effort:medium + component:tools + help-wanted
 ```
 
 **Documentation:**
+
 ```
 documentation + good-first-issue + effort:small
 ```
 
 **Security Issues:**
+
 ```
 security + priority:critical + component:authentication
 ```

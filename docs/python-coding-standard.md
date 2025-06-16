@@ -555,11 +555,13 @@ pre-commit run --all-files
 ## Adoption Guidelines
 
 ### For New Code
+
 - All new code must pass pre-commit checks
 - All functions require type hints and docstrings
 - Security patterns must be followed from day one
 
 ### For Existing Code
+
 1. **Phase 1**: Fix all security violations (HIGH PRIORITY)
 2. **Phase 2**: Reduce complexity violations
 3. **Phase 3**: Address style and documentation gaps

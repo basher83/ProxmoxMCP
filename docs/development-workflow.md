@@ -29,15 +29,18 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 **Purpose**: Automatically fixes code formatting and quality issues in pull requests.
 
 **Triggers**:
+
 - Pull request creation and updates
 - Pushes to the `main` branch
 
 **Tools Used**:
+
 - **black**: Python code formatting
 - **ruff**: Linting and import sorting with auto-fix
 - **mypy**: Type checking (informational)
 
 **Process**:
+
 1. Sets up Python 3.10 environment
 2. Installs UV package manager with caching
 3. Creates virtual environment and installs dev dependencies
@@ -47,6 +50,7 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 7. Commits any fixes directly to the PR branch via autofix.ci
 
 **Key Features**:
+
 - Uses `--exit-zero` flags to prevent workflow failures
 - Caches dependencies for faster execution
 - Follows project's established tooling standards
@@ -59,12 +63,14 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 **Purpose**: Provides AI-powered code review and quality checks for pull requests.
 
 **Triggers**:
+
 - Pull request opened
 - Pull request synchronized (new commits)
 
 **Components**:
 
 #### Auto Review Job
+
 - **Runtime**: ubuntu-latest
 - **Permissions**: contents:read, pull-requests:write, id-token:write
 - **AI Model**: Uses Claude via Anthropic API
@@ -76,6 +82,7 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
   - Documentation completeness
 
 #### Quality Checks Job
+
 - **Runtime**: ubuntu-latest  
 - **Python Version**: 3.9 (note: should be updated to 3.10 for consistency)
 - **Tools**: pytest, black, mypy
@@ -88,9 +95,11 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 **Purpose**: Automatically implements solutions when Claude Code bot is assigned to GitHub issues.
 
 **Triggers**:
+
 - Issue assignment to `claude-code-bot` or issues labeled with `claude-code`
 
 **Process**:
+
 1. **Notification**: Adds comment explaining that Claude Code will work on the issue
 2. **Environment Setup**: Python 3.10, UV package manager, project dependencies
 3. **Implementation**: Claude Code analyzes requirements and implements solution
@@ -99,6 +108,7 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 6. **Pull Request**: Automatically creates PR when implementation is complete
 
 **Key Features**:
+
 - 120-minute timeout for complex issues
 - Follows project guidelines from CLAUDE.md
 - Automatic PR creation with issue linking
@@ -113,11 +123,13 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 **Purpose**: Automated dependency updates across multiple ecosystems.
 
 **Schedule**: Weekly updates on different days to distribute load:
+
 - **Monday 09:00 UTC**: Python dependencies
 - **Tuesday 09:00 UTC**: Docker dependencies  
 - **Wednesday 09:00 UTC**: GitHub Actions
 
 #### Python Dependencies
+
 - **Ecosystem**: pip
 - **Grouping Strategy**:
   - **Production**: proxmoxer, pydantic, fastmcp (minor/patch only)
@@ -127,18 +139,21 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 - **Assignee**: @basher83
 
 #### Docker Dependencies
+
 - **Ecosystem**: docker
 - **Target**: Root directory Dockerfile
 - **Labels**: `dependencies`, `docker`
 - **Commit Prefix**: `docker:`
 
 #### GitHub Actions
+
 - **Ecosystem**: github-actions
 - **Target**: `.github/workflows/` directory
 - **Labels**: `dependencies`, `github-actions`
 - **Commit Prefix**: `ci:`
 
 **Security Features**:
+
 - Major version updates require manual review
 - Automatic assignment to maintainers
 - Consistent labeling for easy filtering
@@ -148,12 +163,14 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 ### Code Quality Stack
 
 #### Black (Code Formatting)
+
 - **Version**: 23.x
 - **Configuration**: Inherits line length from ruff (100 characters)
 - **Usage**: `black .`
 - **Integration**: Automatic via autofix.ci workflow
 
 #### Ruff (Linting & Import Sorting)
+
 - **Version**: 0.1.x
 - **Rules**: E (errors), F (pyflakes), B (bugbear), I (import sorting)
 - **Target**: Python 3.10+
@@ -161,6 +178,7 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 - **Import Sorting**: Configured for ProxmoxMCP with first-party package recognition
 
 #### MyPy (Type Checking)
+
 - **Version**: 1.x
 - **Configuration**: Strict type checking enabled
 - **Features**:
@@ -170,6 +188,7 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 - **Usage**: `mypy .`
 
 #### Pytest (Testing)
+
 - **Version**: 7.x
 - **Mode**: Strict asyncio mode
 - **Extensions**: pytest-asyncio for async test support
@@ -178,6 +197,7 @@ The ProxmoxMCP project uses a modern development workflow with automated code qu
 ### Package Management
 
 #### UV Package Manager
+
 - **Purpose**: Fast Python package installation and environment management
 - **Features**: Caching, lock files, virtual environment management
 - **Integration**: Used in all CI workflows for consistent dependency management
@@ -213,6 +233,7 @@ pytest && black . && mypy . && ruff check .
 ### CI Quality Gates
 
 All pull requests must pass:
+
 1. **autofix.ci**: Automatic code formatting and linting
 2. **Claude Auto Review**: AI-powered code review
 3. **Quality Checks**: Full test suite and type checking
@@ -220,6 +241,7 @@ All pull requests must pass:
 ### Pre-commit Recommendations
 
 While not enforced, developers can optionally use:
+
 ```bash
 # Install pre-commit hooks (optional)
 pip install pre-commit
@@ -258,6 +280,7 @@ pre-commit install
 ### Commit Message Guidelines
 
 Follow the established commit template (`.gitmessage`):
+
 ```
 type: brief description (max 50 chars)
 
@@ -270,6 +293,7 @@ Co-authored-by: Name <email@example.com>
 ```
 
 **Commit Types**:
+
 - `feat`: New features
 - `fix`: Bug fixes
 - `security`: Security improvements
@@ -286,21 +310,25 @@ Co-authored-by: Name <email@example.com>
 ### Common Issues
 
 #### autofix.ci Not Running
+
 - Check that the workflow file is named exactly `autofix.yml`
 - Verify the autofix.ci app is installed on the repository
 - Ensure branch protection rules allow autofix commits
 
 #### Claude Code Assignment Not Working
+
 - Verify the `claude-code` label exists in the repository
 - Check that `ANTHROPIC_API_KEY` secret is configured
 - Ensure issue templates are being used correctly
 
 #### Quality Checks Failing
+
 - Run checks locally first: `pytest && black . && mypy .`
 - Check for Python version mismatch (should be 3.10+)
 - Verify all dev dependencies are installed
 
 #### Dependency Update Issues
+
 - Check Dependabot configuration syntax
 - Verify repository permissions for Dependabot
 - Review ignored dependencies list

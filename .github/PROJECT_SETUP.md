@@ -3,6 +3,7 @@
 ## Creating the "Proxmox MCP Development Roadmap" Project
 
 ### Step 1: Create New Project
+
 1. Go to [ProxmoxMCP repository](https://github.com/basher83/ProxmoxMCP)
 2. Click the **"Projects"** tab
 3. Click **"New project"**
@@ -11,6 +12,7 @@
 6. Description: `Tracking development progress for Proxmox MCP based on the repository review`
 
 ### Step 2: Configure Columns
+
 Create these columns in order:
 
 | Column | Description |
@@ -21,18 +23,23 @@ Create these columns in order:
 | **Done** | Tasks that are completed and approved |
 
 ### Step 3: Add Automation Rules
+
 Configure these automation rules in Project Settings:
 
 #### Issues Automation
+
 - **When issues are opened** → Move to **To Do** column
 - **When issues are closed** → Move to **Done** column
 
 #### Pull Requests Automation  
+
 - **When pull requests are opened** → Move to **Review** column
 - **When pull requests are merged** → Move to **Done** column
 
 ### Step 4: Configure Labels
+
 Ensure these labels are added to the project:
+
 - `bug`
 - `enhancement`
 - `documentation`
@@ -47,6 +54,7 @@ Ensure these labels are added to the project:
 ### Phase 1: Critical Security Fixes (Create Issues)
 
 **Issue 1: Implement Token Encryption**
+
 ```
 Title: [SECURITY] Implement token encryption at rest
 Labels: security, priority:critical, component:config, effort:medium
@@ -69,6 +77,7 @@ Implement token encryption for sensitive data in configuration files.
 ```
 
 **Issue 2: Enable SSL Verification by Default**
+
 ```
 Title: [SECURITY] Change default SSL verification to true
 Labels: security, priority:high, component:config, effort:small
@@ -89,6 +98,7 @@ Change default SSL verification from false to true for security.
 ```
 
 **Issue 3: Add VM Command Validation**
+
 ```
 Title: [SECURITY] Implement VM command validation and sanitization
 Labels: security, priority:critical, component:tools, effort:medium
@@ -113,6 +123,7 @@ Add input validation and sanitization for VM commands to prevent injection attac
 ### Phase 2: Docker Improvements (Create Issues)
 
 **Issue 4: Enhance Docker Security**
+
 ```
 Title: [DOCKER] Implement Docker security best practices
 Labels: security, priority:high, component:docker, effort:medium
@@ -131,6 +142,7 @@ Enhance Docker container security with non-root user and security practices.
 ### Phase 3: Error Handling (Create Issues)
 
 **Issue 5: Create Exception Hierarchy**
+
 ```
 Title: [ENHANCEMENT] Implement ProxmoxMCP-specific exception classes
 Labels: enhancement, priority:medium, component:tools, effort:small
@@ -141,6 +153,7 @@ Create specific exception classes for better error handling and debugging.
 ```
 
 **Issue 6: Add Health Check Tool**
+
 ```
 Title: [ENHANCEMENT] Add health check endpoint for monitoring
 Labels: enhancement, priority:medium, component:server, effort:small
@@ -153,6 +166,7 @@ Add health check tool for monitoring server and Proxmox connection status.
 ## Quick Setup Commands
 
 ### Using GitHub CLI (if available)
+
 ```bash
 # Create project (requires GitHub CLI with projects extension)
 gh project create --title "Proxmox MCP Development Roadmap" --body "Tracking development progress for Proxmox MCP"
@@ -162,11 +176,13 @@ gh project create --title "Proxmox MCP Development Roadmap" --body "Tracking dev
 ```
 
 ### Manual Setup
+
 Follow the web interface steps above, then manually create issues based on the roadmap phases.
 
 ## Project Management Best Practices
 
 ### Issue Creation Guidelines
+
 1. **Use descriptive titles** with prefixes: [SECURITY], [ENHANCEMENT], [DOCKER], etc.
 2. **Add appropriate labels** for priority, component, and effort
 3. **Include acceptance criteria** for clear completion definition
@@ -174,12 +190,14 @@ Follow the web interface steps above, then manually create issues based on the r
 5. **Link related issues** using "Related to #X" or "Blocks #Y"
 
 ### Board Management
+
 1. **Weekly review** of board status and priorities
 2. **Move cards promptly** as work progresses
 3. **Update issue descriptions** with progress notes
 4. **Close completed issues** with summary of changes
 
 ### Automation Benefits
+
 - **Automatic card movement** based on issue/PR lifecycle
 - **Consistent labeling** for better organization
 - **Progress tracking** without manual overhead
@@ -188,6 +206,7 @@ Follow the web interface steps above, then manually create issues based on the r
 ---
 
 **Next Steps:**
+
 1. Create the GitHub Project board using the web interface
 2. Configure automation rules as described
 3. Create initial issues for Phase 1 (Critical Security Fixes)

@@ -251,6 +251,7 @@ task --list
 ```
 
 Shows organized sections:
+
 - **Branch Management**: All branch-related tasks
 - **Development Setup**: Existing setup tasks
 - **Code Quality**: Existing quality tasks
@@ -262,6 +263,7 @@ Shows organized sections:
 ### Backward Compatibility
 
 All your existing tasks remain unchanged:
+
 - ✅ `task setup` - Still works exactly the same
 - ✅ `task quick` - No changes to existing workflow
 - ✅ `task check` - All quality checks unchanged
@@ -270,6 +272,7 @@ All your existing tasks remain unchanged:
 ### New Dependencies
 
 The branch tasks only require:
+
 - Git (already required for your project)
 - Bash (standard on macOS/Linux)
 - The branch template scripts (included)
@@ -281,6 +284,7 @@ No additional dependencies needed!
 ### Common Issues
 
 **Task not found:**
+
 ```bash
 # Make sure integration completed
 task --list | grep branch
@@ -290,11 +294,13 @@ task --list | grep branch
 ```
 
 **Branch script not executable:**
+
 ```bash
 chmod +x scripts/branch-templates/*.sh
 ```
 
 **Git errors:**
+
 ```bash
 # Make sure you're in the git repository
 git status

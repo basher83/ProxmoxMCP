@@ -35,6 +35,7 @@ cd scripts/branch-templates
 ### Integration with Existing Workflow
 
 These templates work seamlessly with:
+
 - ✅ **autofix.ci**: Automatic code formatting
 - ✅ **Claude Code**: AI-assisted development  
 - ✅ **Dependabot**: Dependency management

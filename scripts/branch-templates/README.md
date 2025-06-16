@@ -42,6 +42,7 @@ cd scripts/branch-templates
 ```
 
 **Branch Types:**
+
 - `feature` - New feature development
 - `fix` - Bug fixes
 - `security` - Security-related changes
@@ -50,6 +51,7 @@ cd scripts/branch-templates
 - `hotfix` - Critical production fixes
 
 **Examples:**
+
 ```bash
 ./create-branch.sh feature "add-vm-monitoring-tools" 123
 ./create-branch.sh fix "memory-leak-connection-pool" 58
@@ -97,18 +99,21 @@ The scripts automatically generate branch names following the established conven
 ## ✨ Script Features
 
 ### Automatic Validation
+
 - ✅ Validates branch type and description
 - ✅ Checks git repository status
 - ✅ Warns about uncommitted changes
 - ✅ Ensures main branch exists and is current
 
 ### Smart Branch Management
+
 - 🔄 Automatically updates main branch before creating new branch
 - 📤 Pushes branch to remote with upstream tracking
 - 🏷️ Generates clean, consistent branch names
 - 📋 Provides branch-specific guidance and next steps
 
 ### User Experience
+
 - 🎨 Colored output for better readability
 - 📖 Comprehensive help and usage information
 - ⚡ Quick helper scripts for common operations
@@ -129,11 +134,13 @@ The scripts automatically generate branch names following the established conven
 ### With Claude Code
 
 When Claude Code is assigned to an issue, it will automatically:
+
 1. Create a branch using pattern: `claude/issue-{number}-{description}`
 2. Implement the solution
 3. Create a pull request
 
 For manual work on Claude-identified issues:
+
 ```bash
 ./feature.sh "claude-suggested-improvement" 123
 ```
@@ -146,6 +153,7 @@ For manual work on Claude-identified issues:
 ```
 
 This will:
+
 - Create the hotfix branch immediately
 - Show warning about expedited review process
 - Provide guidance for minimal, focused changes
@@ -155,6 +163,7 @@ This will:
 The scripts provide guidance for commit messages following conventional commit format:
 
 ### Feature Commits
+
 ```
 feat: implement new VM monitoring tools
 
@@ -166,6 +175,7 @@ Closes #123
 ```
 
 ### Fix Commits
+
 ```
 fix: resolve memory leak in connection pool
 
@@ -177,6 +187,7 @@ Fixes #58
 ```
 
 ### Security Commits
+
 ```
 security: fix shell injection vulnerability
 
@@ -188,6 +199,7 @@ Addresses CVE-2025-XXXX
 ```
 
 ### Hotfix Commits
+
 ```
 hotfix: patch critical authentication bypass
 
@@ -212,23 +224,27 @@ Edit `config.sh` to customize:
 ### Common Issues
 
 **Script not executable:**
+
 ```bash
 chmod +x scripts/branch-templates/*.sh
 ```
 
 **Not in git repository:**
+
 ```bash
 cd /path/to/ProxmoxMCP
 ./scripts/branch-templates/feature.sh "my-feature"
 ```
 
 **Main branch not found:**
+
 ```bash
 # Ensure you're on the correct repository
 git branch -a
 ```
 
 **Uncommitted changes warning:**
+
 ```bash
 # Commit or stash changes first
 git add .
@@ -254,7 +270,9 @@ git push -u origin feature/123-description
 ## 🔗 Integration with Existing Tools
 
 ### VS Code
+
 Add to your VS Code settings for quick access:
+
 ```json
 {
   "terminal.integrated.profiles.osx": {
@@ -267,7 +285,9 @@ Add to your VS Code settings for quick access:
 ```
 
 ### Git Aliases
+
 Add to your `.gitconfig`:
+
 ```ini
 [alias]
   new-feature = "!f() { ./scripts/branch-templates/feature.sh \"$1\" \"$2\"; }; f"
@@ -276,13 +296,16 @@ Add to your `.gitconfig`:
 ```
 
 Usage:
+
 ```bash
 git new-feature "add-monitoring" 123
 git new-fix "connection-issue" 58
 ```
 
 ### Task Integration
+
 Add to your `Taskfile.yml`:
+
 ```yaml
 tasks:
   branch:feature:
@@ -297,6 +320,7 @@ tasks:
 ```
 
 Usage:
+
 ```bash
 task branch:feature -- "add-monitoring" 123
 task branch:fix -- "connection-issue" 58
@@ -317,6 +341,7 @@ To update the branch templates:
 2. Test with a sample branch creation
 3. Update this README if needed
 4. Commit changes with:
+
    ```bash
    git add scripts/branch-templates/
    git commit -m "chore: update branch templates"

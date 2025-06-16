@@ -24,6 +24,7 @@ Setup guides
 Technical documentation
 
 # Rules
+
 1. Always utilize `get_all_coding_preferences` to retrieve all coding preferences before starting any tasks.
 2. Use `search_coding_preferences` to find specific coding preferences related to the task at hand.
 3. When adding new coding preferences, ensure they are comprehensive and include all relevant context.

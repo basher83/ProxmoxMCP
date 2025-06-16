@@ -63,11 +63,13 @@ assignees: ''
 <!-- Provide examples of the enhanced functionality, commands, or API usage -->
 
 ### Current Usage
+
 ```bash
 # How it currently works
 ```
 
 ### Enhanced Usage  
+
 ```bash
 # How it would work with the enhancement
 ```

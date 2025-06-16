@@ -9,13 +9,17 @@ This guide walks you through setting up Mem0-MCP in your development environment
 ## Deployment Options
 
 ### Cloud-Hosted (Current Setup)
+
 This workspace uses the cloud-hosted version of Mem0, available at [mem0.ai](https://mem0.ai/). This option provides:
+
 - Easy setup and maintenance
 - Automatic scaling and updates
 - No local resource requirements
 
 ### Self-Hosted Alternative
+
 A self-hosted Docker version is available but requires additional configuration for persistent memory across container restarts. This option may be considered for future deployments that require:
+
 - Full data control
 - Custom configurations
 - Offline operation
@@ -25,6 +29,7 @@ A self-hosted Docker version is available but requires additional configuration 
 Before setting up Mem0-MCP, ensure you have the following installed:
 
 ### UV (Universal Virtual Environment)
+
 UV is required for Python package management and virtual environment creation.
 
 ```bash
@@ -38,6 +43,7 @@ source $HOME/.local/share/../bin/env
 ## Installation
 
 ### Step 1: Clone the Repository
+
 ```bash
 cd /workspace
 git clone https://github.com/mem0ai/mem0-mcp.git
@@ -45,6 +51,7 @@ cd mem0-mcp
 ```
 
 ### Step 2: Configure Environment Variables
+
 Create and configure the `.env` file with your API credentials:
 
 ```bash
@@ -52,6 +59,7 @@ nano .env
 ```
 
 Add the following environment variables:
+
 ```bash
 # Example .env configuration
 export MEM0_MCP_API_KEY=your_api_key_here
@@ -59,6 +67,7 @@ export MEM0_MCP_API_KEY=your_api_key_here
 ```
 
 > **Note:** Replace `your_api_key_here` with your actual Mem0 API key from [mem0.ai](https://mem0.ai/).
+>
 ## Running Mem0-MCP
 
 ### Method 1: Manual Activation
@@ -80,6 +89,7 @@ uv run main.py --host <your_host> --port <your_port>
 ```
 
 **Default values:**
+
 - Host: `0.0.0.0`
 - Port: `8080`
 
@@ -150,6 +160,7 @@ run_mem0 8081 127.0.0.1
 Once Mem0-MCP is running, configure your MCP client to connect to the Server-Sent Events (SSE) endpoint.
 
 ### Connection Details
+
 - **Endpoint URL:** `http://0.0.0.0:8080/sse`
 - **Connection Type:** SSE (Server-Sent Events)
 
@@ -171,6 +182,7 @@ Add the following configuration to your Claude Desktop MCP settings:
 ### Configuration File Location
 
 The MCP configuration file is typically located at:
+
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 - **Linux:** `~/.config/Claude/claude_desktop_config.json`
@@ -180,11 +192,13 @@ The MCP configuration file is typically located at:
 To verify that Mem0-MCP is running correctly:
 
 1. **Check the server status:**
+
    ```bash
    curl http://0.0.0.0:8080/health
    ```
 
 2. **Test the SSE endpoint:**
+
    ```bash
    curl -H "Accept: text/event-stream" http://0.0.0.0:8080/sse
    ```
@@ -203,5 +217,6 @@ To verify that Mem0-MCP is running correctly:
 ### Getting Help
 
 For additional support:
+
 - Check the [Mem0-MCP GitHub repository](https://github.com/mem0ai/mem0-mcp) for issues and documentation
 - Review the [Mem0.ai documentation](https://mem0.ai/) for API-related questions

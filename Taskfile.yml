@@ -47,6 +47,39 @@ tasks:
     cmds:
       - ./scripts/yaml-lint.sh --check
 
+  # Markdown linting and formatting tasks
+  markdown:lint:
+    desc: Lint all Markdown files
+    cmds:
+      - markdownlint-cli2 "**/*.md"
+    sources:
+      - "**/*.md"
+      - ".markdownlint.jsonc"
+    generates:
+      - .task/markdown-lint-{{.CHECKSUM}}
+
+  markdown:fix:
+    desc: Auto-fix Markdown formatting issues
+    cmds:
+      - markdownlint-cli2 --fix "**/*.md"
+    sources:
+      - "**/*.md"
+      - ".markdownlint.jsonc"
+
+  markdown:check:
+    desc: Check Markdown files (strict mode - exits with error)
+    cmds:
+      - markdownlint-cli2 "**/*.md" --config .markdownlint.jsonc
+
+  markdown:summary:
+    desc: Show summary of Markdown issues across all files
+    cmds:
+      - echo "📝 Markdown Linting Summary"
+      - echo "============================"
+      - markdownlint-cli2 "**/*.md" || true
+      - echo ""
+      - echo "💡 Run 'task markdown:fix' to auto-fix issues"
+
   # Python code quality tasks
   format:
     desc: Format Python code with black
@@ -101,13 +134,15 @@ tasks:
       - lint
       - type:check
       - yaml:check
+      - markdown:check
 
   fix:
-    desc: Auto-fix all fixable issues (Python + YAML)
+    desc: Auto-fix all fixable issues (Python + YAML + Markdown)
     cmds:
       - task: format
       - task: lint:fix
       - task: yaml:autofix
+      - task: markdown:fix
 
   yaml:autofix:
     desc: Auto-fix YAML spacing issues (trailing spaces, newlines, etc.)
@@ -133,12 +168,13 @@ tasks:
 
   # Pre-commit style checks
   pre-commit:
-    desc: Run pre-commit checks (format, lint, type-check, yaml)
+    desc: Run pre-commit checks (format, lint, type-check, yaml, markdown)
     cmds:
       - task: format
       - task: lint:fix
       - task: type:check
       - task: yaml:lint
+      - task: markdown:fix
       - echo "✅ All pre-commit checks passed!"
 
   # CI simulation

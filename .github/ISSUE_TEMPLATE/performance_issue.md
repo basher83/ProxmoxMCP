@@ -13,16 +13,19 @@ assignees: ''
 <!-- Please provide specific metrics where possible -->
 
 ### Response Times
+
 - **Expected Response Time**: <!-- e.g., < 2 seconds -->
 - **Actual Response Time**: <!-- e.g., 15-30 seconds -->
 - **Tool/Operation Affected**: <!-- e.g., get_vms, execute_vm_command -->
 
 ### Resource Usage
+
 - **CPU Usage**: <!-- e.g., High/Normal/Low -->
 - **Memory Usage**: <!-- e.g., 500MB, increasing over time -->
 - **Network Latency**: <!-- e.g., 50ms to Proxmox server -->
 
 ## Environment Details
+
 - **ProxmoxMCP Version**: <!-- e.g., 1.0.0 -->
 - **Proxmox Version**: <!-- e.g., 7.4-3 -->
 - **Python Version**: <!-- e.g., 3.10.4 -->
@@ -31,6 +34,7 @@ assignees: ''
 - **Hardware**: <!-- e.g., 4 CPU cores, 8GB RAM -->
 
 ## Proxmox Environment
+
 - **Number of Nodes**: <!-- e.g., 3 -->
 - **Total VMs**: <!-- e.g., 25 -->
 - **Total Containers**: <!-- e.g., 10 -->
@@ -51,6 +55,7 @@ assignees: ''
 - [ ] Minor inconvenience
 
 ## Frequency
+
 - [ ] Always occurs
 - [ ] Occurs most of the time (>75%)
 - [ ] Occurs sometimes (25-75%)

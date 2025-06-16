@@ -9,11 +9,13 @@ This document establishes the branching strategy and workflow for the ProxmoxMCP
 ### Branch Types
 
 #### 1. `main` Branch
+
 - **Purpose**: Production-ready code, always deployable
 - **Protection**: Fully protected, no direct pushes
 - **Merge Requirements**: PR review + CI checks passing
 
 #### 2. Feature Branches
+
 ```bash
 feature/issue-number-short-description
 # Examples:
@@ -23,6 +25,7 @@ feature/new-vm-management-tools
 ```
 
 #### 3. Fix Branches
+
 ```bash
 fix/issue-number-short-description  
 # Examples:
@@ -31,6 +34,7 @@ fix/memory-leak-in-connection-pool
 ```
 
 #### 4. Security Branches
+
 ```bash
 security/vulnerability-description
 # Examples:
@@ -39,6 +43,7 @@ security/bandit-shell-injection-fixes
 ```
 
 #### 5. Maintenance Branches
+
 ```bash
 chore/maintenance-task
 # Examples:
@@ -48,6 +53,7 @@ chore/ci-workflow-improvements
 ```
 
 #### 6. Release Branches (Optional)
+
 ```bash
 release/version-number
 # Examples:
@@ -56,6 +62,7 @@ release/v1.1.0-beta
 ```
 
 #### 7. Hotfix Branches
+
 ```bash
 hotfix/critical-issue-description
 # Examples:
@@ -68,6 +75,7 @@ hotfix/production-down-fix
 ### Standard Development Workflow
 
 1. **Start New Work**
+
 ```bash
 # Ensure main is current
 git checkout main
@@ -91,6 +99,7 @@ git push -u origin feature/123-add-new-tool
 ```
 
 2. **Create Pull Request**
+
 - Use PR template checklist
 - Link related issues
 - Add appropriate labels
@@ -98,11 +107,13 @@ git push -u origin feature/123-add-new-tool
 - Ensure all CI checks pass
 
 3. **Review Process**
+
 - Address review feedback
 - Keep commits clean and logical
 - Squash commits if necessary before merge
 
 4. **Merge and Cleanup**
+
 ```bash
 # After PR approval and merge
 git checkout main
@@ -160,6 +171,7 @@ git push origin v1.0.0
 ## Branch Protection Rules
 
 ### Main Branch Protection
+
 - ✅ Require pull request reviews before merging (minimum: 1)
 - ✅ Require status checks to pass before merging
   - Codacy quality checks
@@ -174,6 +186,7 @@ git push origin v1.0.0
 ### Quality Gates
 
 All PRs must pass:
+
 1. **Automated Checks**
    - Codacy quality assessment
    - Security vulnerability scans
@@ -190,18 +203,21 @@ All PRs must pass:
 ### For Reviewers
 
 #### Security Changes
+
 - [ ] Verify no hardcoded credentials
 - [ ] Check for proper input validation
 - [ ] Ensure secure coding practices
 - [ ] Review dependency updates for vulnerabilities
 
 #### Code Changes  
+
 - [ ] Code follows project standards
 - [ ] Adequate test coverage
 - [ ] Documentation updated if needed
 - [ ] No breaking changes without version bump
 
 #### Documentation Changes
+
 - [ ] Accuracy of technical content
 - [ ] Consistency with existing docs
 - [ ] Proper formatting and grammar
@@ -209,6 +225,7 @@ All PRs must pass:
 ### For Contributors
 
 #### Before Creating PR
+
 - [ ] Branch name follows conventions
 - [ ] Commits are logical and well-described
 - [ ] All CI checks passing
@@ -216,6 +233,7 @@ All PRs must pass:
 - [ ] Documentation updated if needed
 
 #### PR Description Template
+
 ```markdown
 ## Summary
 Brief description of changes
@@ -242,16 +260,19 @@ Brief description of changes
 ## Integration with Existing Tools
 
 ### Codacy Integration
+
 - All PRs must pass Codacy quality gates
 - Security issues must be addressed before merge
 - Code complexity limits enforced
 
 ### Dependabot Integration  
+
 - Automated dependency PRs get `dependencies` label
 - Security updates get expedited review
 - Breaking changes require manual testing
 
 ### CI/CD Workflows
+
 - `autofix.yml`: Automated formatting fixes
 - `claude-auto-review.yml`: AI-assisted code review
 - `yaml-lint.yml`: YAML file validation
@@ -260,17 +281,20 @@ Brief description of changes
 ## Migration Plan
 
 ### Phase 1: Foundation (Week 1)
+
 1. Update branch protection rules
 2. Create PR and issue templates
 3. Document new workflow (this guide)
 4. Train team on new process
 
 ### Phase 2: Process Rollout (Week 2)
+
 1. Apply new workflow to all new PRs
 2. Migrate any existing feature work to proper branches
 3. Update CI/CD to enforce new rules
 
 ### Phase 3: Optimization (Week 3-4)  
+
 1. Monitor adoption and address issues
 2. Refine review process based on experience
 3. Add additional automation as needed
@@ -285,6 +309,7 @@ A: Create a revert commit, then properly implement the change in a feature branc
 
 **Q: How do I handle conflicts during rebase?**
 A:
+
 ```bash
 git rebase main
 # Fix conflicts in files
