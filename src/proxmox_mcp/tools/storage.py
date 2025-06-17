@@ -80,7 +80,9 @@ class StorageTools(ProxmoxTool):
                             "storage": store["storage"],
                             "type": store["type"],
                             "content": store.get("content", []),
-                            "status": ("online" if store.get("enabled", True) else "offline"),
+                            "status": (
+                                "online" if store.get("enabled", True) else "offline"
+                            ),
                             "used": status.get("used", 0),
                             "total": status.get("total", 0),
                             "available": status.get("avail", 0),
@@ -93,7 +95,9 @@ class StorageTools(ProxmoxTool):
                             "storage": store["storage"],
                             "type": store["type"],
                             "content": store.get("content", []),
-                            "status": ("online" if store.get("enabled", True) else "offline"),
+                            "status": (
+                                "online" if store.get("enabled", True) else "offline"
+                            ),
                             "used": 0,
                             "total": 0,
                             "available": 0,

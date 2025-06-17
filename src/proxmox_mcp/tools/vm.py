@@ -119,7 +119,9 @@ class VMTools(ProxmoxTool):
             self._handle_error("get VMs", e)
             return []
 
-    async def execute_command(self, node: str, vmid: str, command: str) -> List[Content]:
+    async def execute_command(
+        self, node: str, vmid: str, command: str
+    ) -> List[Content]:
         """Execute a command in a VM via QEMU guest agent.
 
         Uses the QEMU guest agent to execute commands within a running VM.

@@ -27,9 +27,13 @@ from pydantic import Field
 from .config.loader import load_config
 from .core.logging import setup_logging
 from .core.proxmox import ProxmoxManager
+from .tools.ai_diagnostics import AIProxmoxDiagnostics
 from .tools.cluster import ClusterTools
 from .tools.container import ContainerTools
 from .tools.definitions import (
+    ANALYZE_CLUSTER_HEALTH_DESC,
+    ANALYZE_SECURITY_POSTURE_DESC,
+    DIAGNOSE_VM_ISSUES_DESC,
     EXECUTE_VM_COMMAND_DESC,
     GET_CLUSTER_STATUS_DESC,
     GET_CONTAINERS_DESC,
@@ -37,6 +41,7 @@ from .tools.definitions import (
     GET_NODES_DESC,
     GET_STORAGE_DESC,
     GET_VMS_DESC,
+    SUGGEST_RESOURCE_OPTIMIZATION_DESC,
 )
 from .tools.node import NodeTools
 from .tools.storage import StorageTools
@@ -65,6 +70,7 @@ class ProxmoxMCPServer:
         self.container_tools = ContainerTools(self.proxmox)
         self.storage_tools = StorageTools(self.proxmox)
         self.cluster_tools = ClusterTools(self.proxmox)
+        self.ai_diagnostics = AIProxmoxDiagnostics(self.proxmox)
 
         # Initialize MCP server
         self.mcp = FastMCP("ProxmoxMCP")
@@ -92,7 +98,9 @@ class ProxmoxMCPServer:
         def get_node_status(
             node: Annotated[
                 str,
-                Field(description="Name/ID of node to query (e.g. 'pve1', 'proxmox-node2')"),
+                Field(
+                    description="Name/ID of node to query (e.g. 'pve1', 'proxmox-node2')"
+                ),
             ],
         ) -> List[TextContent]:
             return self.node_tools.get_node_status(node)
@@ -131,6 +139,34 @@ class ProxmoxMCPServer:
         @self.mcp.tool(description=GET_CLUSTER_STATUS_DESC)
         def get_cluster_status() -> List[TextContent]:
             return self.cluster_tools.get_cluster_status()
+
+        # AI Diagnostic tools
+        @self.mcp.tool(description=ANALYZE_CLUSTER_HEALTH_DESC)
+        async def analyze_cluster_health() -> List[TextContent]:
+            return await self.ai_diagnostics.analyze_cluster_health()
+
+        @self.mcp.tool(description=DIAGNOSE_VM_ISSUES_DESC)
+        async def diagnose_vm_issues(
+            node: Annotated[
+                str,
+                Field(
+                    description="Proxmox node name hosting the VM (e.g. 'pve1', 'proxmox-node2')"
+                ),
+            ],
+            vmid: Annotated[
+                str,
+                Field(description="Virtual machine ID to diagnose (e.g. '100', '101')"),
+            ],
+        ) -> List[TextContent]:
+            return await self.ai_diagnostics.diagnose_vm_issues(node, vmid)
+
+        @self.mcp.tool(description=SUGGEST_RESOURCE_OPTIMIZATION_DESC)
+        async def suggest_resource_optimization() -> List[TextContent]:
+            return await self.ai_diagnostics.suggest_resource_optimization()
+
+        @self.mcp.tool(description=ANALYZE_SECURITY_POSTURE_DESC)
+        async def analyze_security_posture() -> List[TextContent]:
+            return await self.ai_diagnostics.analyze_security_posture()
 
     def start(self) -> None:
         """Start the MCP server.

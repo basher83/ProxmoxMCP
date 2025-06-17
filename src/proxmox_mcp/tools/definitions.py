@@ -52,3 +52,75 @@ GET_CLUSTER_STATUS_DESC = """Get overall Proxmox cluster health and configuratio
 
 Example:
 {"name": "proxmox", "quorum": "ok", "nodes": 3, "ha_status": "active"}"""
+
+# AI Diagnostic tool descriptions
+ANALYZE_CLUSTER_HEALTH_DESC = """AI-powered comprehensive cluster health analysis using Claude Code SDK.
+
+Analyzes all cluster components (nodes, VMs, storage, network) and provides intelligent 
+insights, recommendations, and actionable solutions for:
+- Performance bottlenecks and optimization opportunities
+- Security concerns and hardening recommendations  
+- Capacity planning and resource utilization analysis
+- Critical issues requiring immediate attention
+- Long-term maintenance recommendations
+
+Returns detailed AI analysis with prioritized action items, specific configuration 
+changes, and implementation guidance.
+
+Example output includes performance metrics, security assessments, and optimization 
+recommendations with expected impact and implementation complexity."""
+
+DIAGNOSE_VM_ISSUES_DESC = """AI-powered VM issue diagnosis and troubleshooting using Claude Code SDK.
+
+Parameters:
+node* - Proxmox node name hosting the VM (e.g. 'pve1')
+vmid* - Virtual machine ID to diagnose (e.g. '100')
+
+Performs comprehensive VM analysis including:
+- Performance issues and resource constraints
+- Configuration problems and optimization opportunities
+- Network connectivity troubleshooting
+- Storage performance analysis
+- Guest OS issues (when guest agent available)
+- Hardware compatibility concerns
+
+Returns detailed diagnostic report with root cause analysis, specific solution steps, 
+implementation commands, and prevention measures.
+
+Example:
+{"vm": "100", "issues": ["High CPU usage", "Network latency"], "solutions": [...]}"""
+
+SUGGEST_RESOURCE_OPTIMIZATION_DESC = """AI-powered resource optimization recommendations using Claude Code SDK.
+
+Analyzes cluster-wide resource utilization patterns and provides intelligent 
+recommendations for:
+- Overprovisioned VMs that can be downsized
+- Underutilized nodes that could host additional workloads
+- Storage optimization (thin provisioning, compression, deduplication)
+- Network optimization and traffic analysis
+- Cost-saving opportunities with ROI calculations
+- Performance improvement strategies
+
+Returns comprehensive optimization report with specific configuration changes, 
+expected resource savings, implementation complexity ratings, and success metrics.
+
+Example output includes resource reallocation suggestions, performance improvements, 
+and cost optimization with quantified benefits."""
+
+ANALYZE_SECURITY_POSTURE_DESC = """AI-powered security posture analysis using Claude Code SDK.
+
+Performs comprehensive security assessment of the Proxmox environment including:
+- Authentication and access control evaluation
+- Network security configuration review
+- VM isolation and security group analysis
+- Backup and disaster recovery security assessment
+- Compliance with security frameworks (SOC2, ISO27001)
+- Potential attack vectors and threat analysis
+- Encryption and data protection measures
+- Audit logging and monitoring capabilities
+
+Returns detailed security analysis with risk-prioritized recommendations, specific 
+remediation steps, compliance implications, and implementation guidance.
+
+Example output includes security findings by risk level, remediation commands, 
+and prevention strategies with compliance mapping."""

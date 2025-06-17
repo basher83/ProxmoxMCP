@@ -129,7 +129,9 @@ async def search_coding_preferences(query: str) -> str:
               or specific technical terms.
     """
     try:
-        memories = mem0_client.search(query, user_id=DEFAULT_USER_ID, output_format="v1.1")
+        memories = mem0_client.search(
+            query, user_id=DEFAULT_USER_ID, output_format="v1.1"
+        )
         flattened_memories = [memory["memory"] for memory in memories["results"]]
         return json.dumps(flattened_memories, indent=2)
     except Exception as e:
