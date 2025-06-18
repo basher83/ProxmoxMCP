@@ -188,6 +188,19 @@ wheels = [
 ]
 
 [[package]]
+name = "claude-code-sdk"
+version = "0.0.11"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/12/2a/dfaa73b0e87253608341ab1d724e76f570142819579e410df5d2158a8470/claude_code_sdk-0.0.11.tar.gz", hash = "sha256:1711560b0a639cd4a766298e538bdf959dcb70b4854d003753306abc83806ce9", size = 11473, upload-time = "2025-06-18T04:09:54.304Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2d/d8/d90842348c09d5211e4fadcb9901627e71ad5d510e63a9a0595d393c56e7/claude_code_sdk-0.0.11-py3-none-any.whl", hash = "sha256:d0ad485db36477c290ca9a4cc08f4a7eb795daf2d7646255e2f1475c28d19a0d", size = 10293, upload-time = "2025-06-18T04:09:53.104Z" },
+]
+
+[[package]]
 name = "click"
 version = "8.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -436,6 +449,7 @@ name = "proxmox-mcp"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "claude-code-sdk" },
     { name = "cryptography" },
     { name = "mcp" },
     { name = "proxmoxer" },
@@ -462,6 +476,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "black", marker = "extra == 'dev'", specifier = ">=23.0.0,<26.0.0" },
+    { name = "claude-code-sdk", specifier = ">=0.0.10,<1.0.0" },
     { name = "cryptography", specifier = ">=45.0.0,<46.0.0" },
     { name = "mcp", git = "https://github.com/modelcontextprotocol/python-sdk.git" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0.0,<2.0.0" },
