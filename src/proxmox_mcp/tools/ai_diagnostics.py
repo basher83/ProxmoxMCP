@@ -28,9 +28,7 @@ try:
     CLAUDE_SDK_AVAILABLE = True
 except ImportError:
     CLAUDE_SDK_AVAILABLE = False
-    logging.warning(
-        "Claude Code SDK not available. AI diagnostic features will be disabled."
-    )
+    logging.warning("Claude Code SDK not available. AI diagnostic features will be disabled.")
 
 
 class AIProxmoxDiagnostics(ProxmoxTool):
@@ -125,9 +123,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
 
 ---
 📊 **Analysis Summary**
-- Nodes analyzed: {len(cluster_data.get('nodes', []))}
-- VMs analyzed: {len(cluster_data.get('vms', []))}
-- Storage pools: {len(cluster_data.get('storage', []))}
+- Nodes analyzed: {len(cluster_data.get("nodes", []))}
+- VMs analyzed: {len(cluster_data.get("vms", []))}
+- Storage pools: {len(cluster_data.get("storage", []))}
 - Analysis powered by Claude Code SDK with Proxmox expertise
 
 💡 **Next Steps**: Review high-priority recommendations first, then implement
@@ -197,10 +195,10 @@ suggested optimizations during maintenance windows.
 
 **VM Overview**
 - Node: {node}
-- Status: {vm_status.get('status', 'unknown')}
-- CPU Cores: {vm_status.get('cpus', 'N/A')}
-- Memory: {vm_status.get('maxmem', 'N/A')} bytes
-- Uptime: {vm_status.get('uptime', 'N/A')} seconds
+- Status: {vm_status.get("status", "unknown")}
+- CPU Cores: {vm_status.get("cpus", "N/A")}
+- Memory: {vm_status.get("maxmem", "N/A")} bytes
+- Uptime: {vm_status.get("uptime", "N/A")} seconds
 
 **AI Analysis & Recommendations**
 
@@ -269,10 +267,10 @@ suggested optimizations during maintenance windows.
             formatted_response = f"""⚡ **AI Resource Optimization Report**
 
 **Current Resource Overview**
-- Total CPU Cores: {resource_summary.get('total_cpu_cores', 'N/A')}
-- Total Memory: {self._format_bytes(resource_summary.get('total_memory', 0))}
-- Memory Utilization: {resource_summary.get('memory_utilization_percent', 0):.1f}%
-- Active VMs: {len(resource_data.get('vms', []))}
+- Total CPU Cores: {resource_summary.get("total_cpu_cores", "N/A")}
+- Total Memory: {self._format_bytes(resource_summary.get("total_memory", 0))}
+- Memory Utilization: {resource_summary.get("memory_utilization_percent", 0):.1f}%
+- Active VMs: {len(resource_data.get("vms", []))}
 
 **AI Optimization Recommendations**
 
@@ -345,8 +343,8 @@ suggested optimizations during maintenance windows.
 
 **Security Overview**
 - User Accounts: {user_count}
-- Firewall Status: {security_data.get('firewall_options', {}).get('enable', 'Unknown')}
-- Datacenter Config: {'Available' if security_data.get('datacenter_config') else 'Limited'}
+- Firewall Status: {security_data.get("firewall_options", {}).get("enable", "Unknown")}
+- Datacenter Config: {"Available" if security_data.get("datacenter_config") else "Limited"}
 
 **AI Security Assessment**
 
@@ -424,9 +422,7 @@ suggested optimizations during maintenance windows.
                         }
                     )
                 except Exception as e:
-                    self.logger.warning(
-                        f"Failed to get status for node {node['node']}: {e}"
-                    )
+                    self.logger.warning(f"Failed to get status for node {node['node']}: {e}")
                     data["nodes"].append(
                         {
                             "name": node["node"],
@@ -456,9 +452,7 @@ suggested optimizations during maintenance windows.
                         }
                         data["vms"].append(vm_info)
                 except Exception as e:
-                    self.logger.warning(
-                        f"Failed to get VMs for node {node['node']}: {e}"
-                    )
+                    self.logger.warning(f"Failed to get VMs for node {node['node']}: {e}")
 
             # Collect storage information
             try:
@@ -506,14 +500,10 @@ suggested optimizations during maintenance windows.
             if vm_status.get("status") == "running":
                 try:
                     # Get RRD data for performance metrics
-                    rrd_data = (
-                        self.proxmox.nodes(node).qemu(vmid).rrd.get(timeframe="hour")
-                    )
+                    rrd_data = self.proxmox.nodes(node).qemu(vmid).rrd.get(timeframe="hour")
                     data["performance_metrics"] = rrd_data
                 except Exception as e:
-                    self.logger.warning(
-                        f"Failed to get performance metrics for VM {vmid}: {e}"
-                    )
+                    self.logger.warning(f"Failed to get performance metrics for VM {vmid}: {e}")
                     data["performance_metrics"] = None
 
                 # Try to get guest agent info if available
@@ -573,9 +563,7 @@ suggested optimizations during maintenance windows.
                 (used_memory / total_memory * 100) if total_memory > 0 else 0
             ),
             "total_vms": len(data.get("vms", [])),
-            "running_vms": len(
-                [vm for vm in data.get("vms", []) if vm.get("status") == "running"]
-            ),
+            "running_vms": len([vm for vm in data.get("vms", []) if vm.get("status") == "running"]),
         }
 
         return data
@@ -622,9 +610,7 @@ suggested optimizations during maintenance windows.
 
         return data
 
-    async def _basic_cluster_analysis(
-        self, cluster_data: Dict[str, Any]
-    ) -> List[Content]:
+    async def _basic_cluster_analysis(self, cluster_data: Dict[str, Any]) -> List[Content]:
         """Provide basic cluster analysis when Claude SDK is unavailable."""
         nodes = cluster_data.get("nodes", [])
         vms = cluster_data.get("vms", [])
@@ -646,9 +632,7 @@ suggested optimizations during maintenance windows.
                 memory_info = node.get("memory_usage", {})
                 memory_used = memory_info.get("used", 0)
                 memory_total = memory_info.get("total", 1)
-                memory_percent = (
-                    (memory_used / memory_total) * 100 if memory_total > 0 else 0
-                )
+                memory_percent = (memory_used / memory_total) * 100 if memory_total > 0 else 0
 
                 analysis += (
                     f"- {node['name']}: {node['status']} | "
@@ -659,9 +643,9 @@ suggested optimizations during maintenance windows.
 
         analysis += f"""
 **VM Status Summary:**
-- Running: {len([vm for vm in vms if vm.get('status') == 'running'])}
-- Stopped: {len([vm for vm in vms if vm.get('status') == 'stopped'])}
-- Other: {len([vm for vm in vms if vm.get('status') not in ['running', 'stopped']])}
+- Running: {len([vm for vm in vms if vm.get("status") == "running"])}
+- Stopped: {len([vm for vm in vms if vm.get("status") == "stopped"])}
+- Other: {len([vm for vm in vms if vm.get("status") not in ["running", "stopped"]])}
 
 ℹ️ For detailed AI-powered analysis, please install and configure Claude Code SDK.
 """
@@ -678,35 +662,33 @@ suggested optimizations during maintenance windows.
         analysis = f"""🔧 **Basic VM Analysis** (AI features unavailable)
 
 **VM {vmid} on {node}:**
-- Status: {status.get('status', 'unknown')}
-- CPU: {status.get('cpus', 'N/A')} cores
-- Memory: {self._format_bytes(status.get('maxmem', 0))}
-- Uptime: {status.get('uptime', 'N/A')} seconds
+- Status: {status.get("status", "unknown")}
+- CPU: {status.get("cpus", "N/A")} cores
+- Memory: {self._format_bytes(status.get("maxmem", 0))}
+- Uptime: {status.get("uptime", "N/A")} seconds
 
 **Configuration:**
-- Boot disk: {config.get('bootdisk', 'N/A')}
-- Network: {len([k for k in config.keys() if k.startswith('net')])} interface(s)
-- OS Type: {config.get('ostype', 'N/A')}
+- Boot disk: {config.get("bootdisk", "N/A")}
+- Network: {len([k for k in config.keys() if k.startswith("net")])} interface(s)
+- OS Type: {config.get("ostype", "N/A")}
 
 ℹ️ For detailed AI-powered diagnosis, please install and configure Claude Code SDK.
 """
 
         return [Content(type="text", text=analysis)]
 
-    async def _basic_resource_analysis(
-        self, resource_data: Dict[str, Any]
-    ) -> List[Content]:
+    async def _basic_resource_analysis(self, resource_data: Dict[str, Any]) -> List[Content]:
         """Provide basic resource analysis when Claude SDK is unavailable."""
         summary = resource_data.get("resource_summary", {})
 
         analysis = f"""⚡ **Basic Resource Analysis** (AI features unavailable)
 
 **Resource Summary:**
-- Total CPU Cores: {summary.get('total_cpu_cores', 'N/A')}
-- Total Memory: {self._format_bytes(summary.get('total_memory', 0))}
-- Memory Utilization: {summary.get('memory_utilization_percent', 0):.1f}%
-- Total VMs: {summary.get('total_vms', 0)}
-- Running VMs: {summary.get('running_vms', 0)}
+- Total CPU Cores: {summary.get("total_cpu_cores", "N/A")}
+- Total Memory: {self._format_bytes(summary.get("total_memory", 0))}
+- Memory Utilization: {summary.get("memory_utilization_percent", 0):.1f}%
+- Total VMs: {summary.get("total_vms", 0)}
+- Running VMs: {summary.get("running_vms", 0)}
 
 **Basic Recommendations:**
 - Monitor memory usage if above 80%
@@ -719,9 +701,7 @@ configure Claude Code SDK.
 
         return [Content(type="text", text=analysis)]
 
-    async def _basic_security_analysis(
-        self, security_data: Dict[str, Any]
-    ) -> List[Content]:
+    async def _basic_security_analysis(self, security_data: Dict[str, Any]) -> List[Content]:
         """Provide basic security analysis when Claude SDK is unavailable."""
         users = security_data.get("users", [])
         firewall = security_data.get("firewall_options", {})
@@ -730,7 +710,7 @@ configure Claude Code SDK.
 
 **Security Overview:**
 - User accounts: {len(users)}
-- Firewall enabled: {firewall.get('enable', 'Unknown')}
+- Firewall enabled: {firewall.get("enable", "Unknown")}
 
 **Basic Security Checklist:**
 - ✓ Review user accounts and remove unused accounts
