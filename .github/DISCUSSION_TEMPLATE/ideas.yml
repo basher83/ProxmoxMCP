@@ -12,7 +12,7 @@ body:
         - Performance improvements
         - New tool concepts
 
-        **Note**: For concrete feature requests, please use the 
+        **Note**: For concrete feature requests, please use the
         [Feature Request issue template](https://github.com/basher83/ProxmoxMCP/issues/new?template=feature_request.md).
 
   - type: input

@@ -8,7 +8,7 @@ on:
 jobs:
   claude-issue-handler:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.assignees.*.login, 'claude-code-bot') || 
+    if: contains(github.event.issue.assignees.*.login, 'claude-code-bot') ||
         contains(github.event.issue.labels.*.name, 'claude-code')
     permissions:
       contents: write
@@ -85,7 +85,7 @@ jobs:
 
             **Branch:** I'll create a new branch for this work
 
-            Please implement the solution for this issue following the project's guidelines 
+            Please implement the solution for this issue following the project's guidelines
             in CLAUDE.md and the development workflow.
 
             Remember to:
