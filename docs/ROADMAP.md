@@ -1,6 +1,8 @@
 # ProxmoxMCP Project Roadmap
 
-This roadmap outlines the planned development and improvement efforts for the ProxmoxMCP project, prioritized for production readiness. The phases are organized by urgency with specific implementation guidance and timelines.
+This roadmap outlines the planned development and improvement efforts for the
+ProxmoxMCP project, prioritized for production readiness. The phases are organized
+by urgency with specific implementation guidance and timelines.
 
 ## Phase 1: Critical Security Fixes (Immediate - 1-2 days)
 
@@ -23,7 +25,8 @@ These items address critical security vulnerabilities and must be implemented im
 
 ### SSL Security
 
-- [x] **Enable SSL Verification**: Change default from `"verify_ssl": false` to `"verify_ssl": true` in `proxmox-config/config.example.json`
+- [x] **Enable SSL Verification**: Change default from `"verify_ssl": false` to
+  `"verify_ssl": true` in `proxmox-config/config.example.json`
 
 ### Input Validation
 

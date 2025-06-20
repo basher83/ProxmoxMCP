@@ -1,6 +1,7 @@
 # GitHub Instructions
 
-This document provides guidelines for Claude Code when working with Git operations and GitHub integration for the ProxmoxMCP repository.
+This document provides guidelines for Claude Code when working with Git operations and
+GitHub integration for the ProxmoxMCP repository.
 
 ## Git Configuration
 
@@ -39,7 +40,8 @@ git tree        # graphical tree log
 
 ## Commit Message Guidelines
 
-The repository uses a commit template at `/workspaces/ProxmoxMCP/.gitmessage`. All commits must follow these conventions:
+The repository uses a commit template at `/workspaces/ProxmoxMCP/.gitmessage`. All
+commits must follow these conventions:
 
 ### Structure
 

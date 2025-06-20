@@ -5,7 +5,8 @@ applyTo: "**"
 
 # GitHub Copilot Commit Message Instructions
 
-GitHub Copilot should follow the ProxmoxMCP commit message format defined in the [gitignore](.gitmessage) file when generating commit messages.
+GitHub Copilot should follow the ProxmoxMCP commit message format defined in the
+[gitignore](.gitmessage) file when generating commit messages.
 
 Follow these steps exactly when making a commit:
 

@@ -4,7 +4,8 @@ Add this section to your main README.md or CONTRIBUTING.md to document the new b
 
 ## 🌿 Branch Creation Templates
 
-To ensure consistent branch naming and streamlined development workflow, use the provided branch creation templates located in `scripts/branch-templates/`.
+To ensure consistent branch naming and streamlined development workflow, use the
+provided branch creation templates located in `scripts/branch-templates/`.
 
 ### Quick Start
 

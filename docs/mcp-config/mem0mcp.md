@@ -4,7 +4,9 @@
 
 ## Overview
 
-This guide walks you through setting up Mem0-MCP in your development environment. Mem0-MCP provides intelligent memory management capabilities for machine learning workflows through the Model Context Protocol (MCP).
+This guide walks you through setting up Mem0-MCP in your development environment.
+Mem0-MCP provides intelligent memory management capabilities for machine learning
+workflows through the Model Context Protocol (MCP).
 
 ## Deployment Options
 
@@ -18,7 +20,9 @@ This workspace uses the cloud-hosted version of Mem0, available at [mem0.ai](htt
 
 ### Self-Hosted Alternative
 
-A self-hosted Docker version is available but requires additional configuration for persistent memory across container restarts. This option may be considered for future deployments that require:
+A self-hosted Docker version is available but requires additional configuration
+for persistent memory across container restarts. This option may be considered for
+future deployments that require:
 
 - Full data control
 - Custom configurations

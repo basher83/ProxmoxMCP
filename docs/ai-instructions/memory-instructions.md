@@ -13,7 +13,8 @@ Documentation and comments
 Example usage
 Best practices
 
-`get_all_coding_preferences`: Retrieve all stored coding preferences to analyze patterns, review implementations, and ensure no relevant information is missed.
+`get_all_coding_preferences`: Retrieve all stored coding preferences to analyze
+patterns, review implementations, and ensure no relevant information is missed.
 
 `search_coding_preferences`: Semantically search through stored coding preferences to find relevant:
 

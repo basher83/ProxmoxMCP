@@ -1,6 +1,8 @@
 # Claude Code Automation
 
-This repository is configured to work with Claude Code automation for issue resolution. When you assign an issue to Claude Code, it will automatically create a branch, implement the solution, and create a pull request.
+This repository is configured to work with Claude Code automation for issue
+resolution. When you assign an issue to Claude Code, it will automatically create
+a branch, implement the solution, and create a pull request.
 
 ## How It Works
 

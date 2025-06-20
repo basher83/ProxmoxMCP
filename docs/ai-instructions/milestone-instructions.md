@@ -1,12 +1,17 @@
 # Milestone Management Instructions
 
-This document provides comprehensive guidelines for Claude Code when working with GitHub milestones in the ProxmoxMCP repository. Follow these instructions to ensure consistent milestone management that aligns with project development phases and roadmap objectives.
+This document provides comprehensive guidelines for Claude Code when working with GitHub
+milestones in the ProxmoxMCP repository. Follow these instructions to ensure consistent
+milestone management that aligns with project development phases and roadmap objectives.
 
 ## Overview and Purpose
 
 ### What are Milestones in ProxmoxMCP?
 
-Milestones represent significant development phases in the ProxmoxMCP project lifecycle, each with specific goals, features, and release targets. They help organize issues and pull requests by version, track progress toward release objectives, and maintain development focus on key deliverables.
+Milestones represent significant development phases in the ProxmoxMCP project lifecycle,
+each with specific goals, features, and release targets. They help organize issues and
+pull requests by version, track progress toward release objectives, and maintain
+development focus on key deliverables.
 
 ### ProxmoxMCP Milestone Strategy
 
@@ -172,7 +177,8 @@ gh api repos/basher83/ProxmoxMCP/milestones | \
 ```bash
 # Analyze issues by component and milestone
 gh issue list --milestone "v1.0.0" --json labels,title,number | \
-  jq '.[] | select(.labels[] | .name | startswith("component:")) | {number, title, component: [.labels[] | select(.name | startswith("component:")) | .name]}'
+  jq '.[] | select(.labels[] | .name | startswith("component:")) | 
+    {number, title, component: [.labels[] | select(.name | startswith("component:")) | .name]}'
 ```
 
 ### 8. Milestone Cleanup and Maintenance
@@ -286,4 +292,6 @@ gh issue edit 45 --milestone "v0.9.0" --add-label "component:authentication,prio
 gh milestone view "v1.0.0"
 ```
 
-This structured approach ensures consistent milestone management that supports ProxmoxMCP's development workflow, maintains project organization, and facilitates efficient progress tracking toward release objectives.
+This structured approach ensures consistent milestone management that supports
+ProxmoxMCP's development workflow, maintains project organization, and facilitates
+efficient progress tracking toward release objectives.

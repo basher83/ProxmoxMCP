@@ -47,4 +47,5 @@ assignees: ""
 
 ---
 
-**Note:** For installation issues, use the "Installation Help" template. For bugs or unexpected behavior, use the "Bug Report" template.
+**Note:** For installation issues, use the "Installation Help" template. For bugs or
+unexpected behavior, use the "Bug Report" template.

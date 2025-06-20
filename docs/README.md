@@ -1,6 +1,7 @@
 # 📚 ProxmoxMCP Documentation
 
-Welcome to the comprehensive documentation for **ProxmoxMCP** - a Python-based Model Context Protocol (MCP) server for managing Proxmox hypervisors.
+Welcome to the comprehensive documentation for **ProxmoxMCP** - a Python-based
+Model Context Protocol (MCP) server for managing Proxmox hypervisors.
 
 ## 🚀 Quick Start
 
@@ -33,11 +34,13 @@ This project uses modern Python development practices:
 
 ## 📋 Configuration
 
-The server requires proper configuration for Proxmox API access. See the configuration examples in the `proxmox-config/` directory.
+The server requires proper configuration for Proxmox API access. See the
+configuration examples in the `proxmox-config/` directory.
 
 ## 🤖 Automation
 
-This project includes Claude Code automation for issue resolution. When you assign an issue with the `claude-code` label, it automatically:
+This project includes Claude Code automation for issue resolution. When you
+assign an issue with the `claude-code` label, it automatically:
 
 1. Creates a branch
 2. Implements the solution

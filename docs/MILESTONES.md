@@ -2,7 +2,8 @@
 
 *Last Updated: January 6, 2025*
 
-This document outlines the release milestones for ProxmoxMCP, including goals, success criteria, timelines, and risk assessments for each phase of development.
+This document outlines the release milestones for ProxmoxMCP, including goals,
+success criteria, timelines, and risk assessments for each phase of development.
 
 ## Compatibility Matrix
 
@@ -37,7 +38,9 @@ This document outlines the release milestones for ProxmoxMCP, including goals, s
 
 ### Goals
 
-Establish a solid foundation for the v1.0.0 release through comprehensive testing, security improvements, and documentation completion. Focus on core functionality stability and production readiness preparation.
+Establish a solid foundation for the v1.0.0 release through comprehensive
+testing, security improvements, and documentation completion. Focus on core
+functionality stability and production readiness preparation.
 
 ### Success Criteria
 
@@ -91,7 +94,9 @@ Home lab enthusiasts, small business IT administrators, automation developers se
 
 ### Goals
 
-Deliver a production-ready MCP server for Proxmox VE management with enterprise-grade security, comprehensive tool coverage, and complete documentation suitable for production deployments.
+Deliver a production-ready MCP server for Proxmox VE management with
+enterprise-grade security, comprehensive tool coverage, and complete
+documentation suitable for production deployments.
 
 ### Success Criteria
 
@@ -151,7 +156,9 @@ Home lab enthusiasts, small business IT, automation developers, early enterprise
 
 ### Goals
 
-Expand tool coverage with advanced Proxmox features, enhance user experience through improved formatting and error handling, and establish community integration examples for broader adoption.
+Expand tool coverage with advanced Proxmox features, enhance user experience
+through improved formatting and error handling, and establish community
+integration examples for broader adoption.
 
 ### Success Criteria
 
@@ -208,7 +215,9 @@ Power users, automation specialists, enterprise evaluators, DevOps teams
 
 ### Goals
 
-Transform ProxmoxMCP into an enterprise-ready solution with comprehensive monitoring, scalability features, and advanced deployment options suitable for production enterprise environments.
+Transform ProxmoxMCP into an enterprise-ready solution with comprehensive
+monitoring, scalability features, and advanced deployment options suitable for
+production enterprise environments.
 
 ### Success Criteria
 

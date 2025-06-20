@@ -177,7 +177,9 @@ chmod +x scripts/yaml-autofix.sh
 
 ### Custom Rules
 
-Edit `.yamllint.yml` to customize rules for your needs. See [yamllint documentation](https://yamllint.readthedocs.io/en/stable/configuration.html) for all available options.
+Edit `.yamllint.yml` to customize rules for your needs. See [yamllint
+documentation](https://yamllint.readthedocs.io/en/stable/configuration.html) for
+all available options.
 
 ## Available Task Commands
 

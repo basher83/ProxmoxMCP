@@ -4,7 +4,9 @@
 
 ## 🎯 **Overview**
 
-This guide covers the automated markdown linting system implemented to maintain consistent documentation quality across ProxmoxMCP. The system automatically detects, reports, and fixes common markdown formatting issues.
+This guide covers the automated markdown linting system implemented to maintain
+consistent documentation quality across ProxmoxMCP. The system automatically
+detects, reports, and fixes common markdown formatting issues.
 
 ## 🛠️ **Components**
 
@@ -254,4 +256,5 @@ pre-commit autoupdate
 
 ---
 
-> **💡 Tip**: Run `task markdown:summary` regularly to monitor documentation quality and catch issues early in development.
+> **💡 Tip**: Run `task markdown:summary` regularly to monitor documentation
+> quality and catch issues early in development.

@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document establishes the branching strategy and workflow for the ProxmoxMCP repository to ensure consistent, high-quality development practices.
+This document establishes the branching strategy and workflow for the ProxmoxMCP
+repository to ensure consistent, high-quality development practices.
 
 ## Branching Strategy: Enhanced GitHub Flow
 

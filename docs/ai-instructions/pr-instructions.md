@@ -1,6 +1,8 @@
 # Pull Request Instructions
 
-This document provides comprehensive guidelines for Claude Code when working with pull requests in the ProxmoxMCP repository. Follow these instructions to ensure consistent, high-quality PR review, testing, and merging that aligns with project standards.
+This document provides comprehensive guidelines for Claude Code when working with pull
+requests in the ProxmoxMCP repository. Follow these instructions to ensure consistent,
+high-quality PR review, testing, and merging that aligns with project standards.
 
 ## Pre-PR Analysis Phase
 
@@ -334,4 +336,6 @@ Before approving any PR, verify:
 - [ ] Breaking changes documented with migration guidance
 - [ ] Component-specific validation completed
 
-This systematic approach ensures consistent, high-quality pull request review and merging that maintains ProxmoxMCP's standards, security, and architectural integrity while facilitating efficient development workflows.
+This systematic approach ensures consistent, high-quality pull request review and
+merging that maintains ProxmoxMCP's standards, security, and architectural integrity
+while facilitating efficient development workflows.

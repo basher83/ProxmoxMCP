@@ -1,6 +1,8 @@
 # Issue Instructions
 
-This document provides comprehensive guidelines for Claude Code when working on GitHub issues in the ProxmoxMCP repository. Follow these instructions to ensure consistent, high-quality issue resolution that aligns with project standards.
+This document provides comprehensive guidelines for Claude Code when working on GitHub
+issues in the ProxmoxMCP repository. Follow these instructions to ensure consistent,
+high-quality issue resolution that aligns with project standards.
 
 ## Pre-Work Phase
 
@@ -272,4 +274,5 @@ Before marking an issue as complete, verify:
 - [ ] Backward compatibility maintained
 - [ ] Performance implications considered
 
-This systematic approach ensures consistent, high-quality issue resolution that maintains ProxmoxMCP's standards and architectural integrity.
+This systematic approach ensures consistent, high-quality issue resolution that
+maintains ProxmoxMCP's standards and architectural integrity.

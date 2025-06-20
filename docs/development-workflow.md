@@ -1,6 +1,7 @@
 # Development Workflow
 
-This document provides comprehensive documentation for all automated workflows, CI/CD processes, and development practices in the ProxmoxMCP project.
+This document provides comprehensive documentation for all automated workflows,
+CI/CD processes, and development practices in the ProxmoxMCP project.
 
 ## Table of Contents
 
@@ -13,7 +14,10 @@ This document provides comprehensive documentation for all automated workflows, 
 
 ## Overview
 
-The ProxmoxMCP project uses a modern development workflow with automated code quality, dependency management, and AI-assisted development. All workflows are designed to maintain high code quality while reducing manual overhead for contributors.
+The ProxmoxMCP project uses a modern development workflow with automated code
+quality, dependency management, and AI-assisted development. All workflows are
+designed to maintain high code quality while reducing manual overhead for
+contributors.
 
 ### Key Principles
 

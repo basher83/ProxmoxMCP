@@ -4,7 +4,8 @@
 
 ## 🎯 **Overview**
 
-We've enhanced your existing task-based workflow with proper pre-commit hooks that automatically catch and fix the issues identified by Codacy analysis.
+We've enhanced your existing task-based workflow with proper pre-commit hooks that
+automatically catch and fix the issues identified by Codacy analysis.
 
 ### **What Was Added**
 
@@ -80,7 +81,8 @@ task hooks:setup
 - repo: local
   hooks:
     - id: check-subprocess-shell
-      entry: bash -c 'if grep -r "shell=True" src/ --include="*.py"; then echo "❌ Found shell=True in source code!"; exit 1; fi'
+      entry: bash -c 'if grep -r "shell=True" src/ --include="*.py"; then echo
+        "❌ Found shell=True in source code!"; exit 1; fi'
 ```
 
 **Addresses**: Issue #61 (prevents future shell=True usage)

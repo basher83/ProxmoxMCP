@@ -19,9 +19,12 @@ We take the security of ProxmoxMCP seriously. If you discover a security vulnera
 
 Instead, please:
 
-1. **Use GitHub Security Advisories**: Go to the [Security tab](https://github.com/basher83/ProxmoxMCP/security/advisories) and click "Report a vulnerability"
+1. **Use GitHub Security Advisories**: Go to the
+   [Security tab](https://github.com/basher83/ProxmoxMCP/security/advisories) and
+   click "Report a vulnerability"
 2. **Email**: Send details to the project maintainers at [INSERT_EMAIL]
-3. **Use our Security Issue Template**: If you must use issues, use the [Security Vulnerability template](https://github.com/basher83/ProxmoxMCP/issues/new?template=security_vulnerability.md)
+3. **Use our Security Issue Template**: If you must use issues, use the
+   [Security Vulnerability template](https://github.com/basher83/ProxmoxMCP/issues/new?template=security_vulnerability.md)
 
 ### What to Include
 
@@ -87,7 +90,8 @@ Security updates will be:
 
 ### Acknowledgments
 
-We appreciate responsible disclosure and will acknowledge security researchers who report vulnerabilities to us (unless they prefer to remain anonymous).
+We appreciate responsible disclosure and will acknowledge security researchers who
+report vulnerabilities to us (unless they prefer to remain anonymous).
 
 ---
 
