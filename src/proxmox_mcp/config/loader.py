@@ -121,9 +121,7 @@ def _decrypt_config_tokens(config_data: dict) -> dict:
             try:
                 if encryptor is None:
                     encryptor = TokenEncryption()
-                config_data["auth"]["token_value"] = encryptor.decrypt_token(
-                    token_value
-                )
+                config_data["auth"]["token_value"] = encryptor.decrypt_token(token_value)
             except Exception as e:
                 _handle_decryption_error("auth.token_value", token_value, e)
 
@@ -222,9 +220,7 @@ def encrypt_config_file(config_path: str, output_path: Optional[str] = None) -> 
         if "auth" in config_data and "token_value" in config_data["auth"]:
             token_value = config_data["auth"]["token_value"]
             if isinstance(token_value, str) and not encryptor.is_encrypted(token_value):
-                config_data["auth"]["token_value"] = encryptor.encrypt_token(
-                    token_value
-                )
+                config_data["auth"]["token_value"] = encryptor.encrypt_token(token_value)
 
         # Write encrypted config
         with open(output_path, "w") as f:
