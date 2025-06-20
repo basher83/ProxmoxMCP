@@ -35,8 +35,8 @@ uv pip install -e ".[dev]"
 
 #### Standardized Quality Assurance Workflow
 
-The ProxmoxMCP project uses a comprehensive, standardized quality assurance workflow that must be 
-followed for all code changes. This workflow includes automated checks, error recovery procedures, and 
+The ProxmoxMCP project uses a comprehensive, standardized quality assurance workflow that must be
+followed for all code changes. This workflow includes automated checks, error recovery procedures, and
 ProxmoxMCP-specific validations.
 
 #### Pre-Commit Quality Pipeline
@@ -371,7 +371,7 @@ echo "🎉 Code is ready for commit"
 
 ### Dependency Management and Version Verification
 
-Before modifying dependencies in `pyproject.toml`, `requirements.in`, or `requirements-dev.in`, 
+Before modifying dependencies in `pyproject.toml`, `requirements.in`, or `requirements-dev.in`,
 ALWAYS verify actual package versions to prevent uninstallable packages:
 
 #### Version Research Commands
@@ -824,8 +824,8 @@ echo "✅ Security validation passed"
 
 ### Overview
 
-Repository hygiene involves proactive maintenance procedures to prevent accumulation of stale 
-references, outdated analysis, and technical debt. These procedures should be integrated into regular 
+Repository hygiene involves proactive maintenance procedures to prevent accumulation of stale
+references, outdated analysis, and technical debt. These procedures should be integrated into regular
 development workflows to ensure repository health and accuracy.
 
 ### Pre-Work Hygiene Procedures
@@ -945,7 +945,7 @@ After completing implementation work:
   1. Use simpler review text, or
   2. Escape special characters properly, or
   3. Submit reviews through the GitHub web interface for complex formatting
-- ALWAYS verify package versions exist before setting dependency constraints using 
+- ALWAYS verify package versions exist before setting dependency constraints using
   `pip index versions <package>` or GitHub releases to prevent uninstallable packages
 - ALWAYS treat GitHub API as authoritative source for repository state; verify branch existence before analysis
 - Perform stale branch cleanup before any repository analysis to ensure accuracy

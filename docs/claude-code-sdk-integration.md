@@ -2,8 +2,8 @@
 
 ## Project Overview
 
-This document tracks the implementation of Claude Code SDK integration into ProxmoxMCP to create 
-intelligent, AI-powered infrastructure management capabilities. The integration will transform ProxmoxMCP 
+This document tracks the implementation of Claude Code SDK integration into ProxmoxMCP to create
+intelligent, AI-powered infrastructure management capabilities. The integration will transform ProxmoxMCP
 from a basic management tool into an intelligent infrastructure advisor.
 
 ### Goals
@@ -470,8 +470,8 @@ Based on configuration management analysis, these capabilities provide significa
 - **Enterprise Focus**: Target enterprise use cases with compliance and security priorities
 - **User-Controlled Analysis**: Allow users to specify scope and depth of configuration analysis
 
-**Value Justification**: Configuration management represents the natural evolution from reactive 
-diagnostics to proactive infrastructure optimization, providing substantial enterprise value through 
+**Value Justification**: Configuration management represents the natural evolution from reactive
+diagnostics to proactive infrastructure optimization, providing substantial enterprise value through
 automated best practices, security compliance, and performance optimization.
 
 ### Advanced AI Features (Future)
@@ -506,9 +506,9 @@ automated best practices, security compliance, and performance optimization.
 
 ## Conclusion
 
-This Claude Code SDK integration will transform ProxmoxMCP into an intelligent infrastructure 
-management platform, providing AI-powered insights that help administrators optimize, secure, and 
-maintain their Proxmox environments more effectively. The phased implementation approach ensures quality 
+This Claude Code SDK integration will transform ProxmoxMCP into an intelligent infrastructure
+management platform, providing AI-powered insights that help administrators optimize, secure, and
+maintain their Proxmox environments more effectively. The phased implementation approach ensures quality
 and maintainability while delivering value at each milestone.
 
 ---
