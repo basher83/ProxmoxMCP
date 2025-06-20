@@ -522,7 +522,8 @@ To update the branch management system:
 
 ### From Legacy to Modern Format
 
-If you have existing branches using the legacy format, they will continue to work. For new branches, consider using the modern component-based format:
+If you have existing branches using the legacy format, they will continue to work. For new
+branches, consider using the modern component-based format:
 
 **Legacy:** `feature/123-add-monitoring`  
 **Modern:** `feature/vm-monitoring-dashboard`
@@ -531,4 +532,6 @@ The validation system supports both formats for backward compatibility.
 
 ---
 
-This branch management system is designed to work seamlessly with the ProxmoxMCP development workflow and existing automation. For questions or improvements, please create an issue or discussion in the repository.
+This branch management system is designed to work seamlessly with the ProxmoxMCP development
+workflow and existing automation. For questions or improvements, please create an issue or
+discussion in the repository.

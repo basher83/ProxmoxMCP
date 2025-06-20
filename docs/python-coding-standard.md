@@ -22,7 +22,9 @@
 
 ## Overview
 
-This document defines the Python coding standards for the ProxmoxMCP project. These standards are enforced through automated tools integrated with our CI/CD pipeline and are based on our current Codacy "Default coding standard" configuration.
+This document defines the Python coding standards for the ProxmoxMCP project. These standards are
+enforced through automated tools integrated with our CI/CD pipeline and are based on our current
+Codacy "Default coding standard" configuration.
 
 ### Enforcement Tools
 

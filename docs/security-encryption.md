@@ -23,7 +23,8 @@ python -m proxmox_mcp.utils.encrypt_config --generate-key
 export PROXMOX_MCP_MASTER_KEY="your-generated-key"
 ```
 
-> **Security Note**: The key generation process now includes enhanced security measures that prevent the key from being exposed in terminal history or log files during automatic generation.
+> **Security Note**: The key generation process now includes enhanced security measures that
+> prevent the key from being exposed in terminal history or log files during automatic generation.
 
 ### 2. Encrypt Your Configuration
 
@@ -204,7 +205,8 @@ Enable debug logging to troubleshoot encryption issues:
 
 ## Key Rotation Procedures
 
-Key rotation is essential for maintaining long-term security. ProxmoxMCP provides comprehensive tools and procedures for safely rotating encryption keys.
+Key rotation is essential for maintaining long-term security. ProxmoxMCP provides comprehensive
+tools and procedures for safely rotating encryption keys.
 
 ### When to Rotate Keys
 
