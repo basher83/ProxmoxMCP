@@ -28,9 +28,7 @@ try:
     CLAUDE_SDK_AVAILABLE = True
 except ImportError:
     CLAUDE_SDK_AVAILABLE = False
-    logging.warning(
-        "Claude Code SDK not available. AI diagnostic features will be disabled."
-    )
+    logging.warning("Claude Code SDK not available. AI diagnostic features will be disabled.")
 
 
 class AIProxmoxDiagnostics(ProxmoxTool):
@@ -424,9 +422,7 @@ suggested optimizations during maintenance windows.
                         }
                     )
                 except Exception as e:
-                    self.logger.warning(
-                        f"Failed to get status for node {node['node']}: {e}"
-                    )
+                    self.logger.warning(f"Failed to get status for node {node['node']}: {e}")
                     data["nodes"].append(
                         {
                             "name": node["node"],
@@ -456,9 +452,7 @@ suggested optimizations during maintenance windows.
                         }
                         data["vms"].append(vm_info)
                 except Exception as e:
-                    self.logger.warning(
-                        f"Failed to get VMs for node {node['node']}: {e}"
-                    )
+                    self.logger.warning(f"Failed to get VMs for node {node['node']}: {e}")
 
             # Collect storage information
             try:
@@ -506,14 +500,10 @@ suggested optimizations during maintenance windows.
             if vm_status.get("status") == "running":
                 try:
                     # Get RRD data for performance metrics
-                    rrd_data = (
-                        self.proxmox.nodes(node).qemu(vmid).rrd.get(timeframe="hour")
-                    )
+                    rrd_data = self.proxmox.nodes(node).qemu(vmid).rrd.get(timeframe="hour")
                     data["performance_metrics"] = rrd_data
                 except Exception as e:
-                    self.logger.warning(
-                        f"Failed to get performance metrics for VM {vmid}: {e}"
-                    )
+                    self.logger.warning(f"Failed to get performance metrics for VM {vmid}: {e}")
                     data["performance_metrics"] = None
 
                 # Try to get guest agent info if available
@@ -573,9 +563,7 @@ suggested optimizations during maintenance windows.
                 (used_memory / total_memory * 100) if total_memory > 0 else 0
             ),
             "total_vms": len(data.get("vms", [])),
-            "running_vms": len(
-                [vm for vm in data.get("vms", []) if vm.get("status") == "running"]
-            ),
+            "running_vms": len([vm for vm in data.get("vms", []) if vm.get("status") == "running"]),
         }
 
         return data
@@ -622,9 +610,7 @@ suggested optimizations during maintenance windows.
 
         return data
 
-    async def _basic_cluster_analysis(
-        self, cluster_data: Dict[str, Any]
-    ) -> List[Content]:
+    async def _basic_cluster_analysis(self, cluster_data: Dict[str, Any]) -> List[Content]:
         """Provide basic cluster analysis when Claude SDK is unavailable."""
         nodes = cluster_data.get("nodes", [])
         vms = cluster_data.get("vms", [])
@@ -646,9 +632,7 @@ suggested optimizations during maintenance windows.
                 memory_info = node.get("memory_usage", {})
                 memory_used = memory_info.get("used", 0)
                 memory_total = memory_info.get("total", 1)
-                memory_percent = (
-                    (memory_used / memory_total) * 100 if memory_total > 0 else 0
-                )
+                memory_percent = (memory_used / memory_total) * 100 if memory_total > 0 else 0
 
                 analysis += (
                     f"- {node['name']}: {node['status']} | "
@@ -693,9 +677,7 @@ suggested optimizations during maintenance windows.
 
         return [Content(type="text", text=analysis)]
 
-    async def _basic_resource_analysis(
-        self, resource_data: Dict[str, Any]
-    ) -> List[Content]:
+    async def _basic_resource_analysis(self, resource_data: Dict[str, Any]) -> List[Content]:
         """Provide basic resource analysis when Claude SDK is unavailable."""
         summary = resource_data.get("resource_summary", {})
 
@@ -719,9 +701,7 @@ configure Claude Code SDK.
 
         return [Content(type="text", text=analysis)]
 
-    async def _basic_security_analysis(
-        self, security_data: Dict[str, Any]
-    ) -> List[Content]:
+    async def _basic_security_analysis(self, security_data: Dict[str, Any]) -> List[Content]:
         """Provide basic security analysis when Claude SDK is unavailable."""
         users = security_data.get("users", [])
         firewall = security_data.get("firewall_options", {})
