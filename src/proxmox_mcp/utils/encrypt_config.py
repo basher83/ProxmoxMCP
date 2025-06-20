@@ -46,6 +46,7 @@ def clear_terminal_if_requested() -> None:
                 # Use Windows-specific clear method via ctypes
                 try:
                     import ctypes
+
                     ctypes.windll.kernel32.SetConsoleTitleW("ProxmoxMCP")  # type: ignore
                     # Clear screen using ANSI escape sequences (works on modern Windows)
                     print("\033[2J\033[H", end="", flush=True)

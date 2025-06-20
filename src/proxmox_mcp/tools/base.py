@@ -88,8 +88,7 @@ class ProxmoxTool:
         }
 
         if resource_type in template_mapping:
-            template_func = template_mapping[resource_type]
-            return template_func(data)
+            return template_mapping[resource_type](data)
 
         # Fallback to JSON formatting for unknown types
         import json
@@ -107,7 +106,9 @@ class ProxmoxTool:
         """
         if isinstance(data, tuple) and len(data) == 2:
             return ProxmoxTemplates.node_status(data[0], data[1])
-        return ProxmoxTemplates.node_status("unknown", data if isinstance(data, dict) else {})
+        return ProxmoxTemplates.node_status(
+            "unknown", data if isinstance(data, dict) else {}
+        )
 
     def _handle_error(self, operation: str, error: Exception) -> None:
         """Handle and log errors from Proxmox operations.
