@@ -2,8 +2,8 @@
 
 Convert branch analysis findings into GitHub automation workflow: $ARGUMENTS
 
-Transform branch analysis results into actionable GitHub issues that integrate with your existing 
-claude-issue-assignment.yml automation. This command bridges local development insights with your 
+Transform branch analysis results into actionable GitHub issues that integrate with your existing
+claude-issue-assignment.yml automation. This command bridges local development insights with your
 automated issue management system.
 
 ## Integration with ProxmoxMCP GitHub Automation

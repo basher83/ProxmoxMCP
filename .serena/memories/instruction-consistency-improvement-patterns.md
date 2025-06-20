@@ -2,7 +2,7 @@
 
 ## Memory System Transition Update
 
-Successfully updated ProxmoxMCP instruction files to reflect transition from mem0 server to 
+Successfully updated ProxmoxMCP instruction files to reflect transition from mem0 server to
 Serena MCP server memory functions.
 
 ### Files Updated

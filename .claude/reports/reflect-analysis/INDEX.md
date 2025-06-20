@@ -1,6 +1,6 @@
 # Reflection Analysis Reports Index
 
-This directory contains reflection analysis reports that examine and improve the CLAUDE.md 
+This directory contains reflection analysis reports that examine and improve the CLAUDE.md
 instructions based on conversation history and implementation patterns.
 
 ## Report Overview

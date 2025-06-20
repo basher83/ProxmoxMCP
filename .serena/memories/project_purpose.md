@@ -2,8 +2,8 @@
 
 ## Overview
 
-ProxmoxMCP is a Python-based Model Context Protocol (MCP) server that provides a clean interface for 
-interacting with Proxmox Virtual Environment (VE) hypervisors. It enables management of nodes, VMs, 
+ProxmoxMCP is a Python-based Model Context Protocol (MCP) server that provides a clean interface for
+interacting with Proxmox Virtual Environment (VE) hypervisors. It enables management of nodes, VMs,
 containers, and storage through the MCP protocol.
 
 ## Key Features

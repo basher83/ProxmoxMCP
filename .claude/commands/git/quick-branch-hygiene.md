@@ -2,10 +2,10 @@
 
 Quick branch hygiene check and immediate improvements: $ARGUMENTS
 
-Execute rapid branch analysis focusing on immediate wins and obvious improvements. 
+Execute rapid branch analysis focusing on immediate wins and obvious improvements.
 Use this for daily/weekly branch maintenance.
 
-**IMPORTANT**: Always verify branch state against GitHub API to catch stale local 
+**IMPORTANT**: Always verify branch state against GitHub API to catch stale local
 branches that no longer exist remotely.
 
 ## Rapid Analysis Mode
@@ -247,7 +247,7 @@ Generate immediate actionable summary:
 - Consider `git branch --merged` and `git branch --no-merged` for additional context
 - Keep logs of deleted branches for recovery if needed
 
-**Integration Note:** Use this command weekly before your automated GitHub issue 
-processing to maintain clean branch state for your automation workflows. The stale branch 
-cleanup should be the first step in any branch hygiene workflow to ensure accurate 
+**Integration Note:** Use this command weekly before your automated GitHub issue
+processing to maintain clean branch state for your automation workflows. The stale branch
+cleanup should be the first step in any branch hygiene workflow to ensure accurate
 analysis of remaining branches.

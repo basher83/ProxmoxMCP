@@ -2,8 +2,8 @@
 
 Comprehensive branch analysis and merge strategy workflow: $ARGUMENTS
 
-This workflow systematically analyzes all branches to optimize merge strategy and maintain 
-branch purpose alignment. Execute each phase methodically and maintain detailed analysis 
+This workflow systematically analyzes all branches to optimize merge strategy and maintain
+branch purpose alignment. Execute each phase methodically and maintain detailed analysis
 throughout.
 
 **IMPORTANT**: Always verify branch analysis against current GitHub state to ensure accuracy.
