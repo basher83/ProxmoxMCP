@@ -19,7 +19,7 @@ cp Taskfile-integrated.yml Taskfile.yml
 | Task | Description | Usage |
 |------|-------------|-------|
 | `task branch` | Interactive branch creation | `task branch` |
-| `task branch:feature` | Create feature branch | `task branch:feature -- "description" [issue]` |
+| `task branch:feature` | Create feature branch | `task branch:feature -- "desc" [issue]` |
 | `task branch:fix` | Create fix branch | `task branch:fix -- "description" [issue]` |
 | `task branch:security` | Create security branch | `task branch:security -- "description"` |
 | `task branch:chore` | Create chore branch | `task branch:chore -- "description"` |

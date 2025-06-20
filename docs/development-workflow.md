@@ -362,4 +362,5 @@ Co-authored-by: Name <email@example.com>
 
 ---
 
-This workflow documentation is maintained alongside the codebase. When adding new workflows or modifying existing ones, please update this document accordingly.
+This workflow documentation is maintained alongside the codebase. When adding new
+workflows or modifying existing ones, please update this document accordingly.

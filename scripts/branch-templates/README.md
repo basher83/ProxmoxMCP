@@ -1,6 +1,8 @@
 # Branch Management System
 
-A comprehensive branch management system for the ProxmoxMCP project that provides both automated branch templates and validation tools to enforce consistent branch naming conventions.
+A comprehensive branch management system for the ProxmoxMCP project that provides
+both automated branch templates and validation tools to enforce consistent branch
+naming conventions.
 
 ## 🚀 Quick Start
 

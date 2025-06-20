@@ -74,7 +74,7 @@ hotfix/production-down-fix
 
 ### Standard Development Workflow
 
-1. **Start New Work**
+#### 1. Start New Work
 
 ```bash
 # Ensure main is current
@@ -98,7 +98,7 @@ Closes #123"
 git push -u origin feature/123-add-new-tool
 ```
 
-2. **Create Pull Request**
+#### 2. Create Pull Request
 
 - Use PR template checklist
 - Link related issues
@@ -106,13 +106,13 @@ git push -u origin feature/123-add-new-tool
 - Request relevant reviewers
 - Ensure all CI checks pass
 
-3. **Review Process**
+#### 3. Review Process
 
 - Address review feedback
 - Keep commits clean and logical
 - Squash commits if necessary before merge
 
-4. **Merge and Cleanup**
+#### 4. Merge and Cleanup
 
 ```bash
 # After PR approval and merge
