@@ -28,24 +28,28 @@ This workflow systematically analyzes chat history, current instruction effectiv
 For each recent significant interaction, evaluate:
 
 A. **Instruction Adherence**
+
 - Did Claude follow established ProxmoxMCP workflows correctly?
 - Were security guidelines (credential handling, API access) observed?
 - Was the memory system utilized appropriately for context?
 - Were quality checks (pytest, black, mypy) applied correctly?
 
 B. **Task Execution Quality**
+
 - Accuracy of technical implementations
 - Alignment with ProxmoxMCP architectural patterns
 - Consistency with established coding preferences
 - Integration with existing MCP protocol compliance
 
 C. **Communication Effectiveness**
+
 - Clarity of technical explanations
 - Appropriate level of detail in responses
 - Correct interpretation of user requirements
 - Professional communication standards maintained
 
 D. **Workflow Integration**
+
 - Proper use of GitHub integration tools (gh CLI)
 - Correct issue creation and resolution patterns
 - Appropriate PR review and merge processes
@@ -71,18 +75,21 @@ done
 **Instruction Effectiveness Evaluation:**
 
 A. **Completeness Assessment**
+
 - Are all ProxmoxMCP components adequately covered?
 - Do instructions address both development and deployment scenarios?
 - Is security guidance comprehensive and actionable?
 - Are workflow instructions clear and unambiguous?
 
 B. **Consistency Analysis**
+
 - Do instructions across different files contradict each other?
 - Are terminology and patterns used consistently?
 - Do examples align with current codebase structure?
 - Are version constraints and dependencies up to date?
 
 C. **Specificity Evaluation**
+
 - Are instructions specific enough to prevent misinterpretation?
 - Do examples provide sufficient context for implementation?
 - Are edge cases and error scenarios adequately addressed?
@@ -102,12 +109,14 @@ mcp__serena__read_memory "architecture-decisions"
 **Memory-Instruction Alignment Analysis:**
 
 A. **Pattern Consistency**
+
 - Do stored coding preferences align with documented instructions?
 - Are architectural patterns consistently represented?
 - Do implementation examples match current best practices?
 - Are security patterns properly documented and stored?
 
 B. **Knowledge Gap Identification**
+
 - What patterns are stored in memory but missing from instructions?
 - Which instruction areas lack supporting memory patterns?
 - Are there conflicting approaches between memory and documentation?
@@ -131,12 +140,14 @@ grep -r "\.py\|\.md\|\.json" CLAUDE.md | grep -v "^#"
 **Reference Accuracy Assessment:**
 
 A. **File Path Validation**
+
 - Do all referenced file paths exist in current codebase?
 - Are component descriptions accurate for current architecture?
 - Do code examples reflect current implementation patterns?
 - Are configuration references up to date?
 
 B. **Architectural Consistency**
+
 - Do instruction descriptions match actual component relationships?
 - Are tool categories accurately represented?
 - Is the MCP protocol integration correctly described?
@@ -151,18 +162,21 @@ B. **Architectural Consistency**
 Using analysis from Phase 1, identify instruction gaps in these categories:
 
 A. **Technical Implementation Gaps**
+
 - **MCP Protocol Specifics**: Areas where MCP tool implementation details are insufficient
 - **Proxmox API Integration**: Missing guidance on API authentication, error handling, or specific operations
 - **Security Implementation**: Incomplete security patterns or missing vulnerability considerations
 - **Performance Optimization**: Lack of performance guidelines for specific scenarios
 
 B. **Workflow Process Gaps**
+
 - **Development Workflow**: Missing steps in development process documentation
 - **Testing Procedures**: Insufficient testing guidance for specific scenarios
 - **Deployment Processes**: Incomplete deployment or configuration guidance
 - **Quality Assurance**: Missing quality check procedures or validation steps
 
 C. **Communication and Documentation Gaps**
+
 - **Technical Communication**: Unclear communication standards or examples
 - **Documentation Standards**: Missing documentation requirements or formats
 - **User Interaction**: Insufficient guidance on user requirement interpretation
@@ -173,6 +187,7 @@ C. **Communication and Documentation Gaps**
 **Cross-Reference Conflict Analysis:**
 
 A. **Instruction Conflicts**
+
 ```bash
 # Systematic conflict detection methodology:
 # Compare equivalent sections across instruction files
@@ -202,18 +217,21 @@ A. **Instruction Conflicts**
 **Instruction Performance Analysis:**
 
 A. **High-Impact Issues** (Priority: Critical)
+
 - Instructions that frequently lead to incorrect implementations
 - Security guidance that is insufficient or potentially dangerous
 - Workflow instructions that cause delays or rework
 - Communication guidance that leads to user confusion
 
 B. **Medium-Impact Issues** (Priority: High)
+
 - Instructions that are technically correct but inefficient
 - Guidance that is incomplete but not actively harmful
 - Workflow steps that are unclear but workable
 - Documentation that is accurate but hard to follow
 
 C. **Low-Impact Issues** (Priority: Medium)
+
 - Instructions that could be more comprehensive
 - Guidance that could benefit from additional examples
 - Workflow documentation that could be more streamlined
@@ -224,24 +242,28 @@ C. **Low-Impact Issues** (Priority: Medium)
 **Domain-Specific Analysis:**
 
 A. **MCP Protocol Integration Issues**
+
 - **Tool Registration Patterns**: Are MCP tool registration instructions clear and complete?
 - **Protocol Compliance**: Do instructions ensure MCP protocol adherence?
 - **Client Communication**: Is guidance on MCP client interaction adequate?
 - **Resource Management**: Are MCP resource handling patterns properly documented?
 
 B. **Proxmox API Integration Issues**
+
 - **Authentication Patterns**: Are Proxmox API authentication instructions comprehensive?
 - **Error Handling**: Is Proxmox API error handling guidance sufficient?
 - **API Versioning**: Do instructions address API version compatibility?
 - **Connection Management**: Are connection pooling and management patterns clear?
 
 C. **Security and Configuration Issues**
+
 - **Credential Management**: Are credential handling instructions secure and complete?
 - **Configuration Validation**: Is configuration management guidance comprehensive?
 - **SSL/TLS Handling**: Are secure connection instructions adequate?
 - **Input Validation**: Are input sanitization patterns properly documented?
 
 D. **Architecture and Design Issues**
+
 - **Component Relationships**: Are component interaction patterns clearly described?
 - **Design Principles**: Are ProxmoxMCP design principles well articulated?
 - **Extension Patterns**: Is guidance for extending the system adequate?
@@ -254,12 +276,14 @@ D. **Architecture and Design Issues**
 Create a priority matrix based on:
 
 **Impact Assessment (High/Medium/Low):**
+
 - Frequency of instruction usage
 - Potential for causing security issues
 - Effect on development velocity
 - User experience implications
 
 **Effort Assessment (High/Medium/Low):**
+
 - Complexity of instruction improvement required
 - Number of files that need updating
 - Research required for accurate instruction development
@@ -286,18 +310,21 @@ Create a priority matrix based on:
 For each identified issue, determine root causes:
 
 A. **Systemic Issues**
+
 - Instruction development process gaps
 - Insufficient validation or testing of instructions
 - Lack of regular instruction maintenance cycles
 - Inadequate cross-referencing between instruction files
 
 B. **Knowledge Issues**
+
 - Missing domain expertise in specific areas
 - Outdated technical knowledge in instructions
 - Insufficient understanding of user requirements
 - Gaps in ProxmoxMCP architectural understanding
 
 C. **Process Issues**
+
 - Inadequate instruction update workflows
 - Missing feedback loops from instruction usage
 - Insufficient integration between instruction files
@@ -306,11 +333,13 @@ C. **Process Issues**
 **Impact Chain Analysis:**
 
 For critical issues, trace the impact chain:
+
 ```
 Root Cause → Instruction Gap → Execution Error → User Impact → Project Risk
 ```
 
 Example:
+
 ```
 Incomplete SSL configuration guidance → 
 Missing certificate validation instructions → 
@@ -324,6 +353,7 @@ Project security risk
 **Phase Completion Checkpoint:**
 
 Before proceeding to Phase 3, ensure:
+
 - [ ] Complete current state analysis documented
 - [ ] All instruction gaps identified and categorized
 - [ ] Inconsistencies detected and classified
@@ -343,6 +373,7 @@ All findings from Phases 1-2 must be documented in structured format for Phase 3
 Generate a detailed reflection analysis report using the following format and structure:
 
 #### Report Metadata
+
 ```markdown
 # Claude Instruction Reflection Analysis Report
 
@@ -364,6 +395,7 @@ Generate a detailed reflection analysis report using the following format and st
 ```
 
 #### Detailed Findings Structure
+
 ```markdown
 ## Identified Issues and Opportunities
 
@@ -394,11 +426,13 @@ Generate a detailed reflection analysis report using the following format and st
 ### 6.2 Report Storage and Organization
 
 #### File Naming Convention
+
 ```
 reflect-analysis-YYYY-MM-DD-HHMMSS-[branch-name].md
 ```
 
 #### Directory Structure
+
 ```
 .claude/reports/reflect-analysis/
 ├── 2025-01/
@@ -416,7 +450,9 @@ reflect-analysis-YYYY-MM-DD-HHMMSS-[branch-name].md
 ```
 
 #### Report Metadata Tracking
+
 Each report must include:
+
 - **Traceability**: Link to specific chat sessions and interactions
 - **Version Control**: Git commit and branch information
 - **Performance Baseline**: Quantitative measurements before improvements
@@ -426,12 +462,14 @@ Each report must include:
 ### 6.3 Integration with Documentation System
 
 #### Cross-Reference Requirements
+
 - Link improvements to specific sections in CLAUDE.md and subsidiary instruction files
 - Reference related issues, PRs, and roadmap items
 - Connect to ProxmoxMCP component architecture and domain knowledge
 - Maintain bidirectional traceability between reports and implemented changes
 
 #### Documentation Update Coordination
+
 - Automatic notification when instruction files are modified
 - Validation that improvements align with existing architectural patterns
 - Integration with memory system for pattern persistence
@@ -442,12 +480,14 @@ Each report must include:
 ### 7.1 Performance Measurement and Validation
 
 #### Quantitative Metrics
+
 - **Task Completion Rate**: Before/after comparison of successful task completion
 - **Response Accuracy**: Measurement of correct instruction following
 - **Error Reduction**: Quantification of reduced misunderstandings or mistakes
 - **Efficiency Gains**: Time-to-completion improvements for common tasks
 
 #### Validation Methodology
+
 ```markdown
 ### Validation Test Suite
 
@@ -467,6 +507,7 @@ Each report must include:
 ```
 
 #### Continuous Monitoring
+
 - Track performance metrics over extended periods (30, 60, 90 days)
 - Monitor for regression or unintended side effects
 - Collect user feedback and satisfaction metrics
@@ -475,7 +516,9 @@ Each report must include:
 ### 7.2 Memory System Updates and Pattern Capture
 
 #### Knowledge Capture Process
+
 For each validated improvement:
+
 ```markdown
 ### Memory System Update Protocol
 
@@ -493,6 +536,7 @@ For each validated improvement:
 ```
 
 #### Pattern Library Development
+
 - Build comprehensive library of validated instruction improvement patterns
 - Create reusable templates for common instruction optimization scenarios
 - Develop decision trees for selecting appropriate instruction modifications
@@ -501,6 +545,7 @@ For each validated improvement:
 ### 7.3 Continuous Improvement Integration
 
 #### Feedback Loop Establishment
+
 ```markdown
 ### Continuous Improvement Cycle
 
@@ -524,6 +569,7 @@ For each validated improvement:
 ```
 
 #### Integration with Development Workflow
+
 - Automatic reflection triggers based on significant codebase changes
 - Integration with PR review process for instruction-impacting changes
 - Coordination with milestone planning for instruction improvement goals
@@ -534,6 +580,7 @@ For each validated improvement:
 ### 8.1 Integration with Existing Claude Code Workflows
 
 #### Workflow Trigger Points
+
 ```markdown
 ### Automated Reflection Triggers
 
@@ -557,6 +604,7 @@ For each validated improvement:
 ```
 
 #### Integration with Git Workflow
+
 ```bash
 # Pre-commit hook for instruction file changes
 #!/bin/bash
@@ -576,6 +624,7 @@ fi
 ### 8.2 Scheduled Reflection Analysis Procedures
 
 #### Automated Scheduling System
+
 ```markdown
 ### Reflection Analysis Schedule
 
@@ -599,6 +648,7 @@ fi
 ```
 
 #### Automation Infrastructure
+
 ```yaml
 # .github/workflows/claude-reflection-analysis.yml
 name: Claude Instruction Reflection Analysis
@@ -652,6 +702,7 @@ jobs:
 ### 8.3 Quality Gates and Success Metrics
 
 #### Performance Gates
+
 ```markdown
 ### Instruction Quality Gates
 
@@ -677,6 +728,7 @@ jobs:
 ```
 
 #### Success Metrics Dashboard
+
 ```markdown
 ### Key Performance Indicators (KPIs)
 
@@ -704,6 +756,7 @@ jobs:
 ### 9.1 Domain-Specific Instruction Optimization
 
 #### ProxmoxMCP Context Awareness
+
 ```markdown
 ### ProxmoxMCP-Specific Instruction Improvements
 
@@ -727,6 +780,7 @@ jobs:
 ```
 
 #### Domain Knowledge Integration
+
 ```markdown
 ### ProxmoxMCP Knowledge Areas
 
@@ -752,6 +806,7 @@ jobs:
 ### 9.2 MCP Protocol and Proxmox API Instruction Alignment
 
 #### Protocol-Specific Instructions
+
 ```markdown
 ### MCP Protocol Instruction Alignment
 
@@ -775,6 +830,7 @@ jobs:
 ```
 
 #### Proxmox API Integration Precision
+
 ```markdown
 ### Proxmox API Instruction Optimization
 
@@ -794,6 +850,7 @@ jobs:
 ### 9.3 Security and Configuration-Specific Improvements
 
 #### Security Instruction Hardening
+
 ```markdown
 ### Security-Focused Instruction Improvements
 
@@ -817,6 +874,7 @@ jobs:
 ```
 
 #### Configuration Management Precision
+
 ```markdown
 ### Configuration Instruction Optimization
 
@@ -844,24 +902,28 @@ jobs:
 ### Implementation Timeline
 
 #### Phase 1 (Immediate - 1-2 weeks)
+
 - Implement basic reflection analysis automation
 - Establish report generation framework
 - Create initial metric collection system
 - Set up scheduled analysis procedures
 
 #### Phase 2 (Short-term - 1 month)
+
 - Deploy comprehensive validation testing
 - Integrate with existing development workflows
 - Establish quality gates and success metrics
 - Begin ProxmoxMCP-specific optimization
 
 #### Phase 3 (Medium-term - 3 months)
+
 - Full automation integration with CI/CD
 - Advanced pattern recognition and reuse
 - Comprehensive performance monitoring
 - Domain-specific instruction library completion
 
 #### Phase 4 (Long-term - 6+ months)
+
 - Machine learning integration for pattern detection
 - Predictive analysis for instruction optimization needs
 - Cross-project pattern sharing and collaboration

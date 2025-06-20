@@ -11,6 +11,7 @@ ProxmoxMCP provides a sophisticated testing workflow that supports different tes
 ### Primary Testing Commands
 
 #### `task test`
+
 **Description**: Run all tests with enhanced validation and informative output.
 
 ```bash
@@ -18,17 +19,20 @@ task test
 ```
 
 **Features**:
+
 - Comprehensive test suite execution (71 tests)
 - Enhanced output with progress indicators
 - Improved error reporting with `--tb=short`
 - Clear completion summary
 
 **Use Cases**:
+
 - Pre-commit validation
 - Full codebase testing
 - CI/CD pipeline execution
 
 #### `task test:unit`
+
 **Description**: Run unit tests only with focused output.
 
 ```bash
@@ -36,11 +40,13 @@ task test:unit
 ```
 
 **Features**:
+
 - Explicit unit test execution
 - Focused on `tests/` directory
 - Short traceback format for faster debugging
 
 **Use Cases**:
+
 - Development workflow testing
 - Quick validation during coding
 - Focused debugging sessions
@@ -48,6 +54,7 @@ task test:unit
 ### Specialized Testing Commands
 
 #### `task test:coverage`
+
 **Description**: Run tests with coverage reporting (intelligent dependency handling).
 
 ```bash
@@ -55,6 +62,7 @@ task test:coverage
 ```
 
 **Features**:
+
 - Automatic pytest-cov detection
 - Graceful fallback when coverage tools unavailable
 - HTML and terminal coverage reports
@@ -62,16 +70,19 @@ task test:coverage
 - Helpful installation guidance
 
 **Dependencies**:
+
 ```bash
 uv add pytest-cov --group dev
 ```
 
 **Use Cases**:
+
 - Code coverage analysis
 - Quality assurance validation
 - Identifying untested code paths
 
 #### `task test:watch`
+
 **Description**: Run tests in watch mode for continuous development.
 
 ```bash
@@ -79,22 +90,26 @@ task test:watch
 ```
 
 **Features**:
+
 - Automatic pytest-watch detection
 - Graceful fallback to single test run
 - Installation guidance for watch mode
 - Continuous testing during development
 
 **Dependencies**:
+
 ```bash
 uv add pytest-watch --group dev
 ```
 
 **Use Cases**:
+
 - Test-driven development (TDD)
 - Continuous validation during coding
 - Rapid feedback loops
 
 #### `task test:security`
+
 **Description**: Run security-focused test subset.
 
 ```bash
@@ -102,17 +117,20 @@ task test:security
 ```
 
 **Features**:
+
 - Filters tests with security keywords (`encrypt`, `security`, `auth`)
 - Focuses on authentication and encryption functionality
 - Faster execution for security validation
 - 42 security-related tests
 
 **Use Cases**:
+
 - Security-focused development
 - Encryption feature validation
 - Authentication flow testing
 
 #### `task test:tools`
+
 **Description**: Run MCP tools tests.
 
 ```bash
@@ -120,17 +138,20 @@ task test:tools
 ```
 
 **Features**:
+
 - Tests MCP server functionality
 - Validates VM console operations
 - Focuses on tool implementations
 - Quick validation of MCP protocol compliance
 
 **Use Cases**:
+
 - MCP tool development
 - API integration validation
 - Tool functionality verification
 
 #### `task test:config`
+
 **Description**: Run configuration and encryption tests.
 
 ```bash
@@ -138,17 +159,20 @@ task test:config
 ```
 
 **Features**:
+
 - Tests configuration loading and validation
 - Validates encryption/decryption functionality
 - Focuses on config management
 - Covers 42 configuration-related tests
 
 **Use Cases**:
+
 - Configuration system development
 - Encryption feature development
 - Config validation testing
 
 #### `task test:integration`
+
 **Description**: Placeholder for integration tests (future implementation).
 
 ```bash
@@ -156,12 +180,14 @@ task test:integration
 ```
 
 **Features**:
+
 - Guidance for integration test setup
 - Proxmox connection requirements
 - Future implementation roadmap
 - Clear setup instructions
 
 **Use Cases**:
+
 - End-to-end testing (when implemented)
 - Real Proxmox API validation
 - Integration verification
@@ -171,6 +197,7 @@ task test:integration
 ### Development Workflow
 
 #### Rapid Development Cycle
+
 ```bash
 # 1. Start watch mode for continuous testing
 task test:watch
@@ -185,6 +212,7 @@ task test:config    # For configuration
 ```
 
 #### Pre-Commit Workflow
+
 ```bash
 # 1. Run comprehensive pre-commit checks
 task pre-commit
@@ -198,6 +226,7 @@ task pre-commit
 ```
 
 #### Coverage Analysis Workflow
+
 ```bash
 # 1. Install coverage dependencies
 uv add pytest-cov --group dev
@@ -213,6 +242,7 @@ start htmlcov/index.html # Windows
 ### CI/CD Integration
 
 #### Local CI Simulation
+
 ```bash
 # Simulate full CI pipeline locally
 task ci
@@ -224,6 +254,7 @@ task ci
 ```
 
 #### Component-Specific Testing
+
 ```bash
 # Test specific components during development
 task test:security   # Security features
@@ -234,6 +265,7 @@ task test:config     # Configuration system
 ## Test Configuration
 
 ### Pytest Configuration
+
 Located in `pyproject.toml`:
 
 ```toml
@@ -245,6 +277,7 @@ addopts = "-v"
 ```
 
 ### Test Discovery
+
 - **Test Directory**: `tests/`
 - **Test Files**: `test_*.py`
 - **Test Functions**: `test_*`
@@ -253,6 +286,7 @@ addopts = "-v"
 ### Current Test Coverage
 
 #### Covered Components (71 tests)
+
 - ✅ Configuration loading and validation
 - ✅ Encryption and security functionality
 - ✅ MCP server implementation
@@ -260,6 +294,7 @@ addopts = "-v"
 - ✅ Authentication flows
 
 #### Components Needing Coverage (Future)
+
 - ❌ AI diagnostic tools (`tools/ai_diagnostics.py`)
 - ❌ Formatting modules (`formatting/`)
 - ❌ Core Proxmox functionality (`core/proxmox.py`)
@@ -268,9 +303,11 @@ addopts = "-v"
 ## Intelligent Dependency Management
 
 ### Automatic Dependency Detection
+
 The testing system automatically detects optional dependencies and provides helpful fallbacks:
 
 #### pytest-cov Detection
+
 ```bash
 # Automatic detection and fallback
 if uv run python -c "import pytest_cov" 2>/dev/null; then
@@ -284,6 +321,7 @@ fi
 ```
 
 #### pytest-watch Detection
+
 ```bash
 # Automatic detection and fallback
 if uv run python -c "import pytest_watch" 2>/dev/null; then
@@ -297,6 +335,7 @@ fi
 ```
 
 ### Installation Commands
+
 When dependencies are missing, the system provides exact installation commands:
 
 ```bash
@@ -313,19 +352,25 @@ uv add pytest-benchmark --group dev
 ## Integration with Development Tools
 
 ### VS Code Integration
+
 The testing workflow integrates seamlessly with VS Code:
+
 - Test discovery works automatically
 - Debugging support for individual tests
 - Coverage highlighting with coverage extensions
 
 ### Git Hooks Integration
+
 Testing is integrated into git workflows:
+
 - Pre-commit hooks run quality checks
 - Push hooks can run full test suite
 - CI/CD integration validates all changes
 
 ### Docker Integration
+
 Testing works in Docker environments:
+
 ```bash
 # Build and test in Docker
 docker compose up --build
@@ -335,12 +380,14 @@ docker compose exec app task test
 ## Performance Considerations
 
 ### Test Execution Times
+
 - **Full test suite**: ~6-8 seconds (71 tests)
 - **Security subset**: ~2-3 seconds (42 tests)
 - **Tools subset**: ~1-2 seconds (focused tests)
 - **Config subset**: ~3-4 seconds (42 tests)
 
 ### Optimization Strategies
+
 - Use focused test subsets during development
 - Leverage watch mode for continuous testing
 - Run full suite only for pre-commit/CI
@@ -351,6 +398,7 @@ docker compose exec app task test
 ### Common Issues
 
 #### Tests Not Found
+
 ```bash
 # Ensure you're in the project root
 cd /path/to/ProxmoxMCP
@@ -358,6 +406,7 @@ task test
 ```
 
 #### Missing Dependencies
+
 ```bash
 # Install all development dependencies
 uv sync --extra dev
@@ -367,6 +416,7 @@ uv add pytest-cov pytest-watch --group dev
 ```
 
 #### Coverage Tool Issues
+
 ```bash
 # Manually install coverage tools
 uv add pytest-cov --group dev
@@ -376,6 +426,7 @@ uv run python -c "import pytest_cov; print('Coverage tools installed')"
 ```
 
 #### Async Test Issues
+
 ```bash
 # Ensure asyncio mode is configured in pyproject.toml
 [tool.pytest.ini_options]
@@ -385,14 +436,18 @@ asyncio_mode = "strict"
 ### Environment Issues
 
 #### PYTHONPATH Configuration
+
 The Taskfile automatically configures PYTHONPATH:
+
 ```yaml
 env:
   PYTHONPATH: "src:{{.PYTHONPATH}}"
 ```
 
 #### Virtual Environment
+
 Ensure you're using the correct environment:
+
 ```bash
 # Activate UV environment
 source .venv/bin/activate  # Linux/macOS
@@ -405,6 +460,7 @@ uv run task test
 ## Future Enhancements
 
 ### Planned Improvements
+
 - Integration test implementation
 - Performance benchmarking
 - Load testing capabilities
@@ -412,7 +468,9 @@ uv run task test
 - API contract testing
 
 ### Roadmap Alignment
+
 Testing improvements align with project roadmap:
+
 - **Phase 1**: Core component coverage expansion
 - **Phase 2**: Integration testing implementation
 - **Phase 3**: Performance and load testing
@@ -423,18 +481,21 @@ For detailed future improvements, see [GitHub Issue #75](https://github.com/bash
 ## Best Practices
 
 ### Development Testing
+
 1. Use `task test:watch` during active development
 2. Run focused subsets (`test:security`, `test:tools`) for quick feedback
 3. Use `task test:coverage` periodically to identify coverage gaps
 4. Run `task pre-commit` before committing changes
 
 ### CI/CD Testing
+
 1. Use `task ci` for comprehensive local validation
 2. Ensure all dependencies are properly locked in `uv.lock`
 3. Test in clean environments to catch dependency issues
 4. Monitor test execution times and optimize as needed
 
 ### Team Collaboration
+
 1. Share testing patterns and workflows with team members
 2. Document any new test categories or patterns
 3. Keep testing dependencies up to date

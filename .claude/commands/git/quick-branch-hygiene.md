@@ -229,12 +229,14 @@ Generate immediate actionable summary:
 5. **Backup option** - Consider creating backup branches for important-looking commits
 
 **When NOT to delete local branches:**
+
 - Branches with uncommitted work that might be valuable
 - Branches that were recently rebased (GitHub state may lag)
 - Branches that are work-in-progress but not yet pushed
 - Branches with cherry-picked commits that aren't in main yet
 
 **Best Practices:**
+
 - Run `git fetch --prune` first to sync remote tracking branches
 - Use `git branch -D` (force delete) only after verification
 - Consider `git branch --merged` and `git branch --no-merged` for additional context

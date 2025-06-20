@@ -5,6 +5,7 @@ This document outlines the security scanning process for ProxmoxMCP dependencies
 ## Current Security Status
 
 ✅ **All dependencies updated** as of commit b9fb0da:
+
 - setuptools 80.9.0 (≥78.1.1 required for CVE-2025-47273)
 - requests 2.32.4 (≥2.32.4 required for CVE-2024-47081)
 - h11 0.16.0 (≥0.16.0 required for CVE-2025-43859)
@@ -12,6 +13,7 @@ This document outlines the security scanning process for ProxmoxMCP dependencies
 ## Manual Scanning Commands
 
 ### Using uv with pip-audit
+
 ```bash
 # Install pip-audit if not available
 uv add --dev pip-audit
@@ -24,6 +26,7 @@ uv run pip-audit --format=json --output=security-report.json
 ```
 
 ### Using safety (alternative)
+
 ```bash
 # Install safety scanner
 uv add --dev safety
@@ -35,12 +38,15 @@ uv export --format=requirements-txt | uv run safety check --stdin
 ## Monitoring and Prevention
 
 ### Regular Security Reviews
+
 - Run dependency scans before each release
 - Monitor security advisories for core dependencies
 - Update vulnerable dependencies immediately for critical issues
 
 ### Automated Prevention (Future Enhancement)
+
 Consider implementing:
+
 - GitHub Dependabot for automated dependency updates
 - Pre-commit hooks for security scanning
 - CI/CD integration with security scanning tools

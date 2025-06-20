@@ -31,12 +31,14 @@
 For each recent significant interaction, evaluate:
 
 A. **Instruction Adherence**
+
 - Did Claude follow established ProxmoxMCP workflows correctly?
 - Were security guidelines (credential handling, API access) observed?
 - Was the memory system utilized appropriately for context?
 - Were quality checks (pytest, black, mypy) applied correctly?
 
 B. **Task Execution Quality**
+
 - Accuracy of technical implementations
 - Alignment with ProxmoxMCP architectural patterns
 - Consistency with established coding preferences
@@ -47,9 +49,11 @@ B. **Task Execution Quality**
 **Current Instruction Coverage Assessment:**
 
 **Strengths Identified:**
+
 - [List effective instruction areas]
 
 **Critical Gaps Identified:**
+
 - [List instruction gaps with impact assessment]
 
 ### 1.3 Cross-Reference Validation
@@ -57,6 +61,7 @@ B. **Task Execution Quality**
 **Instruction-Reality Alignment Issues:**
 
 **File Path Validation:**
+
 - [ ] All referenced file paths exist in current codebase
 - [ ] Component descriptions align with actual architecture  
 - [ ] Memory system integration instructions are current
@@ -69,6 +74,7 @@ B. **Task Execution Quality**
 #### High-Impact Technical Implementation Gaps
 
 **GAP-XXX: [Gap Title]**
+
 - **Severity**: [Critical/High/Medium/Low]
 - **Category**: [Gap category]
 - **Description**: [Detailed description]
@@ -87,14 +93,17 @@ B. **Task Execution Quality**
 ### 3.1 Critical Priority Improvements (Immediate)
 
 #### SOLUTION-XXX: [Solution Title]
+
 **Target Issue**: [GAP/CONFLICT IDs]
 
 **Current Problematic Instruction:**
+
 ```markdown
 [Current problematic instruction]
 ```
 
 **Proposed Instruction Improvement:**
+
 ```markdown
 [Proposed improvement]
 ```
@@ -102,14 +111,17 @@ B. **Task Execution Quality**
 ## Phase 4: Implementation Plan
 
 ### 4.1 Immediate Actions (Today)
+
 1. [Action item 1]
 2. [Action item 2]
 
 ### 4.2 Week 1 Actions
+
 1. [Action item 1]
 2. [Action item 2]
 
 ### 4.3 Month 1 Actions
+
 1. [Action item 1]
 2. [Action item 2]
 

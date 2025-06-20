@@ -5,6 +5,7 @@
 Successfully updated ProxmoxMCP instruction files to reflect transition from mem0 server to Serena MCP server memory functions.
 
 ### Files Updated
+
 - `/workspaces/ProxmoxMCP/docs/ai-instructions/memory-instructions.md` - Complete rewrite
 - `/workspaces/ProxmoxMCP/CLAUDE.md` - Removed "(not supported in Codex)" warning
 - `/workspaces/ProxmoxMCP/.claude/commands/reflect.md` - Updated memory function references
@@ -12,11 +13,13 @@ Successfully updated ProxmoxMCP instruction files to reflect transition from mem
 ### Old vs New Memory Functions
 
 **Old (mem0 server):**
+
 - `add_coding_preference` - Store coding patterns
 - `get_all_coding_preferences` - Retrieve all patterns  
 - `search_coding_preferences` - Search patterns
 
 **New (Serena MCP server):**
+
 - `mcp__serena__write_memory` - Store project information
 - `mcp__serena__read_memory` - Read memory content
 - `mcp__serena__list_memories` - List available memories

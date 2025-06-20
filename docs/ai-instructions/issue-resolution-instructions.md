@@ -7,6 +7,7 @@ high-quality issue resolution that aligns with project standards.
 ## Pre-Work Phase
 
 ### 1. Issue Analysis
+
 - **Read the complete issue description** carefully, including all comments and updates
 - Identify the **issue type** from labels (bug, enhancement, security, etc.)
 - Determine **affected components** (server, config, tools, formatting, docker, etc.)
@@ -15,6 +16,7 @@ high-quality issue resolution that aligns with project standards.
 - Assess the **effort level** and complexity
 
 ### 2. Codebase Exploration
+
 - Use `Glob` and `Grep` tools to understand relevant code structure
 - Read existing implementations of similar functionality
 - Identify integration points and dependencies
@@ -24,6 +26,7 @@ high-quality issue resolution that aligns with project standards.
 ## Implementation Phase
 
 ### 3. Planning and Architecture
+
 - Create a **TodoWrite** task list breaking down the implementation
 - Follow **existing architectural patterns** from the codebase
 - Ensure **consistency** with ProxmoxMCP design principles:
@@ -60,6 +63,7 @@ high-quality issue resolution that aligns with project standards.
 - **No hardcoded values** - use configuration or constants
 
 ### 5. Testing Requirements
+
 - **Add comprehensive tests** for new functionality
 - **Use existing test patterns** from the test suite
 - **Mock Proxmox API calls** in tests
@@ -67,6 +71,7 @@ high-quality issue resolution that aligns with project standards.
 - **Ensure backward compatibility** when modifying existing code
 
 ### 6. Documentation Updates
+
 - **Update relevant documentation** in `docs/` directory
 - **Add tool descriptions** to `tools/definitions.py` for new MCP tools
 - **Update README.md** if adding new features or changing installation
@@ -75,6 +80,7 @@ high-quality issue resolution that aligns with project standards.
 ## Quality Assurance Phase
 
 ### 7. Pre-Commit Validation
+
 Run all quality checks before committing:
 
 ```bash
@@ -90,6 +96,7 @@ docker compose build
 ```
 
 ### 8. Security Validation
+
 - **Review for secret exposure** in code and logs
 - **Test authentication flows** if authentication is involved
 - **Validate input sanitization** for command execution
@@ -97,6 +104,7 @@ docker compose build
 - **Review file permissions** for any created files
 
 ### 9. Integration Testing
+
 - **Test MCP tool functionality** individually
 - **Verify Proxmox API integration** if applicable
 - **Test error handling paths** and fallback mechanisms
@@ -106,13 +114,12 @@ docker compose build
 ## Commit and Documentation Phase
 
 ### 10. Commit Guidelines
+
 - **Follow commit message template** from `.gitmessage`
 - **Use appropriate commit type**: feat, fix, security, config, docker, refactor, test, docs, ci, perf
 - **Include detailed commit body** explaining what and why (not how)
 - **Reference the issue number** with "Fixes #issue-number"
 - **Mention affected components** and breaking changes
-
-
 
 ## Component-Specific Guidelines
 
@@ -220,11 +227,13 @@ An issue is successfully resolved when:
 ## Post-Implementation
 
 ### 11. Knowledge Capture
+
 - **Document lessons learned** for future similar issues
 - **Update architectural patterns** if new patterns emerge
 - **Consider roadmap implications** for future development
 
 ### 12. Monitoring and Validation
+
 - **Monitor for related issues** after implementation
 - **Validate real-world usage** when possible
 - **Be available for follow-up questions** and clarifications

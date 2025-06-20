@@ -1,6 +1,7 @@
 # ProxmoxMCP Development Commands
 
 ## Environment Setup
+
 ```bash
 # Create and activate virtual environment
 uv venv
@@ -17,6 +18,7 @@ task setup:update
 ```
 
 ## Code Quality Commands
+
 ```bash
 # Format code
 black .
@@ -44,6 +46,7 @@ task check
 ```
 
 ## Testing Commands
+
 ```bash
 # Run all tests
 pytest
@@ -67,6 +70,7 @@ task test:watch
 ```
 
 ## Development Server
+
 ```bash
 # Set config and run server
 export PROXMOX_MCP_CONFIG="proxmox-config/config.json"
@@ -77,6 +81,7 @@ task dev
 ```
 
 ## Docker Commands
+
 ```bash
 # Build Docker image
 docker compose build
@@ -91,6 +96,7 @@ task docker:run
 ```
 
 ## YAML Linting
+
 ```bash
 # Lint all YAML files
 task yaml:lint
@@ -106,6 +112,7 @@ task yaml:check
 ```
 
 ## Combined Workflows
+
 ```bash
 # Pre-commit workflow
 task pre-commit
@@ -121,6 +128,7 @@ task fix
 ```
 
 ## Dependency Management
+
 ```bash
 # Update dependencies
 task deps:update
@@ -133,6 +141,7 @@ task deps:lock
 ```
 
 ## Cleanup
+
 ```bash
 # Clean generated files
 task clean
@@ -142,6 +151,7 @@ task clean:all
 ```
 
 ## Utility Commands
+
 ```bash
 # Show project info
 task info
