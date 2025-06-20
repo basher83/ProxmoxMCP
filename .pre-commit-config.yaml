@@ -130,7 +130,8 @@ repos:
       # Custom hook to check for subprocess shell=True
       - id: check-subprocess-shell
         name: Check for dangerous subprocess calls
-        entry: bash -c 'if grep -r "shell=True" src/ --include="*.py"; then echo "❌ Found shell=True in source code!"; exit 1; fi'
+        entry: bash -c 'if grep -r "shell=True" src/ --include="*.py"; then 
+          echo "❌ Found shell=True in source code!"; exit 1; fi'
         language: system
         types: [python]
         pass_filenames: false
@@ -138,7 +139,9 @@ repos:
       # Custom hook to validate test credentials
       - id: check-test-credentials
         name: Check test files for hardcoded credentials
-        entry: bash -c 'if grep -r "password.*=.*["\x27][^"\x27]*["\x27]" tests/ --include="*.py" | grep -v "TEST_ONLY\|test-\|mock"; then echo "⚠️ Found potential hardcoded credentials in tests!"; exit 1; fi'
+        entry: bash -c 'if grep -r "password.*=.*[\"'"'"'][^\"'"'"']*[\"'"'"']" tests/ 
+          --include="*.py" | grep -v "TEST_ONLY\|test-\|mock"; then 
+          echo "⚠️ Found potential hardcoded credentials in tests!"; exit 1; fi'
         language: system
         types: [python]
         pass_filenames: false
@@ -148,7 +151,10 @@ repos:
       - id: complexity-check
         name: Check code complexity
         entry: python3
-        args: ["-c", "import subprocess, sys; exec(open('scripts/check_complexity.py').read()) if __import__('pathlib').Path('scripts/check_complexity.py').exists() else print('Complexity checking requires radon: pip install radon')"]
+        args: ["-c", "import subprocess, sys; 
+          exec(open('scripts/check_complexity.py').read()) if 
+          __import__('pathlib').Path('scripts/check_complexity.py').exists() else 
+          print('Complexity checking requires radon: pip install radon')"]
         language: system
         types: [python]
         pass_filenames: false
