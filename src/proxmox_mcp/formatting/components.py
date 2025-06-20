@@ -12,9 +12,7 @@ class ProxmoxComponents:
     """Reusable UI components for formatted output."""
 
     @staticmethod
-    def create_table(
-        headers: List[str], rows: List[List[str]], title: Optional[str] = None
-    ) -> str:
+    def create_table(headers: List[str], rows: List[List[str]], title: Optional[str] = None) -> str:
         """Create an ASCII table with optional title.
 
         Args:
@@ -45,9 +43,7 @@ class ProxmoxComponents:
         # Add title if provided
         if title:
             # Center the title
-            title_str = ProxmoxColors.colorize(
-                title, ProxmoxColors.CYAN, ProxmoxColors.BOLD
-            )
+            title_str = ProxmoxColors.colorize(title, ProxmoxColors.CYAN, ProxmoxColors.BOLD)
             padding = (total_width - len(title) - 2) // 2  # -2 for the border chars
             title_separator = "+" + "-" * (total_width - 2) + "+"
             result.extend(
@@ -175,9 +171,7 @@ class ProxmoxComponents:
             formatted_items = []
             for i, (key, val) in enumerate(row):
                 key_str = ProxmoxColors.colorize(f"{key}:", ProxmoxColors.CYAN)
-                formatted_items.append(
-                    f"{key_str:<{key_widths[i] + 10}} {val:<{val_widths[i]}}"
-                )
+                formatted_items.append(f"{key_str:<{key_widths[i] + 10}} {val:<{val_widths[i]}}")
             result.append("  ".join(formatted_items))
 
         return "\n".join(result)
