@@ -30,11 +30,11 @@ read_only: false
 #  * `delete_memory`: Deletes a memory from Serena's project-specific memory store.
 #  * `execute_shell_command`: Executes a shell command.
 #  * `find_referencing_code_snippets`: Finds code snippets in which the symbol at the given location is referenced.
-#  * `find_referencing_symbols`: Finds symbols that reference the symbol at the given location 
+#  * `find_referencing_symbols`: Finds symbols that reference the symbol at the given location
 #    (optionally filtered by type).
-#  * `find_symbol`: Performs a global (or local) search for symbols with/containing a given 
+#  * `find_symbol`: Performs a global (or local) search for symbols with/containing a given
 #    name/substring (optionally filtered by type).
-#  * `get_current_config`: Prints the current configuration of the agent, including the active 
+#  * `get_current_config`: Prints the current configuration of the agent, including the active
 #    and available projects, tools, contexts, and modes.
 #  * `get_symbols_overview`: Gets an overview of the top-level symbols defined in a given file or directory.
 #  * `initial_instructions`: Gets the initial instructions for the current project.
@@ -45,9 +45,9 @@ read_only: false
 #  * `insert_before_symbol`: Inserts content before the beginning of the definition of a given symbol.
 #  * `list_dir`: Lists files and directories in the given directory (optionally with recursion).
 #  * `list_memories`: Lists memories in Serena's project-specific memory store.
-#  * `onboarding`: Performs onboarding (identifying the project structure and essential tasks, 
+#  * `onboarding`: Performs onboarding (identifying the project structure and essential tasks,
 #    e.g. for testing or building).
-#  * `prepare_for_new_conversation`: Provides instructions for preparing for a new conversation 
+#  * `prepare_for_new_conversation`: Provides instructions for preparing for a new conversation
 #    (in order to continue with the necessary context).
 #  * `read_file`: Reads a file within the project directory.
 #  * `read_memory`: Reads the memory with the given name from Serena's project-specific memory store.
@@ -59,7 +59,7 @@ read_only: false
 #  * `summarize_changes`: Provides instructions for summarizing the changes made to the codebase.
 #  * `switch_modes`: Activates modes by providing a list of their names
 #  * `think_about_collected_information`: Thinking tool for pondering the completeness of collected information.
-#  * `think_about_task_adherence`: Thinking tool for determining whether the agent is still on 
+#  * `think_about_task_adherence`: Thinking tool for determining whether the agent is still on
 #    track with the current task.
 #  * `think_about_whether_you_are_done`: Thinking tool for determining whether the task is truly completed.
 #  * `write_memory`: Writes a named memory (for future reference) to Serena's project-specific memory store.
