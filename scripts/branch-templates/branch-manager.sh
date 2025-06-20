@@ -103,7 +103,9 @@ interactive_create() {
 
     # Select branch type
     echo "Select branch type:"
-    local types=("$BRANCH_PREFIX_FEATURE" "$BRANCH_PREFIX_FIX" "$BRANCH_PREFIX_SECURITY" "$BRANCH_PREFIX_DOCKER" "$BRANCH_PREFIX_CONFIG" "$BRANCH_PREFIX_DOCS" "$BRANCH_PREFIX_CI" "$BRANCH_PREFIX_PERF")
+    local types=("$BRANCH_PREFIX_FEATURE" "$BRANCH_PREFIX_FIX" "$BRANCH_PREFIX_SECURITY" \
+        "$BRANCH_PREFIX_DOCKER" "$BRANCH_PREFIX_CONFIG" "$BRANCH_PREFIX_DOCS" \
+        "$BRANCH_PREFIX_CI" "$BRANCH_PREFIX_PERF")
 
     for i in "${!types[@]}"; do
         echo "  $((i + 1)). ${types[i]}"
@@ -135,7 +137,8 @@ interactive_create() {
     local component_choice
     read -rp "Enter choice (1-${#VALID_COMPONENTS[@]}): " component_choice
 
-    if [[ ! "$component_choice" =~ ^[0-9]+$ ]] || ((component_choice < 1 || component_choice > ${#VALID_COMPONENTS[@]})); then
+    if [[ ! "$component_choice" =~ ^[0-9]+$ ]] || \
+        ((component_choice < 1 || component_choice > ${#VALID_COMPONENTS[@]})); then
         print_error "Invalid choice"
         return 1
     fi
@@ -245,7 +248,8 @@ cleanup_merged() {
 
     # Find merged branches
     local merged_branches
-    merged_branches=$(git branch --merged "$default_branch" | grep -v "^\*" | grep -v "^[[:space:]]*$default_branch$" | xargs)
+    merged_branches=$(git branch --merged "$default_branch" | grep -v "^\*" | \
+        grep -v "^[[:space:]]*$default_branch$" | xargs)
 
     if [[ -z "$merged_branches" ]]; then
         print_success "No merged branches to clean up"

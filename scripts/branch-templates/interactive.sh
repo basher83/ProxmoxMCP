@@ -123,15 +123,18 @@ show_summary() {
     case $BRANCH_TYPE in
         feature|fix)
             if [[ -n "$ISSUE_NUMBER" ]]; then
-                CLEAN_DESC=$(echo "$DESCRIPTION" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+                CLEAN_DESC=$(echo "$DESCRIPTION" | tr '[:upper:]' '[:lower:]' | \
+                sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
                 BRANCH_NAME="${BRANCH_TYPE}/${ISSUE_NUMBER}-${CLEAN_DESC}"
             else
-                CLEAN_DESC=$(echo "$DESCRIPTION" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+                CLEAN_DESC=$(echo "$DESCRIPTION" | tr '[:upper:]' '[:lower:]' | \
+                sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
                 BRANCH_NAME="${BRANCH_TYPE}/${CLEAN_DESC}"
             fi
             ;;
         *)
-            CLEAN_DESC=$(echo "$DESCRIPTION" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+            CLEAN_DESC=$(echo "$DESCRIPTION" | tr '[:upper:]' '[:lower:]' | \
+                sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
             BRANCH_NAME="${BRANCH_TYPE}/${CLEAN_DESC}"
             ;;
     esac

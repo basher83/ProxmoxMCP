@@ -61,4 +61,5 @@ Consider implementing:
 
 ## Contact and Escalation
 
-For critical security vulnerabilities, follow responsible disclosure practices and escalate to project maintainers immediately.
+For critical security vulnerabilities, follow responsible disclosure practices and escalate to
+project maintainers immediately.

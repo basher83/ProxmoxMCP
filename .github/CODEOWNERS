@@ -1,5 +1,6 @@
 # This file defines code ownership for automated review assignments
-# More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/
+# customizing-your-repository/about-code-owners
 
 # Global ownership - all files default to these reviewers
 * @basher83

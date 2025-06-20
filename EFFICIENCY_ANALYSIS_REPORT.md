@@ -2,7 +2,9 @@
 
 ## Executive Summary
 
-This report analyzes the ProxmoxMCP codebase for efficiency improvements and identifies several significant performance bottlenecks. The primary issues center around N+1 query problems in API calls, missing caching mechanisms, and inefficient error handling patterns.
+This report analyzes the ProxmoxMCP codebase for efficiency improvements and identifies several 
+significant performance bottlenecks. The primary issues center around N+1 query problems in API calls, 
+missing caching mechanisms, and inefficient error handling patterns.
 
 ## Major Efficiency Issues Identified
 
@@ -162,6 +164,10 @@ for store in result:
 
 ## Conclusion
 
-The ProxmoxMCP codebase has several efficiency opportunities, with the VM tools N+1 query problem being the most impactful. The proposed optimizations will significantly improve performance for larger Proxmox clusters while maintaining backward compatibility and improving error resilience.
+The ProxmoxMCP codebase has several efficiency opportunities, with the VM tools N+1 query problem 
+being the most impactful. The proposed optimizations will significantly improve performance for larger 
+Proxmox clusters while maintaining backward compatibility and improving error resilience.
 
-The fixes are low-risk as they maintain the same interfaces and response formats while optimizing the underlying implementation. The modular nature of the codebase makes these optimizations straightforward to implement and test.
+The fixes are low-risk as they maintain the same interfaces and response formats while optimizing 
+the underlying implementation. The modular nature of the codebase makes these optimizations 
+straightforward to implement and test.

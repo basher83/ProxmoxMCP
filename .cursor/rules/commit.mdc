@@ -3,7 +3,8 @@ description: For all commits to github
 globs:
 alwaysApply: false
 ---
-For all commits to github follow the ProxmoxMCP commit message format defined in the @.gitmessage file when generating commit messages.
+For all commits to github follow the ProxmoxMCP commit message format defined in the 
+@.gitmessage file when generating commit messages.
 
 Follow these steps exactly when making a commit:
 

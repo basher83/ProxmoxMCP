@@ -350,4 +350,5 @@ task branch:list                   # All branches overview
 task info                          # Project + branch info
 ```
 
-This integration makes branch management a natural part of your existing Task workflow while maintaining all the power and flexibility of your current setup!
+This integration makes branch management a natural part of your existing Task workflow while 
+maintaining all the power and flexibility of your current setup!

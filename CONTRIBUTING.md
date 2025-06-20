@@ -1,6 +1,7 @@
 # 💁 Contributing to ProxmoxMCP
 
-Thank you for your interest in contributing to ProxmoxMCP! This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to ProxmoxMCP! This document provides 
+guidelines and instructions for contributing to the project.
 
 📚 **[Complete Documentation](https://the-mothership.gitbook.io/proxmox-mcp/)** - For detailed guides and API reference
 
@@ -19,7 +20,8 @@ Thank you for your interest in contributing to ProxmoxMCP! This document provide
 
 ## Code of Conduct
 
-By participating in this project, you agree to abide by our Code of Conduct. Please be respectful and considerate of others when contributing to the project.
+By participating in this project, you agree to abide by our Code of Conduct. Please be 
+respectful and considerate of others when contributing to the project.
 
 ## Getting Started
 
@@ -94,7 +96,8 @@ By participating in this project, you agree to abide by our Code of Conduct. Ple
 
 ## Contribution Workflow
 
-1. Check the [issues](https://github.com/yourusername/ProxmoxMCP/issues) for tasks to work on or create a new issue for your proposed change
+1. Check the [issues](https://github.com/yourusername/ProxmoxMCP/issues) for tasks to 
+   work on or create a new issue for your proposed change
 2. Create a new branch from `main`:
 
    ```bash
@@ -195,7 +198,9 @@ pytest --cov=src
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability, please do NOT open an issue. Instead, email [security@example.com](mailto:security@example.com) with details. We take security issues seriously and will address them promptly.
+If you discover a security vulnerability, please do NOT open an issue. Instead, email 
+[security@example.com](mailto:security@example.com) with details. We take security issues 
+seriously and will address them promptly.
 
 ## Community
 

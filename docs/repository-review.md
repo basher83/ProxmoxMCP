@@ -74,7 +74,8 @@ quality, Docker implementation, architecture, security, and documentation.
 
 - **Missing Limits**: No resource limits defined in `compose.yaml`, which could lead to resource exhaustion
 - **No Health Checks**: Missing health check configuration in Docker Compose file
-- **Volume Mounts**: Appropriate use of volume mounts for configuration, but could benefit from read-only mounts where possible
+- **Volume Mounts**: Appropriate use of volume mounts for configuration, but could
+  benefit from read-only mounts where possible
 
 ### Configuration
 

@@ -1,6 +1,7 @@
 # Memory Management Instructions
 
-The Serena MCP server provides memory management tools for storing and retrieving project-specific knowledge and coding patterns.
+The Serena MCP server provides memory management tools for storing and retrieving 
+project-specific knowledge and coding patterns.
 
 ## Available Memory Tools
 

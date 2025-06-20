@@ -76,7 +76,10 @@ validate_prefix() {
 
     if ! is_valid_branch_prefix "$branch_name"; then
         print_error "Invalid branch prefix. Valid prefixes are:"
-        local valid_prefixes=("$BRANCH_PREFIX_FEATURE" "$BRANCH_PREFIX_FIX" "$BRANCH_PREFIX_SECURITY" "$BRANCH_PREFIX_DOCKER" "$BRANCH_PREFIX_CONFIG" "$BRANCH_PREFIX_DOCS" "$BRANCH_PREFIX_CI" "$BRANCH_PREFIX_PERF")
+        local valid_prefixes=("$BRANCH_PREFIX_FEATURE" "$BRANCH_PREFIX_FIX" \
+            "$BRANCH_PREFIX_SECURITY" "$BRANCH_PREFIX_DOCKER" \
+            "$BRANCH_PREFIX_CONFIG" "$BRANCH_PREFIX_DOCS" \
+            "$BRANCH_PREFIX_CI" "$BRANCH_PREFIX_PERF")
         for prefix in "${valid_prefixes[@]}"; do
             echo "  - ${prefix}/"
         done
@@ -96,7 +99,10 @@ validate_component() {
 
     # Extract the part after the prefix
     local prefix_pattern=""
-    local valid_prefixes=("$BRANCH_PREFIX_FEATURE" "$BRANCH_PREFIX_FIX" "$BRANCH_PREFIX_SECURITY" "$BRANCH_PREFIX_DOCKER" "$BRANCH_PREFIX_CONFIG" "$BRANCH_PREFIX_DOCS" "$BRANCH_PREFIX_CI" "$BRANCH_PREFIX_PERF")
+    local valid_prefixes=("$BRANCH_PREFIX_FEATURE" "$BRANCH_PREFIX_FIX" \
+        "$BRANCH_PREFIX_SECURITY" "$BRANCH_PREFIX_DOCKER" \
+        "$BRANCH_PREFIX_CONFIG" "$BRANCH_PREFIX_DOCS" \
+        "$BRANCH_PREFIX_CI" "$BRANCH_PREFIX_PERF")
 
     for prefix in "${valid_prefixes[@]}"; do
         if [[ "$branch_name" == "${prefix}/"* ]]; then

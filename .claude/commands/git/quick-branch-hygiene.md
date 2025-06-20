@@ -2,9 +2,11 @@
 
 Quick branch hygiene check and immediate improvements: $ARGUMENTS
 
-Execute rapid branch analysis focusing on immediate wins and obvious improvements. Use this for daily/weekly branch maintenance.
+Execute rapid branch analysis focusing on immediate wins and obvious improvements. 
+Use this for daily/weekly branch maintenance.
 
-**IMPORTANT**: Always verify branch state against GitHub API to catch stale local branches that no longer exist remotely.
+**IMPORTANT**: Always verify branch state against GitHub API to catch stale local 
+branches that no longer exist remotely.
 
 ## Rapid Analysis Mode
 
@@ -12,7 +14,8 @@ Execute rapid branch analysis focusing on immediate wins and obvious improvement
 
 ```bash
 # Get all local branches with recent activity
-git for-each-ref --format='%(refname:short) %(committerdate:relative) %(authorname)' refs/heads/ --sort=-committerdate | head -10
+git for-each-ref --format='%(refname:short) %(committerdate:relative) %(authorname)' \
+  refs/heads/ --sort=-committerdate | head -10
 
 # Get all remote branches for comparison
 git branch -r
@@ -26,7 +29,8 @@ gh api repos/OWNER/REPO/branches | jq '.[].name'
 ```bash
 # Identify local branches that don't exist on GitHub
 local_branches=$(git branch --format='%(refname:short)' | grep -v '^main$')
-github_branches=$(gh api repos/$(gh repo view --json owner,name --jq '.owner.login + "/" + .name')/branches | jq -r '.[].name')
+github_branches=$(gh api repos/$(gh repo view --json owner,name \
+  --jq '.owner.login + "/" + .name')/branches | jq -r '.[].name')
 
 echo "=== STALE BRANCH DETECTION ==="
 for branch in $local_branches; do
@@ -116,7 +120,8 @@ git checkout main && git pull origin main
 
 # Verify target branch exists on GitHub before proceeding
 target_branch="feature/example-branch"
-if gh api repos/$(gh repo view --json owner,name --jq '.owner.login + "/" + .name')/branches/$target_branch >/dev/null 2>&1; then
+if gh api repos/$(gh repo view --json owner,name \
+  --jq '.owner.login + "/" + .name')/branches/$target_branch >/dev/null 2>&1; then
   echo "✅ Branch verified on GitHub: $target_branch"
   
   # Create quality improvement branch
@@ -242,4 +247,7 @@ Generate immediate actionable summary:
 - Consider `git branch --merged` and `git branch --no-merged` for additional context
 - Keep logs of deleted branches for recovery if needed
 
-**Integration Note:** Use this command weekly before your automated GitHub issue processing to maintain clean branch state for your automation workflows. The stale branch cleanup should be the first step in any branch hygiene workflow to ensure accurate analysis of remaining branches.
+**Integration Note:** Use this command weekly before your automated GitHub issue 
+processing to maintain clean branch state for your automation workflows. The stale branch 
+cleanup should be the first step in any branch hygiene workflow to ensure accurate 
+analysis of remaining branches.

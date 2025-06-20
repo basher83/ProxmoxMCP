@@ -16,7 +16,8 @@ find . -name "*.yml" -o -name "*.yaml" | \
   grep -v .git | \
   grep -v venv | \
   grep -v pnmp-lock | \
-  xargs -I{} sh -c 'echo "Fixing {}" && sed -i "s/[[:space:]]*$//" "{}" && if [ -n "$(tail -c1 "{}" 2>/dev/null)" ]; then echo >> "{}"; fi'
+  xargs -I{} sh -c 'echo "Fixing {}" && sed -i "s/[[:space:]]*$//" "{}" && \
+    if [ -n "$(tail -c1 "{}" 2>/dev/null)" ]; then echo >> "{}"; fi'
 
 echo ""
 echo -e "${GREEN}[SUCCESS]${NC} YAML auto-fix completed!"

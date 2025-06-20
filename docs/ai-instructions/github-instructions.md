@@ -3,7 +3,8 @@
 This document provides guidelines for Claude Code when working with Git operations and
 GitHub integration for the ProxmoxMCP repository.
 
-**CRITICAL**: Always treat GitHub API as the authoritative source for repository state. Local git state may be stale and lead to incorrect analysis or decisions.
+**CRITICAL**: Always treat GitHub API as the authoritative source for repository state. 
+Local git state may be stale and lead to incorrect analysis or decisions.
 
 ## Repository State Management
 
@@ -22,7 +23,8 @@ gh branch --list --all --verbose
 # Cross-reference local vs remote branch state
 git status
 git branch -vv  # Show tracking branch relationship
-gh api repos/basher83/ProxmoxMCP/branches --jq '.[] | {name, commit: .commit.sha[0:7], protected}'
+gh api repos/basher83/ProxmoxMCP/branches --jq \
+  '.[] | {name, commit: .commit.sha[0:7], protected}'
 ```
 
 ### Stale Branch Cleanup (Prerequisite for Analysis)
@@ -37,12 +39,14 @@ git branch --merged main | grep -v main
 git remote prune origin --dry-run
 
 # 3. List branches with no remote tracking
-git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | grep '\[gone\]'
+git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | \
+  grep '\[gone\]'
 
 # 4. Clean up stale branches (after verification)
 git branch --merged main | grep -v main | xargs -r git branch -d
 git remote prune origin
-git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | grep '\[gone\]' | awk '{print $1}' | xargs -r git branch -D
+git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | \
+  grep '\[gone\]' | awk '{print $1}' | xargs -r git branch -D
 ```
 
 ### State Cross-Reference Validation
@@ -55,13 +59,16 @@ git log --oneline -10
 git status --porcelain
 
 # GitHub API state (authoritative)
-gh api repos/basher83/ProxmoxMCP/commits/main --jq '.sha[0:7] + " " + .commit.message'
-gh api repos/basher83/ProxmoxMCP/contents --jq '.[] | select(.type=="file") | .name'
+gh api repos/basher83/ProxmoxMCP/commits/main --jq \
+  '.sha[0:7] + " " + .commit.message'
+gh api repos/basher83/ProxmoxMCP/contents --jq \
+  '.[] | select(.type=="file") | .name'
 
 # Branch comparison
 git log --oneline main..origin/main  # Commits behind
 git log --oneline origin/main..main  # Commits ahead
-gh api repos/basher83/ProxmoxMCP/compare/main...HEAD --jq '{ahead_by, behind_by, status}'
+gh api repos/basher83/ProxmoxMCP/compare/main...HEAD --jq \
+  '{ahead_by, behind_by, status}'
 ```
 
 ## Git Configuration
