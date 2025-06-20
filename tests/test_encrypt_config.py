@@ -448,8 +448,8 @@ class TestTerminalClearing:
 
         # Verify ANSI escape sequence was printed (our secure implementation)
         printed_calls = [str(call) for call in mock_print.call_args_list]
-        # Check for the ANSI escape sequence (\\033[2J\\033[H)
-        ansi_calls = [call for call in printed_calls if "\\033[2J\\033[H" in call]
+        # Check for the ANSI escape sequence - look for hex representation (\x1b)
+        ansi_calls = [call for call in printed_calls if "\\x1b[2J\\x1b[H" in call]
         assert len(ansi_calls) > 0, "ANSI escape sequence should be printed"
 
         # Verify success message was printed
