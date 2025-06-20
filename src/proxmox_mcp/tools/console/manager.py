@@ -43,7 +43,9 @@ class VMConsoleManager:
         self.proxmox = proxmox_api
         self.logger = logging.getLogger("proxmox-mcp.vm-console")
 
-    async def execute_command(self, node: str, vmid: str, command: str) -> Dict[str, Any]:
+    async def execute_command(
+        self, node: str, vmid: str, command: str
+    ) -> Dict[str, Any]:
         """Execute a command in a VM's console via QEMU guest agent.
 
         Implements a two-phase command execution process:
@@ -90,11 +92,15 @@ class VMConsoleManager:
             # Verify VM exists and is running
             vm_status = self.proxmox.nodes(node).qemu(vmid).status.current.get()
             if vm_status["status"] != "running":
-                self.logger.error(f"Failed to execute command on VM {vmid}: VM is not running")
+                self.logger.error(
+                    f"Failed to execute command on VM {vmid}: VM is not running"
+                )
                 raise ValueError(f"VM {vmid} on node {node} is not running")
 
             # Get VM's console
-            self.logger.info(f"Executing command on VM {vmid} (node: {node}): {command}")
+            self.logger.info(
+                f"Executing command on VM {vmid} (node: {node}): {command}"
+            )
 
             # Get the API endpoint
             # Use the guest agent exec endpoint
@@ -163,7 +169,9 @@ class VMConsoleManager:
             self.logger.debug(f"Processed error: {error}")
             self.logger.debug(f"Processed exit code: {exit_code}")
 
-            self.logger.debug(f"Executed command '{command}' on VM {vmid} (node: {node})")
+            self.logger.debug(
+                f"Executed command '{command}' on VM {vmid} (node: {node})"
+            )
 
             return {
                 "success": True,

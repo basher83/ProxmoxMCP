@@ -9,16 +9,18 @@ import subprocess
 import sys
 
 
-def check_radon_installed():
+def check_radon_installed() -> bool:
     """Check if radon is installed"""
     try:
-        subprocess.run(["radon", "--version"], capture_output=True, text=True, check=True)
+        subprocess.run(
+            ["radon", "--version"], capture_output=True, text=True, check=True
+        )
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
 
 
-def _validate_prerequisites():
+def _validate_prerequisites() -> bool:
     """Validate prerequisites for complexity checking"""
     if not check_radon_installed():
         print("⚠️  Install radon for complexity checking: pip install radon")
@@ -32,7 +34,7 @@ def _validate_prerequisites():
     return True
 
 
-def _analyze_complexity_output(output):
+def _analyze_complexity_output(output: str) -> int:
     """Analyze complexity output and return result code"""
     if not output:
         print("✅ No complexity issues found")
@@ -44,11 +46,15 @@ def _analyze_complexity_output(output):
     # Count high complexity functions
     lines = output.split("\n")
     high_complexity = [
-        line for line in lines if any(grade in line for grade in ["C (", "D (", "E (", "F ("])
+        line
+        for line in lines
+        if any(grade in line for grade in ["C (", "D (", "E (", "F ("])
     ]
 
     if high_complexity:
-        print(f"\n⚠️  Found {len(high_complexity)} functions with high complexity (C or worse)")
+        print(
+            f"\n⚠️  Found {len(high_complexity)} functions with high complexity (C or worse)"
+        )
         print("Consider refactoring these functions to improve maintainability.")
         return 1
 
@@ -56,7 +62,7 @@ def _analyze_complexity_output(output):
     return 0
 
 
-def _run_radon_analysis():
+def _run_radon_analysis() -> tuple[str | None, str | None]:
     """Run radon complexity analysis"""
     try:
         result = subprocess.run(
@@ -70,7 +76,7 @@ def _run_radon_analysis():
         return None, f"❌ Error running complexity check: {e}"
 
 
-def run_complexity_check():
+def run_complexity_check() -> int:
     """Run complexity check on source code"""
     if not _validate_prerequisites():
         return 0
@@ -80,7 +86,7 @@ def run_complexity_check():
         print(error)
         return 1
 
-    return _analyze_complexity_output(output)
+    return _analyze_complexity_output(output or "")
 
 
 if __name__ == "__main__":
