@@ -40,11 +40,15 @@ class VMCommand(BaseModel):
     executing commands within a VM via QEMU guest agent.
     """
 
-    node: Annotated[str, Field(description="Host node name (e.g. 'pve1', 'proxmox-node2')")]
+    node: Annotated[
+        str, Field(description="Host node name (e.g. 'pve1', 'proxmox-node2')")
+    ]
     vmid: Annotated[str, Field(description="VM ID number (e.g. '100', '101')")]
     command: Annotated[
         str,
-        Field(description="Shell command to run (e.g. 'uname -a', 'systemctl status nginx')"),
+        Field(
+            description="Shell command to run (e.g. 'uname -a', 'systemctl status nginx')"
+        ),
     ]
 
 
@@ -87,7 +91,9 @@ class AuthConfig(BaseModel):
         # Note: At this point, encrypted tokens have already been decrypted
         # by the config loader, so we're validating the plain text value
         if v.startswith("enc:"):
-            raise ValueError("Token appears to be encrypted but was not decrypted properly")
+            raise ValueError(
+                "Token appears to be encrypted but was not decrypted properly"
+            )
         return v.strip()
 
 
@@ -100,8 +106,12 @@ class LoggingConfig(BaseModel):
     """
 
     level: str = "INFO"  # Optional: Log level (default: INFO)
-    format: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"  # Optional: Log format
-    file: Optional[str] = None  # Optional: Log file path (default: None for console logging)
+    format: str = (
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"  # Optional: Log format
+    )
+    file: Optional[str] = (
+        None  # Optional: Log file path (default: None for console logging)
+    )
 
 
 class Config(BaseModel):
