@@ -9,9 +9,9 @@
 
 ![ProxmoxMCP](https://github.com/user-attachments/assets/e32ab79f-be8a-420c-ab2d-475612150534)
 
-> **Note**: This is a maintained fork of the original 
-> [canvrno/ProxmoxMCP](https://github.com/canvrno/ProxmoxMCP) repository, adding Docker 
-> support and ongoing maintenance. The original repository appears to be inactive since 
+> **Note**: This is a maintained fork of the original
+> [canvrno/ProxmoxMCP](https://github.com/canvrno/ProxmoxMCP) repository, adding Docker
+> support and ongoing maintenance. The original repository appears to be inactive since
 > February 2025.
 
 #### What's Different in this Fork?
