@@ -3,7 +3,7 @@
 This document provides guidelines for Claude Code when working with Git operations and
 GitHub integration for the ProxmoxMCP repository.
 
-**CRITICAL**: Always treat GitHub API as the authoritative source for repository state. 
+**CRITICAL**: Always treat GitHub API as the authoritative source for repository state.
 Local git state may be stale and lead to incorrect analysis or decisions.
 
 ## Repository State Management

@@ -1,12 +1,12 @@
 # Testing Workflow Documentation
 
-This document describes the comprehensive testing capabilities available in ProxmoxMCP through the 
+This document describes the comprehensive testing capabilities available in ProxmoxMCP through the
 enhanced Taskfile.yml configuration.
 
 ## Overview
 
-ProxmoxMCP provides a sophisticated testing workflow that supports different testing scenarios, 
-intelligent dependency management, and developer-friendly output. The testing system is designed to 
+ProxmoxMCP provides a sophisticated testing workflow that supports different testing scenarios,
+intelligent dependency management, and developer-friendly output. The testing system is designed to
 accommodate both rapid development cycles and comprehensive validation.
 
 ## Testing Tasks
@@ -504,5 +504,5 @@ For detailed future improvements, see [GitHub Issue #75](https://github.com/bash
 3. Keep testing dependencies up to date
 4. Contribute to test coverage improvements
 
-This comprehensive testing workflow ensures high code quality, rapid development feedback, and 
+This comprehensive testing workflow ensures high code quality, rapid development feedback, and
 reliable validation of ProxmoxMCP functionality across all components.
