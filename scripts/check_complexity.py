@@ -12,7 +12,9 @@ import sys
 def check_radon_installed() -> bool:
     """Check if radon is installed"""
     try:
-        subprocess.run(["radon", "--version"], capture_output=True, text=True, check=True)
+        subprocess.run(
+            ["radon", "--version"], capture_output=True, text=True, check=True
+        )
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
@@ -44,11 +46,15 @@ def _analyze_complexity_output(output: str) -> int:
     # Count high complexity functions
     lines = output.split("\n")
     high_complexity = [
-        line for line in lines if any(grade in line for grade in ["C (", "D (", "E (", "F ("])
+        line
+        for line in lines
+        if any(grade in line for grade in ["C (", "D (", "E (", "F ("])
     ]
 
     if high_complexity:
-        print(f"\n⚠️  Found {len(high_complexity)} functions with high complexity (C or worse)")
+        print(
+            f"\n⚠️  Found {len(high_complexity)} functions with high complexity (C or worse)"
+        )
         print("Consider refactoring these functions to improve maintainability.")
         return 1
 
