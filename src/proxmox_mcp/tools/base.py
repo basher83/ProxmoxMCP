@@ -12,7 +12,7 @@ consistent behavior and error handling across the MCP server.
 """
 
 import logging
-from typing import Any, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 from mcp.types import TextContent as Content
 from proxmoxer import ProxmoxAPI
@@ -79,7 +79,7 @@ class ProxmoxTool:
             return self._format_node_status(data)
 
         # Use dictionary lookup for simple template mappings
-        template_mapping = {
+        template_mapping: Dict[str, Callable[[Any], str]] = {
             "nodes": ProxmoxTemplates.node_list,
             "vms": ProxmoxTemplates.vm_list,
             "storage": ProxmoxTemplates.storage_list,
