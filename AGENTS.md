@@ -63,7 +63,7 @@ export PROXMOX_MCP_CONFIG="proxmox-config/config.json"
 
 ### AI Workflow Instructions
 
-- **@docs/ai-instructions/memory-instructions.md** - Memory management workflow _(mem0 server unavailable in Codex; ignore this workflow)_
+- **@docs/ai-instructions/memory-instructions.md** - Memory management workflow
 - **@docs/ai-instructions/context-instructions.md** - Context research workflow
 - **@docs/ai-instructions/github-instructions.md** - Git and GitHub best practices
 - **@docs/ai-instructions/issue-creation-instructions.md** - Creating well-structured issues

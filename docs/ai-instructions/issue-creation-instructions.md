@@ -7,14 +7,7 @@ resolution.
 
 ## Pre-Creation Analysis
 
-### 1. Memory and Context Research
-
-- **ALWAYS start** by using `get_all_coding_preferences` to understand existing patterns
-- Use `search_coding_preferences` to find related implementations or similar issues
-- Review existing open issues to avoid duplicates: `gh issue list`
-- Check the roadmap (`docs/ROADMAP.md`) to understand project priorities
-
-### 2. Issue Classification
+### 1. Issue Classification
 
 Determine the appropriate issue type based on the problem or request:
 
@@ -25,7 +18,7 @@ Determine the appropriate issue type based on the problem or request:
 - **performance**: Performance-related issues or improvements
 - **question**: Further information is requested
 
-### 3. Scope and Impact Assessment
+### 2. Scope and Impact Assessment
 
 Identify which ProxmoxMCP components are affected:
 
@@ -40,7 +33,7 @@ Identify which ProxmoxMCP components are affected:
 
 ## Issue Structure and Content
 
-### 4. Title Format
+### 3. Title Format
 
 Use clear, descriptive titles following these patterns:
 
@@ -55,7 +48,7 @@ Use clear, descriptive titles following these patterns:
 - `[SECURITY] Implement rate limiting for API calls`
 - `[DOCUMENTATION] Update installation guide for Docker deployment`
 
-### 5. Issue Body Template
+### 4. Issue Body Template
 
 #### For Bug Reports
 
@@ -210,7 +203,7 @@ How to address the security concern.
 [Urgency level - critical security issues should be marked priority:critical]
 ```
 
-### 6. Label Assignment Guidelines
+### 5. Label Assignment Guidelines
 
 #### Required Labels (Choose One Primary Type)
 
@@ -261,7 +254,7 @@ How to address the security concern.
 
 ## ProxmoxMCP-Specific Considerations
 
-### 7. MCP Protocol Compliance
+### 6. MCP Protocol Compliance
 
 When creating issues related to MCP functionality:
 
@@ -270,7 +263,7 @@ When creating issues related to MCP functionality:
 - **Resource Management**: Consider impact on MCP resource handling
 - **Client Compatibility**: Assess effects on MCP client interactions
 
-### 8. Proxmox Integration Specifics
+### 7. Proxmox Integration Specifics
 
 For Proxmox VE related issues:
 
@@ -279,7 +272,7 @@ For Proxmox VE related issues:
 - **Node vs Cluster**: Specify if issue affects single node or cluster operations
 - **Resource Types**: Identify affected Proxmox resources (VMs, LXC, storage, network)
 
-### 9. Security and Privacy
+### 8. Security and Privacy
 
 Always consider security implications:
 
@@ -290,7 +283,7 @@ Always consider security implications:
 
 ## Issue Lifecycle Management
 
-### 10. Initial Triage Process
+### 9. Initial Triage Process
 
 After creating an issue:
 
@@ -299,7 +292,7 @@ After creating an issue:
 3. **Priority Assignment**: Critical issues get immediate attention
 4. **Component Assignment**: Relevant maintainers are notified
 
-### 11. Issue Updates and Communication
+### 10. Issue Updates and Communication
 
 #### Progress Updates
 
@@ -315,7 +308,7 @@ After creating an issue:
 
 ## Quality Checklist
 
-### 12. Before Submitting
+### 11. Before Submitting
 
 - [ ] **Title is clear and descriptive**
 - [ ] **Appropriate issue type is selected**
@@ -326,7 +319,7 @@ After creating an issue:
 - [ ] **Related issues are referenced**
 - [ ] **Configuration details are included (sanitized)**
 
-### 13. Content Quality Standards
+### 12. Content Quality Standards
 
 - **Be Specific**: Avoid vague descriptions like "it doesn't work"
 - **Include Context**: Provide environment and configuration details
@@ -336,7 +329,7 @@ After creating an issue:
 
 ## Examples and Best Practices
 
-### 14. Good Issue Examples
+### 13. Good Issue Examples
 
 #### Example 1: Clear Bug Report
 
@@ -382,7 +375,7 @@ Add batch operation support to existing VM management tools with proper error
 handling and progress reporting.
 ```
 
-### 15. Anti-Patterns to Avoid
+### 14. Anti-Patterns to Avoid
 
 #### Poor Examples
 
@@ -394,7 +387,7 @@ handling and progress reporting.
 
 ## Integration with Development Workflow
 
-### 16. Issue-to-PR Workflow
+### 15. Issue-to-PR Workflow
 
 1. **Issue Creation**: Follow guidelines in this document
 2. **Discussion**: Engage with maintainers for clarification
@@ -404,7 +397,7 @@ handling and progress reporting.
 6. **Review**: Code review process includes issue validation
 7. **Closure**: Issue is closed when PR is merged
 
-### 17. Branch Naming Convention
+### 16. Branch Naming Convention
 
 When working on issues, use branch names that reference the issue:
 
@@ -412,7 +405,7 @@ When working on issues, use branch names that reference the issue:
 - `feature/issue-456-batch-operations`
 - `security/issue-789-auth-improvements`
 
-### 18. Commit Message Format
+### 17. Commit Message Format
 
 Reference issues in commit messages:
 

@@ -6,14 +6,7 @@ high-quality PR review, testing, and merging that aligns with project standards.
 
 ## Pre-PR Analysis Phase
 
-### 1. Memory and Context Research
-
-- **ALWAYS start** by using `get_all_coding_preferences` to retrieve stored coding patterns
-- Use `search_coding_preferences` to find specific implementations related to PR changes
-- Use `resolve-library-id` and `get-library-docs` for external library research when needed
-- Review existing architectural patterns and implementation styles
-
-### 2. Pull Request Assessment
+### 1. Pull Request Assessment
 
 - **Read the complete PR description** carefully, including all comments and updates
 - Identify the **PR type** from labels (bug fix, enhancement, feature, security, etc.)
@@ -22,7 +15,7 @@ high-quality PR review, testing, and merging that aligns with project standards.
 - Review **acceptance criteria** and implementation scope
 - Assess **breaking changes** and backward compatibility impact
 
-### 3. Codebase Integration Analysis
+### 2. Codebase Integration Analysis
 
 - Use `Glob` and `Grep` tools to understand how changes fit into existing code structure
 - Review related implementations and architectural patterns
@@ -32,7 +25,7 @@ high-quality PR review, testing, and merging that aligns with project standards.
 
 ## PR Review Phase
 
-### 4. Code Quality Assessment
+### 3. Code Quality Assessment
 
 #### Code Implementation Review
 
@@ -62,7 +55,7 @@ high-quality PR review, testing, and merging that aligns with project standards.
 - **Async patterns**: Proper async implementation for VM operations
 - **Type safety**: Type hints for all functions and methods
 
-### 5. Testing and Validation Requirements
+### 4. Testing and Validation Requirements
 
 #### Automated Testing Review
 
@@ -80,7 +73,7 @@ high-quality PR review, testing, and merging that aligns with project standards.
 - **Validate output formatting** consistency across different scenarios
 - **Check configuration loading** if config changes are involved
 
-### 6. Documentation and Communication Review
+### 5. Documentation and Communication Review
 
 #### Documentation Updates
 
@@ -99,7 +92,7 @@ high-quality PR review, testing, and merging that aligns with project standards.
 
 ## Testing and Validation Phase
 
-### 7. Pre-Merge Quality Assurance
+### 6. Pre-Merge Quality Assurance
 
 #### Comprehensive Testing Execution
 
@@ -133,7 +126,7 @@ docker compose build && docker compose up --build -d
 - **Check encryption/decryption** functionality if security features are involved
 - **Verify file permissions** for any created or modified files
 
-### 8. Performance and Compatibility Assessment
+### 7. Performance and Compatibility Assessment
 
 #### Performance Impact Analysis
 
@@ -151,7 +144,7 @@ docker compose build && docker compose up --build -d
 
 ## Approval and Merge Phase
 
-### 9. Final Validation and Approval
+### 8. Final Validation and Approval
 
 #### Component-Specific Validation
 
@@ -189,7 +182,7 @@ docker compose build && docker compose up --build -d
 - **Ensure proper versioning** if breaking changes are introduced
 - **Test upgrade scenarios** from previous versions
 
-### 10. Merge Execution and Validation
+### 9. Merge Execution and Validation
 
 #### Pre-Merge Checklist
 
@@ -212,7 +205,7 @@ docker compose build && docker compose up --build -d
 
 ## Post-Merge Phase
 
-### 11. Post-Merge Validation and Monitoring
+### 10. Post-Merge Validation and Monitoring
 
 #### Immediate Validation
 
@@ -224,12 +217,11 @@ docker compose build && docker compose up --build -d
 
 #### Knowledge Capture and Documentation
 
-- **Update coding patterns** in memory using `add_coding_preference`
 - **Document new architectural decisions** and implementation patterns
 - **Store security best practices** and configuration approaches
 - **Update development workflow** documentation if processes changed
 
-### 12. Continuous Improvement
+### 11. Continuous Improvement
 
 #### Feedback Integration
 

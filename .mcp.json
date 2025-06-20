@@ -20,9 +20,34 @@
         "@modelcontextprotocol/server-puppeteer"
       ]
     },
-    "mem0": {
-      "type": "sse",
-      "url": "http://0.0.0.0:8080/sse"
+    "gitmcp": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://gitmcp.io/docs"
+      ]
+    },
+    "serena": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "/workspaces/ProxmoxMCP"
+      ],
+      "env": {}
+    },
+    "linear": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.linear.app/sse"
+      ]
     }
   }
 }

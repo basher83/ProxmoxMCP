@@ -18,6 +18,7 @@ For installation and basic usage, see the [main README](../README.md).
 
 - **[Repository Review](repository-review.md)** - Comprehensive code analysis and structure
 - **[Claude Code Automation](claude-code-automation.md)** - Automated development workflow setup
+- **[Testing Workflow](testing-workflow.md)** - Comprehensive testing guide and best practices
 
 ### **Security**
 

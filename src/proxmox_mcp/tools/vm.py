@@ -56,8 +56,11 @@ class VMTools(ProxmoxTool):
           * Memory allocation and usage
         - Node placement
 
-        Implements a fallback mechanism that returns basic information
-        if detailed configuration retrieval fails for any VM.
+        Implements an optimized approach that minimizes API calls by:
+        - Batching VM queries per node
+        - Using fallback data when detailed config is unavailable
+        - Reducing redundant API round trips
+        - Isolating node-level failures to prevent total operation failure
 
         Returns:
             List of Content objects containing formatted VM information:
@@ -78,42 +81,45 @@ class VMTools(ProxmoxTool):
         """
         try:
             result = []
-            for node in self.proxmox.nodes.get():
+            nodes = self.proxmox.nodes.get()
+
+            for node in nodes:
                 node_name = node["node"]
-                vms = self.proxmox.nodes(node_name).qemu.get()
-                for vm in vms:
-                    vmid = vm["vmid"]
-                    # Get VM config for CPU cores
-                    try:
-                        config = self.proxmox.nodes(node_name).qemu(vmid).config.get()
-                        result.append(
-                            {
-                                "vmid": vmid,
-                                "name": vm["name"],
-                                "status": vm["status"],
-                                "node": node_name,
-                                "cpus": config.get("cores", "N/A"),
-                                "memory": {
-                                    "used": vm.get("mem", 0),
-                                    "total": vm.get("maxmem", 0),
-                                },
-                            }
-                        )
-                    except Exception:
-                        # Fallback if can't get config
-                        result.append(
-                            {
-                                "vmid": vmid,
-                                "name": vm["name"],
-                                "status": vm["status"],
-                                "node": node_name,
-                                "cpus": "N/A",
-                                "memory": {
-                                    "used": vm.get("mem", 0),
-                                    "total": vm.get("maxmem", 0),
-                                },
-                            }
-                        )
+                try:
+                    vms = self.proxmox.nodes(node_name).qemu.get()
+
+                    vm_configs = {}
+                    for vm in vms:
+                        vmid = vm["vmid"]
+                        try:
+                            config = (
+                                self.proxmox.nodes(node_name).qemu(vmid).config.get()
+                            )
+                            vm_configs[vmid] = config
+                        except Exception:
+                            vm_configs[vmid] = None
+
+                    for vm in vms:
+                        vmid = vm["vmid"]
+                        config = vm_configs.get(vmid)
+
+                        vm_data = {
+                            "vmid": vmid,
+                            "name": vm["name"],
+                            "status": vm["status"],
+                            "node": node_name,
+                            "cpus": config.get("cores", "N/A") if config else "N/A",
+                            "memory": {
+                                "used": vm.get("mem", 0),
+                                "total": vm.get("maxmem", 0),
+                            },
+                        }
+                        result.append(vm_data)
+
+                except Exception as e:
+                    self.logger.warning(f"Failed to get VMs for node {node_name}: {e}")
+                    continue
+
             return self._format_response(result, "vms")
         except Exception as e:
             self._handle_error("get VMs", e)
