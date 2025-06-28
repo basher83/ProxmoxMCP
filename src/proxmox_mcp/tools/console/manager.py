@@ -15,7 +15,7 @@ The module implements a robust command execution system with:
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, cast
 
 
 class VMConsoleManager:
@@ -47,14 +47,18 @@ class VMConsoleManager:
         """Validate that VM exists and is running for command execution."""
         vm_status = self.proxmox.nodes(node).qemu(vmid).status.current.get()
         if vm_status["status"] != "running":
-            self.logger.error(f"Failed to execute command on VM {vmid}: VM is not running")
+            self.logger.error(
+                f"Failed to execute command on VM {vmid}: VM is not running"
+            )
             raise ValueError(f"VM {vmid} on node {node} is not running")
 
-    async def _execute_command_via_agent(self, node: str, vmid: str, command: str) -> int:
+    async def _execute_command_via_agent(
+        self, node: str, vmid: str, command: str
+    ) -> int:
         """Start command execution via QEMU guest agent and return PID."""
         endpoint = self.proxmox.nodes(node).qemu(vmid).agent
         self.logger.debug(f"Using API endpoint: {endpoint}")
-        
+
         try:
             self.logger.debug(f"Executing command via agent: {command}")
             exec_result = endpoint("exec").post(command=command)
@@ -67,15 +71,17 @@ class VMConsoleManager:
         if "pid" not in exec_result:
             raise RuntimeError("No PID returned from command execution")
 
-        return exec_result["pid"]
+        return cast(int, exec_result["pid"])
 
-    async def _get_command_results(self, node: str, vmid: str, pid: int) -> Dict[str, Any]:
+    async def _get_command_results(
+        self, node: str, vmid: str, pid: int
+    ) -> Dict[str, Any]:
         """Wait for command completion and get results."""
         import asyncio
-        
+
         self.logger.info(f"Waiting for command completion (PID: {pid})...")
         await asyncio.sleep(1)  # Allow command to complete
-        
+
         endpoint = self.proxmox.nodes(node).qemu(vmid).agent
         try:
             self.logger.debug(f"Getting status for PID {pid}...")
@@ -86,9 +92,9 @@ class VMConsoleManager:
         except Exception as e:
             self.logger.error(f"Failed to get command status: {str(e)}")
             raise RuntimeError(f"Failed to get command status: {str(e)}") from e
-            
+
         self.logger.info(f"Command completed with status: {console}")
-        return console
+        return cast(dict[str, Any], console)
 
     def _process_command_response(self, console: Any) -> Dict[str, Any]:
         """Process and format command execution response."""
@@ -168,7 +174,9 @@ class VMConsoleManager:
                        - API communication errors occur
         """
         try:
-            self.logger.info(f"Executing command on VM {vmid} (node: {node}): {command}")
+            self.logger.info(
+                f"Executing command on VM {vmid} (node: {node}): {command}"
+            )
 
             # Validate VM state
             self._validate_vm_for_execution(node, vmid)
@@ -182,7 +190,9 @@ class VMConsoleManager:
             # Process and format response
             result = self._process_command_response(console)
 
-            self.logger.debug(f"Executed command '{command}' on VM {vmid} (node: {node})")
+            self.logger.debug(
+                f"Executed command '{command}' on VM {vmid} (node: {node})"
+            )
             return result
 
         except ValueError:
