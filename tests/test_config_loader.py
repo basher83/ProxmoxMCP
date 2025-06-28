@@ -152,7 +152,9 @@ class TestEnhancedDecryptionErrors:
 
     def test_no_sensitive_data_in_error_messages(self):
         """Test that error messages don't expose sensitive token data."""
-        sensitive_token = "enc:very_sensitive_secret_token_data"  # nosec: test credential
+        sensitive_token = (
+            "enc:very_sensitive_secret_token_data"  # nosec: test credential
+        )
 
         with pytest.raises(ValueError) as exc_info:
             _handle_decryption_error(

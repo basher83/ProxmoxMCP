@@ -15,7 +15,7 @@ error handling, logging, and output formatting.
 
 import json
 import logging
-from typing import Any, Dict, List
+from typing import Any, Dict, List, cast
 
 from mcp.types import TextContent as Content
 from proxmoxer import ProxmoxAPI
@@ -23,7 +23,8 @@ from proxmoxer import ProxmoxAPI
 from .base import ProxmoxTool
 
 try:
-    from claude_code_sdk import ClaudeCodeOptions, query  # type: ignore[import-not-found]
+    from claude_code_sdk import (  # type: ignore[import-not-found]
+        ClaudeCodeOptions, query)
 
     CLAUDE_SDK_AVAILABLE = True
 except ImportError:
@@ -145,7 +146,9 @@ suggested optimizations during maintenance windows.
                 )
             ]
 
-    async def _prepare_vm_diagnosis_prompt(self, vmid: str, node: str, vm_data: Dict[str, Any]) -> str:
+    async def _prepare_vm_diagnosis_prompt(
+        self, vmid: str, node: str, vm_data: Dict[str, Any]
+    ) -> str:
         """Prepare the AI diagnosis prompt for VM analysis."""
         return f"""
         Diagnose issues with this Proxmox VM and provide specific solutions:
@@ -169,7 +172,9 @@ suggested optimizations during maintenance windows.
         - Prevention measures for the future
         """
 
-    def _format_vm_diagnosis_response(self, vmid: str, node: str, vm_data: Dict[str, Any], ai_response: str) -> str:
+    def _format_vm_diagnosis_response(
+        self, vmid: str, node: str, vm_data: Dict[str, Any], ai_response: str
+    ) -> str:
         """Format the VM diagnosis response with overview and AI analysis."""
         vm_status = vm_data.get("status", {})
         return f"""🔧 **AI VM Diagnostic Report - VM {vmid}**
@@ -215,13 +220,17 @@ suggested optimizations during maintenance windows.
                 return await self._basic_vm_analysis(vm_data, node, vmid)
 
             # Prepare AI diagnosis prompt
-            diagnosis_prompt = await self._prepare_vm_diagnosis_prompt(vmid, node, vm_data)
-            
+            diagnosis_prompt = await self._prepare_vm_diagnosis_prompt(
+                vmid, node, vm_data
+            )
+
             # Get AI analysis
             ai_response = await self._query_claude(diagnosis_prompt)
 
             # Format the response
-            formatted_response = self._format_vm_diagnosis_response(vmid, node, vm_data, ai_response)
+            formatted_response = self._format_vm_diagnosis_response(
+                vmid, node, vm_data, ai_response
+            )
 
             return [Content(type="text", text=formatted_response)]
 
@@ -234,7 +243,9 @@ suggested optimizations during maintenance windows.
                 )
             ]
 
-    def _prepare_resource_optimization_prompt(self, resource_data: Dict[str, Any]) -> str:
+    def _prepare_resource_optimization_prompt(
+        self, resource_data: Dict[str, Any]
+    ) -> str:
         """Prepare the AI optimization prompt for resource analysis."""
         return f"""
         Analyze this Proxmox resource utilization data and suggest optimizations:
@@ -258,7 +269,9 @@ suggested optimizations during maintenance windows.
         - Monitoring metrics to track success
         """
 
-    def _format_resource_optimization_response(self, resource_data: Dict[str, Any], ai_response: str) -> str:
+    def _format_resource_optimization_response(
+        self, resource_data: Dict[str, Any], ai_response: str
+    ) -> str:
         """Format the resource optimization response with overview and AI analysis."""
         resource_summary = resource_data.get("resource_summary", {})
         return f"""⚡ **AI Resource Optimization Report**
@@ -299,13 +312,17 @@ suggested optimizations during maintenance windows.
                 return await self._basic_resource_analysis(resource_data)
 
             # Prepare optimization prompt
-            optimization_prompt = self._prepare_resource_optimization_prompt(resource_data)
+            optimization_prompt = self._prepare_resource_optimization_prompt(
+                resource_data
+            )
 
             # Get AI analysis
             ai_response = await self._query_claude(optimization_prompt)
 
             # Format the response
-            formatted_response = self._format_resource_optimization_response(resource_data, ai_response)
+            formatted_response = self._format_resource_optimization_response(
+                resource_data, ai_response
+            )
 
             return [Content(type="text", text=formatted_response)]
 
@@ -344,7 +361,9 @@ suggested optimizations during maintenance windows.
         - Compliance implications
         """
 
-    def _format_security_analysis_response(self, security_data: Dict[str, Any], ai_response: str) -> str:
+    def _format_security_analysis_response(
+        self, security_data: Dict[str, Any], ai_response: str
+    ) -> str:
         """Format the security analysis response with overview and AI assessment."""
         user_count = len(security_data.get("users", []))
         return f"""🔒 **AI Security Posture Analysis**
@@ -390,7 +409,9 @@ suggested optimizations during maintenance windows.
             ai_response = await self._query_claude(security_prompt)
 
             # Format the response
-            formatted_response = self._format_security_analysis_response(security_data, ai_response)
+            formatted_response = self._format_security_analysis_response(
+                security_data, ai_response
+            )
 
             return [Content(type="text", text=formatted_response)]
 
@@ -429,29 +450,37 @@ suggested optimizations during maintenance windows.
             self.logger.error(f"Claude Code SDK query failed: {e}")
             raise RuntimeError(f"AI analysis failed: {e}") from e
 
-    def _collect_node_metrics(self, nodes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _collect_node_metrics(
+        self, nodes: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
         """Collect metrics for all nodes."""
         node_data = []
         for node in nodes:
             try:
                 node_status = self.proxmox.nodes(node["node"]).status.get()
-                node_data.append({
-                    "name": node["node"],
-                    "status": node["status"],
-                    "cpu_usage": node_status.get("cpu", 0),
-                    "memory_usage": node_status.get("memory", {}),
-                    "uptime": node_status.get("uptime", 0),
-                    "load_average": node_status.get("loadavg", []),
-                    "cpu_info": node_status.get("cpuinfo", {}),
-                    "kernel_version": node_status.get("kversion", "unknown"),
-                })
+                node_data.append(
+                    {
+                        "name": node["node"],
+                        "status": node["status"],
+                        "cpu_usage": node_status.get("cpu", 0),
+                        "memory_usage": node_status.get("memory", {}),
+                        "uptime": node_status.get("uptime", 0),
+                        "load_average": node_status.get("loadavg", []),
+                        "cpu_info": node_status.get("cpuinfo", {}),
+                        "kernel_version": node_status.get("kversion", "unknown"),
+                    }
+                )
             except Exception as e:
-                self.logger.warning(f"Failed to get status for node {node['node']}: {e}")
-                node_data.append({
-                    "name": node["node"],
-                    "status": node.get("status", "unknown"),
-                    "error": str(e),
-                })
+                self.logger.warning(
+                    f"Failed to get status for node {node['node']}: {e}"
+                )
+                node_data.append(
+                    {
+                        "name": node["node"],
+                        "status": node.get("status", "unknown"),
+                        "error": str(e),
+                    }
+                )
         return node_data
 
     def _collect_vm_metrics(self, nodes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -482,7 +511,7 @@ suggested optimizations during maintenance windows.
     def _collect_storage_metrics(self) -> List[Dict[str, Any]]:
         """Collect storage pool information."""
         try:
-            return self.proxmox.storage.get()
+            return cast(list[dict[str, Any]], self.proxmox.storage.get())
         except Exception as e:
             self.logger.warning(f"Failed to get storage information: {e}")
             return []
@@ -490,7 +519,7 @@ suggested optimizations during maintenance windows.
     def _collect_cluster_status(self) -> List[Dict[str, Any]]:
         """Collect cluster status information."""
         try:
-            return self.proxmox.cluster.status.get()
+            return cast(list[dict[str, Any]], self.proxmox.cluster.status.get())
         except Exception as e:
             self.logger.warning(f"Failed to get cluster status: {e}")
             return []
@@ -504,15 +533,15 @@ suggested optimizations during maintenance windows.
         try:
             # Get base node list
             nodes = self.proxmox.nodes.get()
-            
+
             # Collect all metrics using helper methods
             data = {
                 "nodes": self._collect_node_metrics(nodes),
-                "vms": self._collect_vm_metrics(nodes), 
+                "vms": self._collect_vm_metrics(nodes),
                 "storage": self._collect_storage_metrics(),
                 "cluster_status": self._collect_cluster_status(),
             }
-            
+
             return data
 
         except Exception as e:

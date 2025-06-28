@@ -205,7 +205,9 @@ class TestKeyRotation:
         # Create test config with encrypted token
         master_key = TokenEncryption.generate_master_key()
         encryptor = TokenEncryption(master_key=master_key)
-        encrypted_token = encryptor.encrypt_token("test-token")  # nosec: test credential
+        encrypted_token = encryptor.encrypt_token(
+            "test-token"
+        )  # nosec: test credential
 
         test_config = {"auth": {"token_value": encrypted_token}}
 
@@ -225,7 +227,9 @@ class TestKeyRotation:
 
     def test_verify_config_decryption_with_plain_token(self) -> None:
         """Test config decryption verification with plain text token."""
-        test_config = {"auth": {"token_value": "plain-text-token"}}  # nosec: test credential
+        test_config = {
+            "auth": {"token_value": "plain-text-token"}
+        }  # nosec: test credential
 
         with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
             json.dump(test_config, f)
@@ -274,7 +278,9 @@ class TestKeyRotation:
         # Create config with token encrypted with different key
         actual_key = TokenEncryption.generate_master_key()
         encryptor = TokenEncryption(master_key=actual_key)
-        encrypted_token = encryptor.encrypt_token("test-token")  # nosec: test credential
+        encrypted_token = encryptor.encrypt_token(
+            "test-token"
+        )  # nosec: test credential
 
         test_config = {"auth": {"token_value": encrypted_token}}
 
@@ -293,7 +299,9 @@ class TestKeyRotation:
         # Create original key and encrypted config
         old_key = TokenEncryption.generate_master_key()
         old_encryptor = TokenEncryption(master_key=old_key)
-        encrypted_token = old_encryptor.encrypt_token("test-token-value")  # nosec: test credential
+        encrypted_token = old_encryptor.encrypt_token(
+            "test-token-value"
+        )  # nosec: test credential
 
         test_config = {"auth": {"token_value": encrypted_token}, "other": "data"}
 
@@ -367,7 +375,10 @@ class TestKeyRotation:
             }
 
             # Config 3: plain token (should be skipped)
-            config3 = {"auth": {"token_value": "plain-token"}, "name": "config3"}  # nosec: test credential
+            config3 = {
+                "auth": {"token_value": "plain-token"},
+                "name": "config3",
+            }  # nosec: test credential
 
             # Write configs
             with open(config1_path, "w") as f:
