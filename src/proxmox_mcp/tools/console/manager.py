@@ -15,7 +15,7 @@ The module implements a robust command execution system with:
 """
 
 import logging
-from typing import Any, Dict, cast
+from typing import Any, Dict
 
 
 class VMConsoleManager:
@@ -71,7 +71,10 @@ class VMConsoleManager:
         if "pid" not in exec_result:
             raise RuntimeError("No PID returned from command execution")
 
-        return cast(int, exec_result["pid"])
+        try:
+            return int(exec_result["pid"])
+        except (TypeError, ValueError) as err:
+            raise RuntimeError(f"Unexpected PID value: {exec_result!r}") from err
 
     async def _get_command_results(
         self, node: str, vmid: str, pid: int
@@ -94,7 +97,11 @@ class VMConsoleManager:
             raise RuntimeError(f"Failed to get command status: {str(e)}") from e
 
         self.logger.info(f"Command completed with status: {console}")
-        return cast(dict[str, Any], console)
+        if not isinstance(console, dict):
+            raise RuntimeError(
+                f"Expected dict response, got {type(console).__name__}: {console!r}"
+            )
+        return console
 
     def _process_command_response(self, console: Any) -> Dict[str, Any]:
         """Process and format command execution response."""
