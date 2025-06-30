@@ -358,4 +358,4 @@ async def test_execute_vm_command_with_error(server, mock_proxmox):
     # The response should be formatted text, not JSON
     assert len(response) == 1
     response_text_lower = response[0].text.lower()
-    assert "command output" in response_text_lower or "command not found" in response_text_lower
+    assert "command not found" in response_text_lower

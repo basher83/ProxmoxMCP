@@ -15,7 +15,7 @@ The module implements a robust command execution system with:
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 
 class VMConsoleManager:
@@ -78,7 +78,7 @@ class VMConsoleManager:
 
     async def _get_command_results(
         self, node: str, vmid: str, pid: int
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Wait for command completion and get results."""
         import asyncio
 
@@ -103,7 +103,7 @@ class VMConsoleManager:
             )
         return console
 
-    def _process_command_response(self, console: Any) -> Dict[str, Any]:
+    def _process_command_response(self, console: Any) -> dict[str, Any]:
         """Process and format command execution response."""
         self.logger.debug(f"Raw API response type: {type(console)}")
         self.logger.debug(f"Raw API response: {console}")
@@ -137,7 +137,7 @@ class VMConsoleManager:
 
     async def execute_command(
         self, node: str, vmid: str, command: str
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Execute a command in a VM's console via QEMU guest agent.
 
         Implements a two-phase command execution process:
