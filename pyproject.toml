@@ -108,6 +108,11 @@ known-third-party = ["mcp", "proxmoxer", "pydantic", "cryptography", "requests"]
 section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 split-on-trailing-comma = true
 
+
+[[tool.uv.index]]
+name = "safety"
+url = "https://pkgs.safetycli.com/repository/the-mothership/project/proxmoxmcp/pypi/simple/"
+default = false
 [dependency-groups]
 dev = [
     "ruff>=0.1.15",
