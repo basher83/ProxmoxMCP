@@ -124,9 +124,10 @@ async def test_get_nodes(server, mock_proxmox):
 
     # The response should be formatted text, not JSON
     assert len(response) == 1
-    assert "Proxmox Nodes" in response[0].text
-    assert "node1" in response[0].text
-    assert "node2" in response[0].text
+    response_text = response[0].text
+    assert "Proxmox Nodes" in response_text
+    assert "node1" in response_text
+    assert "node2" in response_text
 
 
 @pytest.mark.asyncio
@@ -306,7 +307,8 @@ async def test_execute_vm_command_success(server, mock_proxmox):
 
     # The response should be formatted text, not JSON
     assert len(response) == 1
-    assert "Command Output" in response[0].text or "command output" in response[0].text
+    response_text_lower = response[0].text.lower()
+    assert "command output" in response_text_lower
 
 
 @pytest.mark.asyncio
@@ -355,4 +357,5 @@ async def test_execute_vm_command_with_error(server, mock_proxmox):
 
     # The response should be formatted text, not JSON
     assert len(response) == 1
-    assert "Command Output" in response[0].text or "command not found" in response[0].text
+    response_text_lower = response[0].text.lower()
+    assert "command output" in response_text_lower or "command not found" in response_text_lower
