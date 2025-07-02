@@ -46,6 +46,7 @@ A Python-based Model Context Protocol (MCP) server for interacting with Proxmox 
 - 📝 Configurable logging system
 - ✅ Type-safe implementation with Pydantic
 - 🎨 Rich output formatting with customizable themes
+- 🪝 Claude Code Hooks integration for automated quality checks and security validation
 
 <https://github.com/user-attachments/assets/1b5f42f7-85d5-4918-aca4-d38413b0e82b>
 
@@ -510,6 +511,26 @@ For enhanced development workflow with Taskfile (recommended):
 - Watch mode testing: `task test:watch`
 
 See [Testing Workflow Documentation](docs/testing-workflow.md) for comprehensive testing guide.
+
+#### 🪝 Claude Code Hooks
+
+This project includes Claude Code hooks for automated quality checks and security validation. The hooks are automatically enabled through the project-level settings in `.claude/settings.json`.
+
+**Features:**
+- **Security validation**: Blocks dangerous commands and warns about credential exposure
+- **Auto-formatting**: Automatically runs Black and Ruff fixes after code edits
+- **Markdown linting**: Validates markdown files using `.markdownlint.jsonc` configuration
+- **Quality reports**: Generates comprehensive reports after running tests
+- **Command logging**: Tracks all executed commands for debugging
+- **Session summaries**: Provides end-of-session reports with recommendations
+
+**Hook Types:**
+- `PreToolUse`: Security checks before running commands
+- `PostToolUse`: Auto-formatting and validation after edits
+- `Notification`: Desktop and terminal notifications
+- `Stop`: Session summary generation
+
+For detailed information about hooks configuration and customization, see the [Claude Code Hooks Guide](docs/claude-code-hooks-guide.md).
 
 ### 🧪 Testing
 
