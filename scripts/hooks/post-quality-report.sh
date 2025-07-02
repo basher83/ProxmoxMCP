@@ -38,7 +38,8 @@ if [ "$RUFF_EXIT" -eq 0 ]; then
     RUFF_ERRORS=0
 else
     # Count actual diagnostic lines (format: path/file.py:line:col: CODE message)
-    RUFF_ERRORS=$(echo "$RUFF_OUTPUT" | grep -E "\.py:[0-9]+:[0-9]+: [A-Z][0-9]+" | wc -l)
+    # Ruff codes are always one letter + 3 digits (e.g., F401, E501, W292)
+    RUFF_ERRORS=$(echo "$RUFF_OUTPUT" | grep -E "\.py:[0-9]+:[0-9]+: [A-Z][0-9]{3}" | wc -l)
 fi
 
 echo "MyPy Errors: $MYPY_ERRORS" >> "$REPORT_FILE"
