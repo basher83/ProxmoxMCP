@@ -2,6 +2,9 @@
 # Pre-code quality check hook for ProxmoxMCP
 # Validates file edits match project standards
 
+# Get repository root dynamically
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
 # Get file path from arguments
 FILE_PATH=$(echo "$CLAUDE_TOOL_ARGUMENTS" | jq -r '.file_path // empty')
 

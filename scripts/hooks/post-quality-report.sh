@@ -2,11 +2,14 @@
 # Post-quality report hook for ProxmoxMCP
 # Generates summary after quality checks
 
+# Get repository root dynamically
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
 # Ensure logs directory exists
-mkdir -p /workspaces/ProxmoxMCP/.claude/logs
+mkdir -p ${REPO_ROOT}/.claude/logs
 
 # Create report file
-REPORT_FILE="/workspaces/ProxmoxMCP/.claude/logs/quality-report-$(date +%Y%m%d-%H%M%S).txt"
+REPORT_FILE="${REPO_ROOT}/.claude/logs/quality-report-$(date +%Y%m%d-%H%M%S).txt"
 
 echo "Quality Check Report - $(date)" > "$REPORT_FILE"
 echo "================================" >> "$REPORT_FILE"

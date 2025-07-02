@@ -2,15 +2,18 @@
 # Post-bash validation hook for ProxmoxMCP
 # Analyzes command results and provides feedback
 
+# Get repository root dynamically
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
 # Get command and exit code from environment
 COMMAND=$(echo "$CLAUDE_TOOL_ARGUMENTS" | jq -r '.command // empty')
 EXIT_CODE=$(echo "$CLAUDE_TOOL_RESULT" | jq -r '.exit_code // 0')
 
 # Ensure logs directory exists
-mkdir -p /workspaces/ProxmoxMCP/.claude/logs
+mkdir -p ${REPO_ROOT}/.claude/logs
 
 # Log command execution
-echo "[$(date +"%Y-%m-%d %H:%M:%S")] Command: $COMMAND (exit: $EXIT_CODE)" >> /workspaces/ProxmoxMCP/.claude/logs/command-history.log
+echo "[$(date +"%Y-%m-%d %H:%M:%S")] Command: $COMMAND (exit: $EXIT_CODE)" >> ${REPO_ROOT}/.claude/logs/command-history.log
 
 # Check for specific ProxmoxMCP commands
 if echo "$COMMAND" | grep -q "pytest"; then

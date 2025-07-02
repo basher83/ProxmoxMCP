@@ -2,10 +2,13 @@
 # Session summary hook for ProxmoxMCP
 # Generates summary when Claude Code session ends
 
-# Ensure logs directory exists
-mkdir -p /workspaces/ProxmoxMCP/.claude/logs
+# Get repository root dynamically
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
-SUMMARY_FILE="/workspaces/ProxmoxMCP/.claude/logs/session-$(date +%Y%m%d-%H%M%S).summary"
+# Ensure logs directory exists
+mkdir -p ${REPO_ROOT}/.claude/logs
+
+SUMMARY_FILE="${REPO_ROOT}/.claude/logs/session-$(date +%Y%m%d-%H%M%S).summary"
 
 echo "Claude Code Session Summary" > "$SUMMARY_FILE"
 echo "==========================" >> "$SUMMARY_FILE"
@@ -13,8 +16,8 @@ echo "Date: $(date)" >> "$SUMMARY_FILE"
 echo "" >> "$SUMMARY_FILE"
 
 # Count operations
-if [ -f "/workspaces/ProxmoxMCP/.claude/logs/command-history.log" ]; then
-    COMMAND_COUNT=$(wc -l < /workspaces/ProxmoxMCP/.claude/logs/command-history.log)
+if [ -f "${REPO_ROOT}/.claude/logs/command-history.log" ]; then
+    COMMAND_COUNT=$(wc -l < ${REPO_ROOT}/.claude/logs/command-history.log)
     echo "Commands executed: $COMMAND_COUNT" >> "$SUMMARY_FILE"
 fi
 

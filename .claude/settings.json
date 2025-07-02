@@ -6,11 +6,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'mkdir -p /workspaces/ProxmoxMCP/.claude/logs && echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Running command: $CLAUDE_TOOL_ARGUMENTS\" >> /workspaces/ProxmoxMCP/.claude/logs/commands.log'"
+            "command": "bash -c 'mkdir -p $(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/logs && echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Running command: $CLAUDE_TOOL_ARGUMENTS\" >> $(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/logs/commands.log'"
           },
           {
             "type": "command",
-            "command": "bash /workspaces/ProxmoxMCP/scripts/hooks/pre-bash-security-check.sh"
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/pre-bash-security-check.sh"
           }
         ]
       },
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /workspaces/ProxmoxMCP/scripts/hooks/pre-code-quality-check.sh"
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/pre-code-quality-check.sh"
           }
         ]
       },
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'mkdir -p /workspaces/ProxmoxMCP/.claude/logs && echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Todo list updated\" >> /workspaces/ProxmoxMCP/.claude/logs/todos.log'"
+            "command": "bash -c 'mkdir -p $(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/logs && echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Todo list updated\" >> $(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/logs/todos.log'"
           }
         ]
       }
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /workspaces/ProxmoxMCP/scripts/hooks/post-bash-validation.sh"
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/post-bash-validation.sh"
           }
         ]
       },
@@ -48,11 +48,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /workspaces/ProxmoxMCP/scripts/hooks/post-edit-format.sh"
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/post-edit-format.sh"
           },
           {
             "type": "command",
-            "command": "bash /workspaces/ProxmoxMCP/scripts/hooks/post-markdown-lint.sh"
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/post-markdown-lint.sh"
           }
         ]
       },
@@ -61,7 +61,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /workspaces/ProxmoxMCP/scripts/hooks/post-quality-report.sh"
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/post-quality-report.sh"
           }
         ]
       }
@@ -72,7 +72,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /workspaces/ProxmoxMCP/scripts/hooks/notification-handler.sh"
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/notification-handler.sh"
           }
         ]
       }
@@ -83,7 +83,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /workspaces/ProxmoxMCP/scripts/hooks/session-summary.sh"
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/session-summary.sh"
           }
         ]
       }

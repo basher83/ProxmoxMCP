@@ -2,6 +2,9 @@
 # Post-markdown lint hook for ProxmoxMCP
 # Validates markdown files after edits
 
+# Get repository root dynamically
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
 # Get file path from arguments
 FILE_PATH=$(echo "$CLAUDE_TOOL_ARGUMENTS" | jq -r '.file_path // empty')
 
@@ -16,9 +19,9 @@ if [[ "$FILE_PATH" == *.md ]]; then
     # Check if markdownlint is installed
     if command -v markdownlint &> /dev/null; then
         # Run markdownlint with project config
-        markdownlint -c /workspaces/ProxmoxMCP/.markdownlint.jsonc "$FILE_PATH" 2>&1 || {
+        markdownlint -c ${REPO_ROOT}/.markdownlint.jsonc "$FILE_PATH" 2>&1 || {
             echo "⚠️  Markdown linting issues found in $FILE_PATH"
-            echo "💡 Run 'markdownlint -c /workspaces/ProxmoxMCP/.markdownlint.jsonc --fix \"$FILE_PATH\"' to auto-fix issues"
+            echo "💡 Run 'markdownlint -c ${REPO_ROOT}/.markdownlint.jsonc --fix \"$FILE_PATH\"' to auto-fix issues"
             # Don't exit with error - just warn
         }
     else

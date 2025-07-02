@@ -2,15 +2,18 @@
 # Notification handler hook for ProxmoxMCP
 # Sends desktop notifications for important events
 
+# Get repository root dynamically
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
 # Get notification type and message
 NOTIFICATION_TYPE=$(echo "$CLAUDE_NOTIFICATION" | jq -r '.type // "info"')
 MESSAGE=$(echo "$CLAUDE_NOTIFICATION" | jq -r '.message // "Claude Code notification"')
 
 # Ensure logs directory exists
-mkdir -p /workspaces/ProxmoxMCP/.claude/logs
+mkdir -p ${REPO_ROOT}/.claude/logs
 
 # Log notification
-echo "[$(date +"%Y-%m-%d %H:%M:%S")] $NOTIFICATION_TYPE: $MESSAGE" >> /workspaces/ProxmoxMCP/.claude/logs/notifications.log
+echo "[$(date +"%Y-%m-%d %H:%M:%S")] $NOTIFICATION_TYPE: $MESSAGE" >> ${REPO_ROOT}/.claude/logs/notifications.log
 
 # Send desktop notification if available
 if command -v notify-send &> /dev/null; then

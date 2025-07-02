@@ -2,6 +2,9 @@
 # Pre-bash security check hook for ProxmoxMCP
 # Validates commands before execution to prevent security issues
 
+# Get repository root dynamically
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
 # Get the command from environment
 COMMAND=$(echo "$CLAUDE_TOOL_ARGUMENTS" | jq -r '.command // empty')
 
