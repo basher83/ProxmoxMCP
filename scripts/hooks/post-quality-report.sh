@@ -2,6 +2,9 @@
 # Post-quality report hook for ProxmoxMCP
 # Generates summary after quality checks
 
+# Ensure logs directory exists
+mkdir -p /workspaces/ProxmoxMCP/.claude/logs
+
 # Create report file
 REPORT_FILE="/workspaces/ProxmoxMCP/.claude/logs/quality-report-$(date +%Y%m%d-%H%M%S).txt"
 
@@ -15,8 +18,8 @@ if [ -f ".coverage" ]; then
 fi
 
 # Count issues
-MYPY_ERRORS=$(mypy . 2>&1 | grep -c "error:" || echo "0")
-RUFF_ERRORS=$(ruff check . 2>&1 | grep -c "error:" || echo "0")
+MYPY_ERRORS=$(mypy . 2>&1 | grep "error:" | wc -l)
+RUFF_ERRORS=$(ruff check . 2>&1 | grep "error:" | wc -l)
 
 echo "MyPy Errors: $MYPY_ERRORS" >> "$REPORT_FILE"
 echo "Ruff Errors: $RUFF_ERRORS" >> "$REPORT_FILE"
@@ -27,11 +30,11 @@ echo "ProxmoxMCP Checks:" >> "$REPORT_FILE"
 echo "-----------------" >> "$REPORT_FILE"
 
 # Check for TODO/FIXME items
-TODO_COUNT=$(grep -r "TODO\|FIXME" src/ --include="*.py" | wc -l || echo "0")
+TODO_COUNT=$(grep -r "TODO\|FIXME" src/ --include="*.py" 2>/dev/null | wc -l)
 echo "TODO/FIXME items: $TODO_COUNT" >> "$REPORT_FILE"
 
 # Check for security patterns
-SECURITY_ISSUES=$(grep -r "password\|token" src/ --include="*.py" | grep -v "Field\|BaseModel" | wc -l || echo "0")
+SECURITY_ISSUES=$(grep -r "password\|token" src/ --include="*.py" 2>/dev/null | grep -v "Field\|BaseModel" | wc -l)
 echo "Potential security patterns: $SECURITY_ISSUES" >> "$REPORT_FILE"
 
 # Summary

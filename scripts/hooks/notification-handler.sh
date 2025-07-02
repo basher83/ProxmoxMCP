@@ -6,6 +6,9 @@
 NOTIFICATION_TYPE=$(echo "$CLAUDE_NOTIFICATION" | jq -r '.type // "info"')
 MESSAGE=$(echo "$CLAUDE_NOTIFICATION" | jq -r '.message // "Claude Code notification"')
 
+# Ensure logs directory exists
+mkdir -p /workspaces/ProxmoxMCP/.claude/logs
+
 # Log notification
 echo "[$(date +"%Y-%m-%d %H:%M:%S")] $NOTIFICATION_TYPE: $MESSAGE" >> /workspaces/ProxmoxMCP/.claude/logs/notifications.log
 

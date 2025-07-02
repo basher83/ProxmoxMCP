@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Running command: $CLAUDE_TOOL_ARGUMENTS\" >> /workspaces/ProxmoxMCP/.claude/logs/commands.log'"
+            "command": "bash -c 'mkdir -p /workspaces/ProxmoxMCP/.claude/logs && echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Running command: $CLAUDE_TOOL_ARGUMENTS\" >> /workspaces/ProxmoxMCP/.claude/logs/commands.log'"
           },
           {
             "type": "command",
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Todo list updated\" >> /workspaces/ProxmoxMCP/.claude/logs/todos.log'"
+            "command": "bash -c 'mkdir -p /workspaces/ProxmoxMCP/.claude/logs && echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Todo list updated\" >> /workspaces/ProxmoxMCP/.claude/logs/todos.log'"
           }
         ]
       }

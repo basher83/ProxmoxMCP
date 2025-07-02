@@ -2,6 +2,9 @@
 # Session summary hook for ProxmoxMCP
 # Generates summary when Claude Code session ends
 
+# Ensure logs directory exists
+mkdir -p /workspaces/ProxmoxMCP/.claude/logs
+
 SUMMARY_FILE="/workspaces/ProxmoxMCP/.claude/logs/session-$(date +%Y%m%d-%H%M%S).summary"
 
 echo "Claude Code Session Summary" > "$SUMMARY_FILE"
@@ -34,13 +37,13 @@ echo "" >> "$SUMMARY_FILE"
 echo "ProxmoxMCP Activity:" >> "$SUMMARY_FILE"
 
 # Check if any tools were modified
-TOOLS_MODIFIED=$(git status --porcelain 2>/dev/null | grep -c "src/proxmox_mcp/tools/" || echo "0")
+TOOLS_MODIFIED=$(git status --porcelain 2>/dev/null | grep "src/proxmox_mcp/tools/" | wc -l)
 if [ "$TOOLS_MODIFIED" -gt 0 ]; then
     echo "  - Modified $TOOLS_MODIFIED tool files" >> "$SUMMARY_FILE"
 fi
 
 # Check if config was modified
-CONFIG_MODIFIED=$(git status --porcelain 2>/dev/null | grep -c "config/" || echo "0")
+CONFIG_MODIFIED=$(git status --porcelain 2>/dev/null | grep "config/" | wc -l)
 if [ "$CONFIG_MODIFIED" -gt 0 ]; then
     echo "  - Modified configuration files" >> "$SUMMARY_FILE"
 fi

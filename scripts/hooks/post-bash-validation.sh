@@ -6,6 +6,9 @@
 COMMAND=$(echo "$CLAUDE_TOOL_ARGUMENTS" | jq -r '.command // empty')
 EXIT_CODE=$(echo "$CLAUDE_TOOL_RESULT" | jq -r '.exit_code // 0')
 
+# Ensure logs directory exists
+mkdir -p /workspaces/ProxmoxMCP/.claude/logs
+
 # Log command execution
 echo "[$(date +"%Y-%m-%d %H:%M:%S")] Command: $COMMAND (exit: $EXIT_CODE)" >> /workspaces/ProxmoxMCP/.claude/logs/command-history.log
 
