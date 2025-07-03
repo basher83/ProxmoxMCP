@@ -24,10 +24,8 @@ from proxmoxer import ProxmoxAPI
 from .base import ProxmoxTool
 
 try:
-    from claude_code_sdk import (  # type: ignore[import]
-        ClaudeCodeOptions,
-        query,
-    )
+    from claude_code_sdk import (ClaudeCodeOptions,  # type: ignore[import]
+                                 query)
 
     CLAUDE_SDK_AVAILABLE = True
 except ImportError:
@@ -85,60 +83,23 @@ class AIProxmoxDiagnostics(ProxmoxTool):
             self.logger.warning("Claude Code SDK unavailable - AI features disabled")
 
     async def analyze_cluster_health(self) -> list[Content]:
-        """Analyze overall cluster health using AI insights.
-
-        Collects comprehensive cluster data including nodes, VMs, storage,
-        and cluster status, then uses Claude Code SDK to provide intelligent
-        analysis and recommendations.
-
-        Returns:
-            list[Content]: Formatted cluster health analysis with recommendations
-        """
+        """Analyze overall cluster health using AI insights."""
         try:
             self.logger.info("Starting AI cluster health analysis")
-
-            # Gather comprehensive cluster data
             cluster_data = await self._collect_cluster_metrics()
 
             if not self.claude_available:
-                return await self._basic_cluster_analysis(cluster_data)
+                return await self._fallback_to_basic_analysis(cluster_data)
 
-            # Use Claude Code SDK for intelligent analysis
-            analysis_prompt = f"""
-            Analyze this Proxmox cluster data and provide a comprehensive health assessment:
+            prompt = self._generate_analysis_prompt(cluster_data)
+            ai_response = await self._query_claude(prompt)
 
-            {json.dumps(cluster_data, indent=2)}
-
-            Please provide:
-            1. Overall health status and critical issues (High/Medium/Low priority)
-            2. Performance bottlenecks and optimization recommendations
-            3. Security concerns and suggestions
-            4. Capacity planning insights and resource utilization analysis
-            5. Immediate action items prioritized by urgency
-            6. Long-term maintenance recommendations
-
-            Focus on actionable insights with specific commands or configuration changes
-            where applicable.
-            """
-
-            ai_response = await self._query_claude(analysis_prompt)
-
-            formatted_response = f"""🤖 **AI Cluster Health Analysis**
-
-{ai_response}
-
----
-📊 **Analysis Summary**
-- Nodes analyzed: {len(cluster_data.get("nodes", []))}
-- VMs analyzed: {len(cluster_data.get("vms", []))}
-- Storage pools: {len(cluster_data.get("storage", []))}
-- Analysis powered by Claude Code SDK with Proxmox expertise
-
-💡 **Next Steps**: Review high-priority recommendations first, then implement
-suggested optimizations during maintenance windows.
-            """
-
-            return [Content(type="text", text=formatted_response)]
+            return [
+                Content(
+                    type="text",
+                    text=self._format_ai_response(cluster_data, ai_response),
+                )
+            ]
 
         except Exception as e:
             self._handle_error("AI cluster health analysis", e)
@@ -148,6 +109,46 @@ suggested optimizations during maintenance windows.
                     text="❌ AI cluster analysis failed. Please check logs for details.",
                 )
             ]
+
+    def _generate_analysis_prompt(self, cluster_data: dict) -> str:
+        """Generate a prompt for Claude to analyze cluster health."""
+        return f"""
+        Analyze this Proxmox cluster data and provide a comprehensive health assessment:
+
+        {json.dumps(cluster_data, indent=2)}
+
+        Please provide:
+        1. Overall health status and critical issues (High/Medium/Low priority)
+        2. Performance bottlenecks and optimization recommendations
+        3. Security concerns and suggestions
+        4. Capacity planning insights and resource utilization analysis
+        5. Immediate action items prioritized by urgency
+        6. Long-term maintenance recommendations
+
+        Focus on actionable insights with specific commands or configuration changes
+        where applicable.
+        """
+
+    def _format_ai_response(self, cluster_data: dict, ai_response: str) -> str:
+        """Format AI's response into user-friendly text."""
+        return f"""🤖 **AI Cluster Health Analysis**
+
+        {ai_response}
+
+        ---
+        📊 **Analysis Summary**
+        - Nodes analyzed: {len(cluster_data.get("nodes", []))}
+        - VMs analyzed: {len(cluster_data.get("vms", []))}
+        - Storage pools: {len(cluster_data.get("storage", []))}
+        - Analysis powered by Claude Code SDK with Proxmox expertise
+
+        💡 **Next Steps**: Review high-priority recommendations first, then implement
+        suggested optimizations during maintenance windows.
+        """
+
+    async def _fallback_to_basic_analysis(self, cluster_data: dict) -> list[Content]:
+        """Fallback to basic analysis if Claude is not available."""
+        return await self._basic_cluster_analysis(cluster_data)
 
     async def _prepare_vm_diagnosis_prompt(
         self, vmid: str, node: str, vm_data: dict[str, Any]
@@ -182,21 +183,21 @@ suggested optimizations during maintenance windows.
         vm_status = vm_data.get("status", {})
         return f"""🔧 **AI VM Diagnostic Report - VM {vmid}**
 
-**VM Overview**
-- Node: {node}
-- Status: {vm_status.get("status", "unknown")}
-- CPU Cores: {vm_status.get("cpus", "N/A")}
-- Memory: {vm_status.get("maxmem", "N/A")} bytes
-- Uptime: {vm_status.get("uptime", "N/A")} seconds
+        **VM Overview**
+        - Node: {node}
+        - Status: {vm_status.get("status", "unknown")}
+        - CPU Cores: {vm_status.get("cpus", "N/A")}
+        - Memory: {vm_status.get("maxmem", "N/A")} bytes
+        - Uptime: {vm_status.get("uptime", "N/A")} seconds
 
-**AI Analysis & Recommendations**
+        **AI Analysis & Recommendations**
 
-{ai_response}
+        {ai_response}
 
----
-💡 **Diagnostic powered by Claude Code SDK with Proxmox expertise**
-🔍 **VM Configuration**: Review VM configuration file for additional optimization opportunities
-⚠️  **Safety**: Test configuration changes in a non-production environment first
+        ---
+        💡 **Diagnostic powered by Claude Code SDK with Proxmox expertise**
+        🔍 **VM Configuration**: Review VM configuration file for additional optimization opportunities
+        ⚠️  **Safety**: Test configuration changes in a non-production environment first
         """
 
     async def diagnose_vm_issues(self, node: str, vmid: str) -> list[Content]:
@@ -279,21 +280,21 @@ suggested optimizations during maintenance windows.
         resource_summary = resource_data.get("resource_summary", {})
         return f"""⚡ **AI Resource Optimization Report**
 
-**Current Resource Overview**
-- Total CPU Cores: {resource_summary.get("total_cpu_cores", "N/A")}
-- Total Memory: {self._format_bytes(resource_summary.get("total_memory", 0))}
-- Memory Utilization: {resource_summary.get("memory_utilization_percent", 0):.1f}%
-- Active VMs: {len(resource_data.get("vms", []))}
+        **Current Resource Overview**
+        - Total CPU Cores: {resource_summary.get("total_cpu_cores", "N/A")}
+        - Total Memory: {self._format_bytes(resource_summary.get("total_memory", 0))}
+        - Memory Utilization: {resource_summary.get("memory_utilization_percent", 0):.1f}%
+        - Active VMs: {len(resource_data.get("vms", []))}
 
-**AI Optimization Recommendations**
+        **AI Optimization Recommendations**
 
-{ai_response}
+        {ai_response}
 
----
-📈 **Optimization Analysis powered by Claude Code SDK**
-📊 **Implementation**: Start with "Easy" recommendations for quick wins
-⚠️  **Testing**: Validate changes in staging environment before production
-🔄 **Monitoring**: Set up alerts to track optimization success metrics
+        ---
+        📈 **Optimization Analysis powered by Claude Code SDK**
+        📊 **Implementation**: Start with "Easy" recommendations for quick wins
+        ⚠️  **Testing**: Validate changes in staging environment before production
+        🔄 **Monitoring**: Set up alerts to track optimization success metrics
         """
 
     async def suggest_resource_optimization(self) -> list[Content]:
