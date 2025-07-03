@@ -553,69 +553,68 @@ class AIProxmoxDiagnostics(ProxmoxTool):
             raise
 
     async def _collect_vm_diagnostics(self, node: str, vmid: str) -> dict[str, Any]:
-        """Collect detailed VM diagnostic data.
-
-        Args:
-            node: Proxmox node name
-            vmid: VM ID to analyze
-
-        Returns:
-            dict[str, Any]: Comprehensive VM diagnostic information
-        """
-        data: dict[str, Any] = {}
-
+        """Collect detailed VM diagnostic data."""
         try:
-            # VM status and configuration
-            vm_status = await asyncio.to_thread(
-                self.proxmox.nodes(node).qemu(vmid).status.current.get
-            )
-            vm_config = await asyncio.to_thread(
-                self.proxmox.nodes(node).qemu(vmid).config.get
-            )
+            status, config = await self._get_vm_status_and_config(node, vmid)
+            diagnostics = {
+                "status": status,
+                "config": config,
+                "performance_metrics": None,
+                "guest_agent": None,
+                "snapshots": [],
+            }
 
-            data["status"] = vm_status
-            data["config"] = vm_config
+            if status.get("status") == "running":
+                diagnostics["performance_metrics"] = await self._get_vm_rrd_data(node, vmid)
+                diagnostics["guest_agent"] = await self._get_guest_agent_info(node, vmid)
 
-            # Try to get VM statistics if running
-            if vm_status.get("status") == "running":
-                try:
-                    # Get RRD data for performance metrics
-                    rrd_data = await asyncio.to_thread(
-                        self.proxmox.nodes(node).qemu(vmid).rrd.get,
-                        timeframe="hour",
-                    )
-                    data["performance_metrics"] = rrd_data
-                except Exception as e:
-                    self.logger.warning(
-                        f"Failed to get performance metrics for VM {vmid}: {e}"
-                    )
-                    data["performance_metrics"] = None
+            diagnostics["snapshots"] = await self._get_vm_snapshots(node, vmid)
 
-                # Try to get guest agent info if available
-                try:
-                    agent_info = await asyncio.to_thread(
-                        self.proxmox.nodes(node).qemu(vmid).agent.info.get
-                    )
-                    data["guest_agent"] = agent_info
-                except Exception as e:
-                    self.logger.debug(f"Guest agent not available for VM {vmid}: {e}")
-                    data["guest_agent"] = None
-
-            # Get VM snapshots
-            try:
-                snapshots = await asyncio.to_thread(
-                    self.proxmox.nodes(node).qemu(vmid).snapshot.get
-                )
-                data["snapshots"] = snapshots
-            except Exception as e:
-                self.logger.warning(f"Failed to get snapshots for VM {vmid}: {e}")
-                data["snapshots"] = []
+            return diagnostics
 
         except Exception as e:
             self.logger.error(f"Failed to collect VM diagnostics for {vmid}: {e}")
             raise
 
-        return data
+
+    async def _get_vm_status_and_config(self, node: str, vmid: str) -> tuple[dict[str, Any], dict[str, Any]]:
+        """Fetch the VM status and config."""
+        status = await asyncio.to_thread(self.proxmox.nodes(node).qemu(vmid).status.current.get)
+        config = await asyncio.to_thread(self.proxmox.nodes(node).qemu(vmid).config.get)
+        return status, config
+
+
+    async def _get_vm_rrd_data(self, node: str, vmid: str) -> dict[str, Any] | None:
+        """Fetch VM performance metrics."""
+        try:
+            return await asyncio.to_thread(
+                self.proxmox.nodes(node).qemu(vmid).rrd.get, timeframe="hour"
+            )
+        except Exception as e:
+            self.logger.warning(f"Failed to get performance metrics for VM {vmid}: {e}")
+            return None
+
+
+    async def _get_guest_agent_info(self, node: str, vmid: str) -> dict[str, Any] | None:
+        """Fetch VM guest agent info."""
+        try:
+            return await asyncio.to_thread(
+                self.proxmox.nodes(node).qemu(vmid).agent.info.get
+            )
+        except Exception as e:
+            self.logger.debug(f"Guest agent not available for VM {vmid}: {e}")
+            return None
+
+
+    async def _get_vm_snapshots(self, node: str, vmid: str) -> list[dict[str, Any]]:
+        """Fetch VM snapshots."""
+        try:
+            return await asyncio.to_thread(
+                self.proxmox.nodes(node).qemu(vmid).snapshot.get
+            )
+        except Exception as e:
+            self.logger.warning(f"Failed to get snapshots for VM {vmid}: {e}")
+            return []
 
     async def _collect_resource_metrics(self) -> dict[str, Any]:
         """Collect resource utilization metrics for optimization analysis.
