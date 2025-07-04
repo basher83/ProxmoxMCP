@@ -237,7 +237,7 @@ tasks:
     desc: Complete CLAUDE.md quality assurance workflow
     deps:
       - qa:phase1
-      - qa:phase2  
+      - qa:phase2
       - qa:phase3
     cmds:
       - echo "🚀 ProxmoxMCP Quality Assurance Pipeline Complete"
@@ -274,7 +274,7 @@ tasks:
       - echo "📊 ProxmoxMCP QA Status Report"
       - echo "================================"
       - echo "Format check:" && (task format:check > /dev/null 2>&1 && echo "✅ PASS" || echo "❌ FAIL")
-      - echo "Lint check:" && (task lint > /dev/null 2>&1 && echo "✅ PASS" || echo "❌ FAIL") 
+      - echo "Lint check:" && (task lint > /dev/null 2>&1 && echo "✅ PASS" || echo "❌ FAIL")
       - echo "Type check:" && (task type:check > /dev/null 2>&1 && echo "✅ PASS" || echo "❌ FAIL")
       - echo "Tests:" && (task test > /dev/null 2>&1 && echo "✅ PASS" || echo "❌ FAIL")
       - echo "Config:" && (task config:validate > /dev/null 2>&1 && echo "✅ PASS" || echo "❌ FAIL")
