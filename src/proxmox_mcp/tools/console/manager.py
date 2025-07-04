@@ -171,28 +171,34 @@ class VMConsoleManager:
                        - API communication errors occur
         """
         try:
-            self.logger.info(f"Executing command on VM {vmid} (node: {node}): {command}")
+            self._log_command_start(node, vmid, command)
 
-            # Validate VM state
             self._validate_vm_for_execution(node, vmid)
 
-            # Execute command via QEMU guest agent
             pid = await self._execute_command_via_agent(node, vmid, command)
 
-            # Get command results
-            console = await self._get_command_results(node, vmid, pid)
+            console_output = await self._get_command_results(node, vmid, pid)
 
-            # Process and format response
-            result = self._process_command_response(console)
+            result = self._process_command_response(console_output)
 
-            self.logger.debug(f"Executed command '{command}' on VM {vmid} (node: {node})")
+            self._log_command_success(node, vmid, command)
+
             return result
 
         except ValueError:
-            # Re-raise ValueError for VM not running
             raise
         except Exception as e:
-            self.logger.error(f"Failed to execute command on VM {vmid}: {str(e)}")
-            if "not found" in str(e).lower():
-                raise ValueError(f"VM {vmid} not found on node {node}") from e
-            raise RuntimeError(f"Failed to execute command: {str(e)}") from e
+            self._handle_command_exception(e, node, vmid)
+
+    def _log_command_start(self, node: str, vmid: str, command: str) -> None:
+        self.logger.info(f"Executing command on VM {vmid} (node: {node}): {command}")
+
+    def _log_command_success(self, node: str, vmid: str, command: str) -> None:
+
+        self.logger.debug(f"Executed command '{command}' on VM {vmid} (node: {node})")
+
+    def _handle_command_exception(self, e: Exception, node: str, vmid: str) -> None:
+        self.logger.error(f"Failed to execute command on VM {vmid}: {str(e)}")
+        if "not found" in str(e).lower():
+            raise ValueError(f"VM {vmid} not found on node {node}") from e
+        raise RuntimeError(f"Failed to execute command: {str(e)}") from e
