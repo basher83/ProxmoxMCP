@@ -128,26 +128,7 @@ The `example.gitconfig` file contains optimized settings for this project includ
 
 4. Edit `proxmox-config/config.json`:
 
-    ```json
-    {
-        "proxmox": {
-            "host": "PROXMOX_HOST",        # Required: Your Proxmox server address
-            "port": 8006,                  # Optional: Default is 8006
-            "verify_ssl": true,            # Optional: Set false only for self-signed certs
-            "service": "PVE"               # Optional: Default is PVE
-        },
-        "auth": {
-            "user": "USER@pve",            # Required: Your Proxmox username
-            "token_name": "TOKEN_NAME",    # Required: API token ID
-            "token_value": "TOKEN_VALUE"   # Required: API token value
-        },
-        "logging": {
-            "level": "INFO",               # Optional: DEBUG for more detail
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-            "file": "proxmox_mcp.log"      # Optional: Log to file
-        }
-    }
-    ```
+  ![config.json](graphics/config.json.png)
 
 #### Verifying Installation
 
@@ -221,31 +202,7 @@ python -m proxmox_mcp.server
 
 For Cline users, add this configuration to your MCP settings file (typically at `~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`):
 
-```json
-{
-  "mcpServers": {
-    "github.com/basher83/ProxmoxMCP": {
-      "command": "/absolute/path/to/ProxmoxMCP/.venv/bin/python",
-      "args": ["-m", "proxmox_mcp.server"],
-      "cwd": "/absolute/path/to/ProxmoxMCP",
-      "env": {
-        "PYTHONPATH": "/absolute/path/to/ProxmoxMCP/src",
-        "PROXMOX_MCP_CONFIG": "/absolute/path/to/ProxmoxMCP/proxmox-config/config.json",
-        "PROXMOX_HOST": "your-proxmox-host",
-        "PROXMOX_USER": "username@pve",
-        "PROXMOX_TOKEN_NAME": "token-name",
-        "PROXMOX_TOKEN_VALUE": "token-value",
-        "PROXMOX_PORT": "8006",
-        "PROXMOX_VERIFY_SSL": "false",
-        "PROXMOX_SERVICE": "PVE",
-        "LOG_LEVEL": "DEBUG"
-      },
-      "disabled": false,
-      "autoApprove": []
-    }
-  }
-}
-```
+ ![cline_mcp_settings.json](graphics/cline_mcp_settings.json.png)
 
 To help generate the correct paths, you can use this command:
 
@@ -285,21 +242,7 @@ Lists all nodes in the Proxmox cluster.
 - Parameters: None
 - Example Response:
 
-  ```text
-  🖥️ Proxmox Nodes
-
-  🖥️ pve-compute-01
-    • Status: ONLINE
-    • Uptime: ⏳ 156d 12h
-    • CPU Cores: 64
-    • Memory: 186.5 GB / 512.0 GB (36.4%)
-
-  🖥️ pve-compute-02
-    • Status: ONLINE
-    • Uptime: ⏳ 156d 11h
-    • CPU Cores: 64
-    • Memory: 201.3 GB / 512.0 GB (39.3%)
-  ```
+  ![get_nodes command output](graphics/get_nodes.png)
 
 ### get_node_status
 
@@ -309,16 +252,7 @@ Get detailed status of a specific node.
   - `node` (string, required): Name of the node
 - Example Response:
 
-  ```text
-  🖥️ Node: pve-compute-01
-    • Status: ONLINE
-    • Uptime: ⏳ 156d 12h
-    • CPU Usage: 42.3%
-    • CPU Cores: 64 (AMD EPYC 7763)
-    • Memory: 186.5 GB / 512.0 GB (36.4%)
-    • Network: ⬆️ 12.8 GB/s ⬇️ 9.2 GB/s
-    • Temperature: 38°C
-  ```
+  ![get_node_status command output](graphics/get_node_status.png)
 
 ### get_vms
 
@@ -327,21 +261,7 @@ List all VMs across the cluster.
 - Parameters: None
 - Example Response:
 
-  ```text
-  🗃️ Virtual Machines
-
-  🗃️ prod-db-master (ID: 100)
-    • Status: RUNNING
-    • Node: pve-compute-01
-    • CPU Cores: 16
-    • Memory: 92.3 GB / 128.0 GB (72.1%)
-
-  🗃️ prod-web-01 (ID: 102)
-    • Status: RUNNING
-    • Node: pve-compute-01
-    • CPU Cores: 8
-    • Memory: 12.8 GB / 32.0 GB (40.0%)
-  ```
+  ![get_vms command output](graphics/get_vms.png)
 
 ### get_storage
 
@@ -350,21 +270,7 @@ List available storage.
 - Parameters: None
 - Example Response:
 
-  ```text
-  💾 Storage Pools
-
-  💾 ceph-prod
-    • Status: ONLINE
-    • Type: rbd
-    • Usage: 12.8 TB / 20.0 TB (64.0%)
-    • IOPS: ⬆️ 15.2k ⬇️ 12.8k
-
-  💾 local-zfs
-    • Status: ONLINE
-    • Type: zfspool
-    • Usage: 3.2 TB / 8.0 TB (40.0%)
-    • IOPS: ⬆️ 42.8k ⬇️ 35.6k
-  ```
+  ![get_storage command output](graphics/get_storage.png)
 
 ### get_cluster_status
 
@@ -373,25 +279,7 @@ Get overall cluster status.
 - Parameters: None
 - Example Response:
 
-  ```text
-  ⚙️ Proxmox Cluster
-
-    • Name: enterprise-cloud
-    • Status: HEALTHY
-    • Quorum: OK
-    • Nodes: 4 ONLINE
-    • Version: 8.1.3
-    • HA Status: ACTIVE
-    • Resources:
-      - Total CPU Cores: 192
-      - Total Memory: 1536 GB
-      - Total Storage: 70 TB
-    • Workload:
-      - Running VMs: 7
-      - Total VMs: 8
-      - Average CPU Usage: 38.6%
-      - Average Memory Usage: 42.8%
-  ```
+  ![get_cluster_status command output](graphics/get_cluster_status.png)
 
 ### execute_vm_command
 
@@ -403,18 +291,7 @@ Execute a command in a VM's console using QEMU Guest Agent.
   - `command` (string, required): Command to execute
 - Example Response:
 
-  ```text
-  🔧 Console Command Result
-    • Status: SUCCESS
-    • Command: systemctl status nginx
-    • Node: pve-compute-01
-    • VM: prod-web-01 (ID: 102)
-
-  Output:
-  ● nginx.service - A high performance web server and a reverse proxy server
-     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
-     Active: active (running) since Tue 2025-02-18 15:23:45 UTC; 2 months 3 days ago
-  ```
+  ![execute_vm_command output](graphics/execute_vm_command.png)
 
 - Requirements:
   - VM must be running
@@ -465,20 +342,13 @@ You may also set other environment variables as needed (see the [Cline Desktop I
 
 3. **Set the required environment variable** at runtime. You can do this by editing the `docker-compose.yml` file:
 
-   ```yaml
-   environment:
-     PROXMOX_MCP_CONFIG: /app/proxmox-config/config.json
-   ```
+ ![volumes](graphics/environment.png)
 
    Or by using an `.env` file and uncommenting the `env_file` line in the compose file.
 
 4. **(Optional) Mount volumes** if you want to persist configuration or logs:
 
-   ```yaml
-   volumes:
-     - ./proxmox-config:/app/proxmox-config
-     - ./logs:/app/logs
-   ```
+ ![volumes](graphics/volumes.png)
 
 #### Ports
 
@@ -517,6 +387,7 @@ See [Testing Workflow Documentation](docs/testing-workflow.md) for comprehensive
 This project includes Claude Code hooks for automated quality checks and security validation. The hooks are automatically enabled through the project-level settings in `.claude/settings.json`.
 
 **Features:**
+
 - **Security validation**: Blocks dangerous commands and warns about credential exposure
 - **Auto-formatting**: Automatically runs Black and Ruff fixes after code edits
 - **Markdown linting**: Validates markdown files using `.markdownlint.jsonc` configuration
@@ -525,6 +396,7 @@ This project includes Claude Code hooks for automated quality checks and securit
 - **Session summaries**: Provides end-of-session reports with recommendations
 
 **Hook Types:**
+
 - `PreToolUse`: Security checks before running commands
 - `PostToolUse`: Auto-formatting and validation after edits
 - `Notification`: Desktop and terminal notifications
