@@ -128,47 +128,41 @@ class VMConsoleManager:
         }
 
     async def execute_command(self, node: str, vmid: str, command: str) -> dict[str, Any]:
-        """Execute a command in a VM's console via QEMU guest agent.
+        """
+        Execute a shell command in a VM via the QEMU guest agent.
 
-        Implements a two-phase command execution process:
-        1. Command Initiation:
-           - Verifies VM exists and is running
-           - Initiates command execution via guest agent
-           - Captures command PID for tracking
+        This method performs two main phases:
+        1. **Initiation**:
+           - Validates that the VM exists and is running.
+           - Uses the guest agent to start the command.
+           - Captures the command's PID for tracking.
 
-        2. Result Collection:
-           - Monitors command execution status
-           - Captures command output and errors
-           - Handles completion status
+        2. **Result Collection**:
+           - Polls the guest agent for command status and output.
+           - Collects stdout, stderr, and exit code.
 
-        Requirements:
-        - VM must be running
-        - QEMU guest agent must be installed and active
-        - Command execution permissions must be enabled
+        **Requirements**:
+        - VM must be powered on.
+        - QEMU guest agent must be installed and running.
+        - Sufficient permissions for command execution.
 
         Args:
-            node: Name of the node where VM is running (e.g., 'pve1')
-            vmid: ID of the VM to execute command in (e.g., '100')
-            command: Shell command to execute in the VM
+            node (str): Name of the Proxmox node (e.g., "pve1").
+            vmid (str): ID of the target VM (e.g., "100").
+            command (str): Shell command to run inside the VM.
 
         Returns:
-            Dictionary containing command execution results:
-            {
-                "success": true/false,
-                "output": "command output",
-                "error": "error output if any",
-                "exit_code": command_exit_code
-            }
+            dict[str, Any]: Result of the command execution:
+                {
+                    "success": bool,
+                    "output": str,
+                    "error": str,
+                    "exit_code": int
+                }
 
         Raises:
-            ValueError: If:
-                     - VM is not found
-                     - VM is not running
-                     - Guest agent is not available
-            RuntimeError: If:
-                       - Command execution fails
-                       - Unable to get command status
-                       - API communication errors occur
+            ValueError: If VM is not found, not running, or agent is unavailable.
+            RuntimeError: If command execution or status retrieval fails.
         """
         try:
             self._log_command_start(node, vmid, command)
