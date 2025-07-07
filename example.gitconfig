@@ -1,4 +1,5 @@
 [safe]
+        # Update this path to your repository location
         directory = /workspaces/ProxmoxMCP
 [core]
         editor = vscode

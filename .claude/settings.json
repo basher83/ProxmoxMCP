@@ -1,0 +1,92 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'mkdir -p $(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/logs && echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Running command: $CLAUDE_TOOL_ARGUMENTS\" >> $(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/logs/commands.log'"
+          },
+          {
+            "type": "command",
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/pre-bash-security-check.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/pre-code-quality-check.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "TodoWrite",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'mkdir -p $(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/logs && echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")] Todo list updated\" >> $(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/logs/todos.log'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/post-bash-validation.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/post-edit-format.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/post-markdown-lint.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "pytest|mypy|black|ruff",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/post-quality-report.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/notification-handler.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $(git rev-parse --show-toplevel 2>/dev/null || pwd)/scripts/hooks/session-summary.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
