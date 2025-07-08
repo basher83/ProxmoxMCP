@@ -188,7 +188,6 @@ class VMConsoleManager:
         self.logger.info(f"Executing command on VM {vmid} (node: {node}): {command}")
 
     def _log_command_success(self, node: str, vmid: str, command: str) -> None:
-
         self.logger.debug(f"Executed command '{command}' on VM {vmid} (node: {node})")
 
     def _handle_command_exception(self, e: Exception, node: str, vmid: str) -> None:
