@@ -108,10 +108,9 @@ section-order = ["future", "standard-library", "third-party", "first-party", "lo
 split-on-trailing-comma = true
 
 
-[[tool.uv.index]]
-name = "safety"
-url = "https://pkgs.safetycli.com/repository/the-mothership/project/proxmoxmcp/pypi/simple/"
-default = false
+# Removed problematic safety index configuration that was causing dependency resolution failures
+# The custom safety index URL was unreachable and breaking CI dependency installation
+
 [dependency-groups]
 dev = [
     "ruff>=0.1.15",
