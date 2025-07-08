@@ -57,7 +57,9 @@ class TestTokenEncryption:
             assert encryptor._master_key not in printed_text
 
         # Verify security messaging is included
-        printed_messages = [str(call[0][0]) for call in mock_print.call_args_list if call[0]]
+        printed_messages = [
+            str(call[0][0]) for call in mock_print.call_args_list if call[0]
+        ]
         security_message_found = any(
             "SECURITY" in msg or "security" in msg for msg in printed_messages
         )

@@ -29,7 +29,9 @@ try:
     CLAUDE_SDK_AVAILABLE = True
 except ImportError:
     CLAUDE_SDK_AVAILABLE = False
-    logging.warning("Claude Code SDK not available. AI diagnostic features will be disabled.")
+    logging.warning(
+        "Claude Code SDK not available. AI diagnostic features will be disabled."
+    )
 
 
 class AIProxmoxDiagnostics(ProxmoxTool):
@@ -193,7 +195,7 @@ class AIProxmoxDiagnostics(ProxmoxTool):
 
         ---
         💡 **Diagnostic powered by Claude Code SDK with Proxmox expertise**
-        🔍 **VM Configuration**: Review VM configuration file for additional optimization opportunities
+        🔍 **VM Configuration**: Review VM configuration file for optimization opportunities
         ⚠️  **Safety**: Test configuration changes in a non-production environment first
         """
 
@@ -221,7 +223,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
                 return await self._basic_vm_analysis(vm_data, node, vmid)
 
             # Prepare AI diagnosis prompt
-            diagnosis_prompt = await self._prepare_vm_diagnosis_prompt(vmid, node, vm_data)
+            diagnosis_prompt = await self._prepare_vm_diagnosis_prompt(
+                vmid, node, vm_data
+            )
 
             # Get AI analysis
             ai_response = await self._query_claude(diagnosis_prompt)
@@ -242,7 +246,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
                 )
             ]
 
-    def _prepare_resource_optimization_prompt(self, resource_data: dict[str, Any]) -> str:
+    def _prepare_resource_optimization_prompt(
+        self, resource_data: dict[str, Any]
+    ) -> str:
         """Prepare the AI optimization prompt for resource analysis."""
         return f"""
         Analyze this Proxmox resource utilization data and suggest optimizations:
@@ -309,7 +315,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
                 return await self._basic_resource_analysis(resource_data)
 
             # Prepare optimization prompt
-            optimization_prompt = self._prepare_resource_optimization_prompt(resource_data)
+            optimization_prompt = self._prepare_resource_optimization_prompt(
+                resource_data
+            )
 
             # Get AI analysis
             ai_response = await self._query_claude(optimization_prompt)
@@ -404,7 +412,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
             ai_response = await self._query_claude(security_prompt)
 
             # Format the response
-            formatted_response = self._format_security_analysis_response(security_data, ai_response)
+            formatted_response = self._format_security_analysis_response(
+                security_data, ai_response
+            )
 
             return [Content(type="text", text=formatted_response)]
 
@@ -443,7 +453,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
             self.logger.error(f"Claude Code SDK query failed: {e}")
             raise RuntimeError(f"AI analysis failed: {e}") from e
 
-    def _collect_node_metrics(self, nodes: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def _collect_node_metrics(
+        self, nodes: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
         """Collect metrics for all nodes."""
         node_data = []
         for node in nodes:
@@ -462,7 +474,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
                     }
                 )
             except Exception as e:
-                self.logger.warning(f"Failed to get status for node {node['node']}: {e}")
+                self.logger.warning(
+                    f"Failed to get status for node {node['node']}: {e}"
+                )
                 node_data.append(
                     {
                         "name": node["node"],
@@ -541,7 +555,7 @@ class AIProxmoxDiagnostics(ProxmoxTool):
         """Collect detailed VM diagnostic data."""
         try:
             status, config = await self._get_vm_status_and_config(node, vmid)
-            diagnostics = {
+            diagnostics: dict[str, Any] = {
                 "status": status,
                 "config": config,
                 "performance_metrics": None,
@@ -550,8 +564,12 @@ class AIProxmoxDiagnostics(ProxmoxTool):
             }
 
             if status.get("status") == "running":
-                diagnostics["performance_metrics"] = await self._get_vm_rrd_data(node, vmid)
-                diagnostics["guest_agent"] = await self._get_guest_agent_info(node, vmid)
+                diagnostics["performance_metrics"] = await self._get_vm_rrd_data(
+                    node, vmid
+                )
+                diagnostics["guest_agent"] = await self._get_guest_agent_info(
+                    node, vmid
+                )
 
             diagnostics["snapshots"] = await self._get_vm_snapshots(node, vmid)
 
@@ -565,7 +583,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
         self, node: str, vmid: str
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Fetch the VM status and config."""
-        status = await asyncio.to_thread(self.proxmox.nodes(node).qemu(vmid).status.current.get)
+        status = await asyncio.to_thread(
+            self.proxmox.nodes(node).qemu(vmid).status.current.get
+        )
         config = await asyncio.to_thread(self.proxmox.nodes(node).qemu(vmid).config.get)
         return status, config
 
@@ -579,10 +599,14 @@ class AIProxmoxDiagnostics(ProxmoxTool):
             self.logger.warning(f"Failed to get performance metrics for VM {vmid}: {e}")
             return None
 
-    async def _get_guest_agent_info(self, node: str, vmid: str) -> dict[str, Any] | None:
+    async def _get_guest_agent_info(
+        self, node: str, vmid: str
+    ) -> dict[str, Any] | None:
         """Fetch VM guest agent info."""
         try:
-            return await asyncio.to_thread(self.proxmox.nodes(node).qemu(vmid).agent.info.get)
+            return await asyncio.to_thread(
+                self.proxmox.nodes(node).qemu(vmid).agent.info.get
+            )
         except Exception as e:
             self.logger.debug(f"Guest agent not available for VM {vmid}: {e}")
             return None
@@ -590,7 +614,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
     async def _get_vm_snapshots(self, node: str, vmid: str) -> list[dict[str, Any]]:
         """Fetch VM snapshots."""
         try:
-            return await asyncio.to_thread(self.proxmox.nodes(node).qemu(vmid).snapshot.get)
+            return await asyncio.to_thread(
+                self.proxmox.nodes(node).qemu(vmid).snapshot.get
+            )
         except Exception as e:
             self.logger.warning(f"Failed to get snapshots for VM {vmid}: {e}")
             return []
@@ -630,7 +656,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
                 (used_memory / total_memory * 100) if total_memory > 0 else 0
             ),
             "total_vms": len(data.get("vms", [])),
-            "running_vms": len([vm for vm in data.get("vms", []) if vm.get("status") == "running"]),
+            "running_vms": len(
+                [vm for vm in data.get("vms", []) if vm.get("status") == "running"]
+            ),
         }
 
         return data
@@ -653,7 +681,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
 
         # Get datacenter configuration
         try:
-            datacenter_config = await asyncio.to_thread(self.proxmox.cluster.datacenter.get)
+            datacenter_config = await asyncio.to_thread(
+                self.proxmox.cluster.datacenter.get
+            )
             data["datacenter_config"] = datacenter_config
         except Exception as e:
             self.logger.warning(f"Failed to get datacenter configuration: {e}")
@@ -661,7 +691,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
 
         # Get firewall configuration if available
         try:
-            firewall_options = await asyncio.to_thread(self.proxmox.cluster.firewall.options.get)
+            firewall_options = await asyncio.to_thread(
+                self.proxmox.cluster.firewall.options.get
+            )
             data["firewall_options"] = firewall_options
         except Exception as e:
             self.logger.warning(f"Failed to get firewall options: {e}")
@@ -677,7 +709,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
 
         return data
 
-    async def _basic_cluster_analysis(self, cluster_data: dict[str, Any]) -> list[Content]:
+    async def _basic_cluster_analysis(
+        self, cluster_data: dict[str, Any]
+    ) -> list[Content]:
         """Provide basic cluster analysis when Claude SDK is unavailable."""
         nodes = cluster_data.get("nodes", [])
         vms = cluster_data.get("vms", [])
@@ -699,7 +733,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
                 memory_info = node.get("memory_usage", {})
                 memory_used = memory_info.get("used", 0)
                 memory_total = memory_info.get("total", 1)
-                memory_percent = (memory_used / memory_total) * 100 if memory_total > 0 else 0
+                memory_percent = (
+                    (memory_used / memory_total) * 100 if memory_total > 0 else 0
+                )
 
                 analysis += (
                     f"- {node['name']}: {node['status']} | "
@@ -744,7 +780,9 @@ class AIProxmoxDiagnostics(ProxmoxTool):
 
         return [Content(type="text", text=analysis)]
 
-    async def _basic_resource_analysis(self, resource_data: dict[str, Any]) -> list[Content]:
+    async def _basic_resource_analysis(
+        self, resource_data: dict[str, Any]
+    ) -> list[Content]:
         """Provide basic resource analysis when Claude SDK is unavailable."""
         summary = resource_data.get("resource_summary", {})
 
@@ -768,7 +806,9 @@ configure Claude Code SDK.
 
         return [Content(type="text", text=analysis)]
 
-    async def _basic_security_analysis(self, security_data: dict[str, Any]) -> list[Content]:
+    async def _basic_security_analysis(
+        self, security_data: dict[str, Any]
+    ) -> list[Content]:
         """Provide basic security analysis when Claude SDK is unavailable."""
         users = security_data.get("users", [])
         firewall = security_data.get("firewall_options", {})

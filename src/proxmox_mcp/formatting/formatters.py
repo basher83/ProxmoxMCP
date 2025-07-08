@@ -53,7 +53,9 @@ class ProxmoxFormatters:
         return f"{ProxmoxTheme.METRICS['uptime']} " + " ".join(parts) if parts else "0m"
 
     @staticmethod
-    def format_percentage(value: float, warning: float = 80.0, critical: float = 90.0) -> str:
+    def format_percentage(
+        value: float, warning: float = 80.0, critical: float = 90.0
+    ) -> str:
         """Format percentage with color based on thresholds.
 
         Args:
