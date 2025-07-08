@@ -15,7 +15,7 @@ The module implements a robust command execution system with:
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 
 class VMConsoleManager:
@@ -54,7 +54,7 @@ class VMConsoleManager:
         """Start command execution via QEMU guest agent and return PID."""
         endpoint = self.proxmox.nodes(node).qemu(vmid).agent
         self.logger.debug(f"Using API endpoint: {endpoint}")
-        
+
         try:
             self.logger.debug(f"Executing command via agent: {command}")
             exec_result = endpoint("exec").post(command=command)
@@ -67,15 +67,18 @@ class VMConsoleManager:
         if "pid" not in exec_result:
             raise RuntimeError("No PID returned from command execution")
 
-        return exec_result["pid"]
+        try:
+            return int(exec_result["pid"])
+        except (TypeError, ValueError) as err:
+            raise RuntimeError(f"Unexpected PID value: {exec_result!r}") from err
 
-    async def _get_command_results(self, node: str, vmid: str, pid: int) -> Dict[str, Any]:
+    async def _get_command_results(self, node: str, vmid: str, pid: int) -> dict[str, Any]:
         """Wait for command completion and get results."""
         import asyncio
-        
+
         self.logger.info(f"Waiting for command completion (PID: {pid})...")
         await asyncio.sleep(1)  # Allow command to complete
-        
+
         endpoint = self.proxmox.nodes(node).qemu(vmid).agent
         try:
             self.logger.debug(f"Getting status for PID {pid}...")
@@ -86,11 +89,13 @@ class VMConsoleManager:
         except Exception as e:
             self.logger.error(f"Failed to get command status: {str(e)}")
             raise RuntimeError(f"Failed to get command status: {str(e)}") from e
-            
+
         self.logger.info(f"Command completed with status: {console}")
+        if not isinstance(console, dict):
+            raise RuntimeError(f"Expected dict response, got {type(console).__name__}: {console!r}")
         return console
 
-    def _process_command_response(self, console: Any) -> Dict[str, Any]:
+    def _process_command_response(self, console: Any) -> dict[str, Any]:
         """Process and format command execution response."""
         self.logger.debug(f"Raw API response type: {type(console)}")
         self.logger.debug(f"Raw API response: {console}")
@@ -122,74 +127,71 @@ class VMConsoleManager:
             "exit_code": exit_code,
         }
 
-    async def execute_command(
-        self, node: str, vmid: str, command: str
-    ) -> Dict[str, Any]:
-        """Execute a command in a VM's console via QEMU guest agent.
+    async def execute_command(self, node: str, vmid: str, command: str) -> dict[str, Any]:
+        """
+        Execute a shell command in a VM via the QEMU guest agent.
 
-        Implements a two-phase command execution process:
-        1. Command Initiation:
-           - Verifies VM exists and is running
-           - Initiates command execution via guest agent
-           - Captures command PID for tracking
+        This method performs two main phases:
+        1. **Initiation**:
+           - Validates that the VM exists and is running.
+           - Uses the guest agent to start the command.
+           - Captures the command's PID for tracking.
 
-        2. Result Collection:
-           - Monitors command execution status
-           - Captures command output and errors
-           - Handles completion status
+        2. **Result Collection**:
+           - Polls the guest agent for command status and output.
+           - Collects stdout, stderr, and exit code.
 
-        Requirements:
-        - VM must be running
-        - QEMU guest agent must be installed and active
-        - Command execution permissions must be enabled
+        **Requirements**:
+        - VM must be powered on.
+        - QEMU guest agent must be installed and running.
+        - Sufficient permissions for command execution.
 
         Args:
-            node: Name of the node where VM is running (e.g., 'pve1')
-            vmid: ID of the VM to execute command in (e.g., '100')
-            command: Shell command to execute in the VM
+            node (str): Name of the Proxmox node (e.g., "pve1").
+            vmid (str): ID of the target VM (e.g., "100").
+            command (str): Shell command to run inside the VM.
 
         Returns:
-            Dictionary containing command execution results:
-            {
-                "success": true/false,
-                "output": "command output",
-                "error": "error output if any",
-                "exit_code": command_exit_code
-            }
+            dict[str, Any]: Result of the command execution:
+                {
+                    "success": bool,
+                    "output": str,
+                    "error": str,
+                    "exit_code": int
+                }
 
         Raises:
-            ValueError: If:
-                     - VM is not found
-                     - VM is not running
-                     - Guest agent is not available
-            RuntimeError: If:
-                       - Command execution fails
-                       - Unable to get command status
-                       - API communication errors occur
+            ValueError: If VM is not found, not running, or agent is unavailable.
+            RuntimeError: If command execution or status retrieval fails.
         """
         try:
-            self.logger.info(f"Executing command on VM {vmid} (node: {node}): {command}")
+            self._log_command_start(node, vmid, command)
 
-            # Validate VM state
             self._validate_vm_for_execution(node, vmid)
 
-            # Execute command via QEMU guest agent
             pid = await self._execute_command_via_agent(node, vmid, command)
 
-            # Get command results
-            console = await self._get_command_results(node, vmid, pid)
+            console_output = await self._get_command_results(node, vmid, pid)
 
-            # Process and format response
-            result = self._process_command_response(console)
+            result = self._process_command_response(console_output)
 
-            self.logger.debug(f"Executed command '{command}' on VM {vmid} (node: {node})")
+            self._log_command_success(node, vmid, command)
+
             return result
 
         except ValueError:
-            # Re-raise ValueError for VM not running
             raise
         except Exception as e:
-            self.logger.error(f"Failed to execute command on VM {vmid}: {str(e)}")
-            if "not found" in str(e).lower():
-                raise ValueError(f"VM {vmid} not found on node {node}") from e
-            raise RuntimeError(f"Failed to execute command: {str(e)}") from e
+            self._handle_command_exception(e, node, vmid)
+
+    def _log_command_start(self, node: str, vmid: str, command: str) -> None:
+        self.logger.info(f"Executing command on VM {vmid} (node: {node}): {command}")
+
+    def _log_command_success(self, node: str, vmid: str, command: str) -> None:
+        self.logger.debug(f"Executed command '{command}' on VM {vmid} (node: {node})")
+
+    def _handle_command_exception(self, e: Exception, node: str, vmid: str) -> None:
+        self.logger.error(f"Failed to execute command on VM {vmid}: {str(e)}")
+        if "not found" in str(e).lower():
+            raise ValueError(f"VM {vmid} not found on node {node}") from e
+        raise RuntimeError(f"Failed to execute command: {str(e)}") from e

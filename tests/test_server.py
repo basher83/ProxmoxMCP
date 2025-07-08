@@ -123,10 +123,13 @@ async def test_get_nodes(server, mock_proxmox):
     response = await server.mcp.call_tool("get_nodes", {})
 
     # The response should be formatted text, not JSON
-    assert len(response) == 1
-    assert "Proxmox Nodes" in response[0].text
-    assert "node1" in response[0].text
-    assert "node2" in response[0].text
+    assert len(response) == 1, f"Expected single response item, got {len(response)}"
+    response_text = response[0].text
+    assert "Proxmox Nodes" in response_text, (
+        f"Expected 'Proxmox Nodes' header not found in: {response_text[:200]}"
+    )
+    assert "node1" in response_text, f"Expected node1 not found in response: {response_text[:200]}"
+    assert "node2" in response_text, f"Expected node2 not found in response: {response_text[:200]}"
 
 
 @pytest.mark.asyncio
@@ -149,17 +152,18 @@ async def test_get_node_status(server, mock_proxmox):
     response = await server.mcp.call_tool("get_node_status", {"node": "node1"})
 
     # The response should be formatted text, not JSON
-    assert len(response) == 1
-    assert "node1" in response[0].text
-    assert "RUNNING" in response[0].text
+    assert len(response) == 1, f"Expected single response item, got {len(response)}"
+    response_text = response[0].text
+    assert "node1" in response_text, f"Expected node1 not found in response: {response_text[:200]}"
+    assert "RUNNING" in response_text, (
+        f"Expected RUNNING status not found in response: {response_text[:200]}"
+    )
 
 
 @pytest.mark.asyncio
 async def test_get_vms(server, mock_proxmox):
     """Test get_vms tool."""
-    mock_proxmox.return_value.nodes.get.return_value = [
-        {"node": "node1", "status": "online"}
-    ]
+    mock_proxmox.return_value.nodes.get.return_value = [{"node": "node1", "status": "online"}]
     mock_proxmox.return_value.nodes.return_value.qemu.get.return_value = [
         {
             "vmid": "100",
@@ -188,18 +192,19 @@ async def test_get_vms(server, mock_proxmox):
     response = await server.mcp.call_tool("get_vms", {})
 
     # The response should be formatted text, not JSON
-    assert len(response) == 1
-    assert "Virtual Machines" in response[0].text
-    assert "vm1" in response[0].text
-    assert "vm2" in response[0].text
+    assert len(response) == 1, f"Expected single response item, got {len(response)}"
+    response_text = response[0].text
+    assert "Virtual Machines" in response_text, (
+        f"Expected 'Virtual Machines' header not found in: {response_text[:200]}"
+    )
+    assert "vm1" in response_text, f"Expected vm1 not found in response: {response_text[:200]}"
+    assert "vm2" in response_text, f"Expected vm2 not found in response: {response_text[:200]}"
 
 
 @pytest.mark.asyncio
 async def test_get_containers(server, mock_proxmox):
     """Test get_containers tool."""
-    mock_proxmox.return_value.nodes.get.return_value = [
-        {"node": "node1", "status": "online"}
-    ]
+    mock_proxmox.return_value.nodes.get.return_value = [{"node": "node1", "status": "online"}]
     mock_proxmox.return_value.nodes.return_value.lxc.get.return_value = [
         {
             "vmid": "200",
@@ -228,10 +233,17 @@ async def test_get_containers(server, mock_proxmox):
     response = await server.mcp.call_tool("get_containers", {})
 
     # The response should be formatted text, not JSON
-    assert len(response) == 1
-    assert "Containers" in response[0].text
-    assert "container1" in response[0].text
-    assert "container2" in response[0].text
+    assert len(response) == 1, f"Expected single response item, got {len(response)}"
+    response_text = response[0].text
+    assert "Containers" in response_text, (
+        f"Expected 'Containers' header not found in: {response_text[:200]}"
+    )
+    assert "container1" in response_text, (
+        f"Expected container1 not found in response: {response_text[:200]}"
+    )
+    assert "container2" in response_text, (
+        f"Expected container2 not found in response: {response_text[:200]}"
+    )
 
 
 @pytest.mark.asyncio
@@ -261,10 +273,17 @@ async def test_get_storage(server, mock_proxmox):
     response = await server.mcp.call_tool("get_storage", {})
 
     # The response should be formatted text, not JSON
-    assert len(response) == 1
-    assert "Storage Pools" in response[0].text
-    assert "local" in response[0].text
-    assert "ceph" in response[0].text
+    assert len(response) == 1, f"Expected single response item, got {len(response)}"
+    response_text = response[0].text
+    assert "Storage Pools" in response_text, (
+        f"Expected 'Storage Pools' header not found in: {response_text[:200]}"
+    )
+    assert "local" in response_text, (
+        f"Expected 'local' storage not found in response: {response_text[:200]}"
+    )
+    assert "ceph" in response_text, (
+        f"Expected 'ceph' storage not found in response: {response_text[:200]}"
+    )
 
 
 @pytest.mark.asyncio
@@ -279,9 +298,14 @@ async def test_get_cluster_status(server, mock_proxmox):
     response = await server.mcp.call_tool("get_cluster_status", {})
 
     # The response should be formatted text, not JSON
-    assert len(response) == 1
-    assert "Cluster" in response[0].text
-    assert "test-cluster" in response[0].text
+    assert len(response) == 1, f"Expected single response item, got {len(response)}"
+    response_text = response[0].text
+    assert "Cluster" in response_text, (
+        f"Expected 'Cluster' header not found in: {response_text[:200]}"
+    )
+    assert "test-cluster" in response_text, (
+        f"Expected 'test-cluster' name not found in response: {response_text[:200]}"
+    )
 
 
 @pytest.mark.asyncio
@@ -309,8 +333,11 @@ async def test_execute_vm_command_success(server, mock_proxmox):
     )
 
     # The response should be formatted text, not JSON
-    assert len(response) == 1
-    assert "Command Output" in response[0].text or "command output" in response[0].text
+    assert len(response) == 1, f"Expected single response item, got {len(response)}"
+    response_text_lower = response[0].text.lower()
+    assert "command output" in response_text_lower, (
+        f"Expected 'command output' not found in response: {response[0].text[:200]}"
+    )
 
 
 @pytest.mark.asyncio
@@ -358,7 +385,8 @@ async def test_execute_vm_command_with_error(server, mock_proxmox):
     )
 
     # The response should be formatted text, not JSON
-    assert len(response) == 1
-    assert (
-        "Command Output" in response[0].text or "command not found" in response[0].text
+    assert len(response) == 1, f"Expected single response item, got {len(response)}"
+    response_text_lower = response[0].text.lower()
+    assert "command not found" in response_text_lower, (
+        f"Expected 'command not found' in error response: {response[0].text[:200]}"
     )
