@@ -53,9 +53,9 @@ class TestSecureKeyGeneration:
         written_key = mock_write_text.call_args[0][0]
         # Key should be base64 encoded string, not prefixed with PROXMOX_MCP_MASTER_KEY=
         assert len(written_key) > 0, "Key should be written"
-        assert not written_key.startswith(
-            "PROXMOX_MCP_MASTER_KEY="
-        ), "Key should be stored without prefix"
+        assert not written_key.startswith("PROXMOX_MCP_MASTER_KEY="), (
+            "Key should be stored without prefix"
+        )
 
         # Verify file permissions were set to 600 (owner read/write only)
         mock_chmod.assert_called_once_with(0o600)
@@ -129,9 +129,9 @@ class TestSecureKeyGeneration:
 
         # Verify that no actual key value appears in the output
         # The key should only be written to file, not displayed
-        assert (
-            "PROXMOX_MCP_MASTER_KEY=AAAA" not in all_output
-        ), "Actual key values should not appear in output"
+        assert "PROXMOX_MCP_MASTER_KEY=AAAA" not in all_output, (
+            "Actual key values should not appear in output"
+        )
 
         # The only reference should be in the export command template
         export_commands = [

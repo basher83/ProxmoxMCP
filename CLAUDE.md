@@ -7,9 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - memory workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/memory-instructions.md
 - context workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/context-instructions.md
 - github workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/github-instructions.md
-- issue creation workflow 
+- issue creation workflow
   @/workspaces/ProxmoxMCP/docs/ai-instructions/issue-creation-instructions.md
-- issue resolution workflow 
+- issue resolution workflow
   @/workspaces/ProxmoxMCP/docs/ai-instructions/issue-resolution-instructions.md
 - pr workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/pr-instructions.md
 - milestone workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/milestone-instructions.md
@@ -37,9 +37,9 @@ uv pip install -e ".[dev]"
 
 #### Standardized Quality Assurance Workflow
 
-The ProxmoxMCP project uses a comprehensive, standardized quality assurance workflow that 
+The ProxmoxMCP project uses a comprehensive, standardized quality assurance workflow that
 must be
-followed for all code changes. This workflow includes automated checks, error recovery 
+followed for all code changes. This workflow includes automated checks, error recovery
 procedures, and
 ProxmoxMCP-specific validations.
 
@@ -332,23 +332,23 @@ echo "🚀 Starting ProxmoxMCP Quality Assurance Pipeline"
 # Phase 1: Core Quality Checks
 echo "📋 Phase 1: Core Quality Checks"
 echo "Running pytest..."
-pytest || { 
-    echo "❌ Tests failed - run 'pytest -v' for details"; exit 1; 
+pytest || {
+    echo "❌ Tests failed - run 'pytest -v' for details"; exit 1;
 }
 
 echo "Running ruff formatter..."
 ruff format . || { echo "❌ Formatting failed"; exit 1; }
 
 echo "Running mypy type checker..."
-mypy . || { 
-    echo "❌ Type checking failed - run 'mypy . --show-error-codes' for details"; 
-    exit 1; 
+mypy . || {
+    echo "❌ Type checking failed - run 'mypy . --show-error-codes' for details";
+    exit 1;
 }
 
 echo "Running ruff linter..."
-ruff check . || { 
-    echo "❌ Linting failed - run 'ruff check . --show-fixes' for details"; 
-    exit 1; 
+ruff check . || {
+    echo "❌ Linting failed - run 'ruff check . --show-fixes' for details";
+    exit 1;
 }
 
 # Phase 2: ProxmoxMCP Validation
@@ -595,7 +595,7 @@ cp proxmox-config/config.example.json proxmox-config/config.json
 ### Configuration Requirements
 
 - Requires `PROXMOX_MCP_CONFIG` environment variable pointing to config JSON file
-- Config must include Proxmox connection details (host, port, SSL settings) and 
+- Config must include Proxmox connection details (host, port, SSL settings) and
   authentication (user, token_name, token_value)
 - Supports both file-based and environment variable configuration
 
@@ -715,7 +715,7 @@ import os
 class SecureConfig(BaseModel):
     proxmox_host: str = Field(..., env="PROXMOX_HOST")
     api_token: str = Field(..., env="PROXMOX_API_TOKEN")
-    
+
     class Config:
         # Never log sensitive fields
         json_encoders = {
@@ -733,20 +733,20 @@ from urllib3.util.retry import Retry
 
 def create_secure_session():
     session = requests.Session()
-    
+
     # Configure retries and timeouts
     retry_strategy = Retry(
         total=3,
         backoff_factor=1,
         status_forcelist=[429, 500, 502, 503, 504],
     )
-    
+
     adapter = HTTPAdapter(max_retries=retry_strategy)
     session.mount("https://", adapter)
-    
+
     # Always verify SSL certificates
     session.verify = True
-    
+
     return session
 ```
 
@@ -761,13 +761,13 @@ def execute_vm_command(vm_id: int, command: List[str]) -> dict:
     # Validate VM ID
     if not isinstance(vm_id, int) or vm_id < 1:
         raise ValueError("Invalid VM ID")
-    
+
     # Use list form to prevent injection
     safe_command = [str(arg) for arg in command]
-    
+
     # Log command execution (without sensitive data)
     logger.info(f"Executing command on VM {vm_id}: {safe_command[0]}")
-    
+
     # Execute with proxmox API
     return proxmox_api.execute_command(vm_id, safe_command)
 ```
