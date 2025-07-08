@@ -44,7 +44,6 @@ dev = [
     "pytest-cov>=4.0.0,<7.0.0",
 
     # Code formatting and linting
-    "black>=23.0.0,<26.0.0",
     "ruff>=0.1.0,<0.13.0",
 
     # Type checking

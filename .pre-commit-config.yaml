@@ -6,15 +6,7 @@ default_language_version:
   python: python3.13
 
 repos:
-  # Code formatting (addresses trailing whitespace, style issues)
-  - repo: https://github.com/psf/black
-    rev: 24.10.0
-    hooks:
-      - id: black
-        language_version: python3.13
-        args: [--line-length=88]
-
-  # Linting and import sorting (addresses code style)
+  # Linting and formatting (addresses code style, import sorting, and formatting)
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.2
     hooks:

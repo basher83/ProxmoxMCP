@@ -74,9 +74,7 @@ class TestSecureKeyGeneration:
             for call in printed_calls
             if "PROXMOX_MCP_MASTER_KEY=" in call and "$(cat" not in call
         ]
-        assert (
-            len(key_displays) == 0
-        ), "Raw key should NOT be displayed in console output"
+        assert len(key_displays) == 0, "Raw key should NOT be displayed in console output"
 
     @patch("pathlib.Path.write_text")
     @patch("pathlib.Path.chmod")
@@ -104,9 +102,7 @@ class TestSecureKeyGeneration:
 
         # Verify error message was displayed
         printed_calls = [str(call) for call in mock_print.call_args_list]
-        error_messages = [
-            call for call in printed_calls if "Error saving key file" in call
-        ]
+        error_messages = [call for call in printed_calls if "Error saving key file" in call]
         assert len(error_messages) > 0
 
     @patch("pathlib.Path.write_text")
@@ -139,9 +135,7 @@ class TestSecureKeyGeneration:
 
         # The only reference should be in the export command template
         export_commands = [
-            call
-            for call in printed_calls
-            if "export PROXMOX_MCP_MASTER_KEY=$(cat" in call
+            call for call in printed_calls if "export PROXMOX_MCP_MASTER_KEY=$(cat" in call
         ]
         assert len(export_commands) == 1, "Should show export command template"
 
@@ -205,9 +199,7 @@ class TestKeyRotation:
         # Create test config with encrypted token
         master_key = TokenEncryption.generate_master_key()
         encryptor = TokenEncryption(master_key=master_key)
-        encrypted_token = encryptor.encrypt_token(
-            "test-token"
-        )  # nosec: test credential
+        encrypted_token = encryptor.encrypt_token("test-token")  # nosec: test credential
 
         test_config = {"auth": {"token_value": encrypted_token}}
 
@@ -227,9 +219,7 @@ class TestKeyRotation:
 
     def test_verify_config_decryption_with_plain_token(self) -> None:
         """Test config decryption verification with plain text token."""
-        test_config = {
-            "auth": {"token_value": "plain-text-token"}
-        }  # nosec: test credential
+        test_config = {"auth": {"token_value": "plain-text-token"}}  # nosec: test credential
 
         with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
             json.dump(test_config, f)
@@ -278,9 +268,7 @@ class TestKeyRotation:
         # Create config with token encrypted with different key
         actual_key = TokenEncryption.generate_master_key()
         encryptor = TokenEncryption(master_key=actual_key)
-        encrypted_token = encryptor.encrypt_token(
-            "test-token"
-        )  # nosec: test credential
+        encrypted_token = encryptor.encrypt_token("test-token")  # nosec: test credential
 
         test_config = {"auth": {"token_value": encrypted_token}}
 
@@ -299,9 +287,7 @@ class TestKeyRotation:
         # Create original key and encrypted config
         old_key = TokenEncryption.generate_master_key()
         old_encryptor = TokenEncryption(master_key=old_key)
-        encrypted_token = old_encryptor.encrypt_token(
-            "test-token-value"
-        )  # nosec: test credential
+        encrypted_token = old_encryptor.encrypt_token("test-token-value")  # nosec: test credential
 
         test_config = {"auth": {"token_value": encrypted_token}, "other": "data"}
 
@@ -422,9 +408,7 @@ class TestKeyRotation:
 
                 # Verify backups were created for rotated configs
                 backup_files = [f for f in os.listdir(temp_dir) if ".backup." in f]
-                assert (
-                    len(backup_files) == 2
-                )  # Only encrypted configs should have backups
+                assert len(backup_files) == 2  # Only encrypted configs should have backups
 
     def test_rotate_master_key_all_no_configs(self) -> None:
         """Test bulk rotation with no configuration files."""
@@ -490,9 +474,7 @@ class TestTerminalClearing:
         # Should either have ANSI escape or fallback newlines
         ansi_calls = [call for call in printed_calls if "\\033[2J\\033[H" in call]
         newline_calls = [call for call in printed_calls if "\\n" * 10 in call]
-        assert (
-            len(ansi_calls) > 0 or len(newline_calls) > 0
-        ), "Terminal should be cleared"
+        assert len(ansi_calls) > 0 or len(newline_calls) > 0, "Terminal should be cleared"
 
         # Verify success message was printed
         success_messages = [
@@ -518,9 +500,7 @@ class TestTerminalClearing:
 
         # Verify manual instruction was printed
         printed_calls = [str(call) for call in mock_print.call_args_list]
-        manual_instructions = [
-            call for call in printed_calls if "clear terminal manually" in call
-        ]
+        manual_instructions = [call for call in printed_calls if "clear terminal manually" in call]
         assert len(manual_instructions) > 0
 
         # Verify no ANSI escape sequence was printed
@@ -602,15 +582,11 @@ class TestTerminalClearing:
 
         # Verify error message was printed
         printed_calls = [str(call) for call in mock_print.call_args_list]
-        error_messages = [
-            call for call in printed_calls if "Could not clear terminal" in call
-        ]
+        error_messages = [call for call in printed_calls if "Could not clear terminal" in call]
         assert len(error_messages) > 0
 
         # Verify manual instruction was printed
-        manual_instructions = [
-            call for call in printed_calls if "clear terminal manually" in call
-        ]
+        manual_instructions = [call for call in printed_calls if "clear terminal manually" in call]
         assert len(manual_instructions) > 0
 
     @patch("proxmox_mcp.utils.encrypt_config.clear_terminal_if_requested")
@@ -646,9 +622,7 @@ class TestTerminalClearing:
             # Check that terminal clearing message was printed
             printed_calls = [str(call) for call in mock_print.call_args_list]
             success_messages = [
-                call
-                for call in printed_calls
-                if "Terminal cleared for security" in call
+                call for call in printed_calls if "Terminal cleared for security" in call
             ]
             assert len(success_messages) > 0
 
@@ -676,9 +650,7 @@ class TestTerminalClearing:
             # Check that terminal clearing message was printed
             printed_calls = [str(call) for call in mock_print.call_args_list]
             success_messages = [
-                call
-                for call in printed_calls
-                if "Terminal cleared for security" in call
+                call for call in printed_calls if "Terminal cleared for security" in call
             ]
             assert len(success_messages) > 0
 

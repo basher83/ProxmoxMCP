@@ -84,9 +84,9 @@ tasks:
 
   # Python code quality tasks
   format:
-    desc: Format Python code with black
+    desc: Format Python code with ruff
     cmds:
-      - uv run black .
+      - uv run ruff format .
     sources:
       - "**/*.py"
     generates:
@@ -95,7 +95,7 @@ tasks:
   format:check:
     desc: Check Python code formatting
     cmds:
-      - uv run black . --check --diff
+      - uv run ruff format --check --diff .
 
   format:fix:
     desc: Auto-fix Python code formatting (alias for format)

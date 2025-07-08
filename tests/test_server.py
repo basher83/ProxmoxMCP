@@ -128,12 +128,8 @@ async def test_get_nodes(server, mock_proxmox):
     assert (
         "Proxmox Nodes" in response_text
     ), f"Expected 'Proxmox Nodes' header not found in: {response_text[:200]}"
-    assert (
-        "node1" in response_text
-    ), f"Expected node1 not found in response: {response_text[:200]}"
-    assert (
-        "node2" in response_text
-    ), f"Expected node2 not found in response: {response_text[:200]}"
+    assert "node1" in response_text, f"Expected node1 not found in response: {response_text[:200]}"
+    assert "node2" in response_text, f"Expected node2 not found in response: {response_text[:200]}"
 
 
 @pytest.mark.asyncio
@@ -158,9 +154,7 @@ async def test_get_node_status(server, mock_proxmox):
     # The response should be formatted text, not JSON
     assert len(response) == 1, f"Expected single response item, got {len(response)}"
     response_text = response[0].text
-    assert (
-        "node1" in response_text
-    ), f"Expected node1 not found in response: {response_text[:200]}"
+    assert "node1" in response_text, f"Expected node1 not found in response: {response_text[:200]}"
     assert (
         "RUNNING" in response_text
     ), f"Expected RUNNING status not found in response: {response_text[:200]}"
@@ -169,9 +163,7 @@ async def test_get_node_status(server, mock_proxmox):
 @pytest.mark.asyncio
 async def test_get_vms(server, mock_proxmox):
     """Test get_vms tool."""
-    mock_proxmox.return_value.nodes.get.return_value = [
-        {"node": "node1", "status": "online"}
-    ]
+    mock_proxmox.return_value.nodes.get.return_value = [{"node": "node1", "status": "online"}]
     mock_proxmox.return_value.nodes.return_value.qemu.get.return_value = [
         {
             "vmid": "100",
@@ -205,20 +197,14 @@ async def test_get_vms(server, mock_proxmox):
     assert (
         "Virtual Machines" in response_text
     ), f"Expected 'Virtual Machines' header not found in: {response_text[:200]}"
-    assert (
-        "vm1" in response_text
-    ), f"Expected vm1 not found in response: {response_text[:200]}"
-    assert (
-        "vm2" in response_text
-    ), f"Expected vm2 not found in response: {response_text[:200]}"
+    assert "vm1" in response_text, f"Expected vm1 not found in response: {response_text[:200]}"
+    assert "vm2" in response_text, f"Expected vm2 not found in response: {response_text[:200]}"
 
 
 @pytest.mark.asyncio
 async def test_get_containers(server, mock_proxmox):
     """Test get_containers tool."""
-    mock_proxmox.return_value.nodes.get.return_value = [
-        {"node": "node1", "status": "online"}
-    ]
+    mock_proxmox.return_value.nodes.get.return_value = [{"node": "node1", "status": "online"}]
     mock_proxmox.return_value.nodes.return_value.lxc.get.return_value = [
         {
             "vmid": "200",

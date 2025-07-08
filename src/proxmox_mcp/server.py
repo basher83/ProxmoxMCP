@@ -98,9 +98,7 @@ class ProxmoxMCPServer:
         def get_node_status(
             node: Annotated[
                 str,
-                Field(
-                    description="Name/ID of node to query (e.g. 'pve1', 'proxmox-node2')"
-                ),
+                Field(description="Name/ID of node to query (e.g. 'pve1', 'proxmox-node2')"),
             ],
         ) -> List[TextContent]:
             return self.node_tools.get_node_status(node)

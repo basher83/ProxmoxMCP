@@ -47,14 +47,10 @@ class VMConsoleManager:
         """Validate that VM exists and is running for command execution."""
         vm_status = self.proxmox.nodes(node).qemu(vmid).status.current.get()
         if vm_status["status"] != "running":
-            self.logger.error(
-                f"Failed to execute command on VM {vmid}: VM is not running"
-            )
+            self.logger.error(f"Failed to execute command on VM {vmid}: VM is not running")
             raise ValueError(f"VM {vmid} on node {node} is not running")
 
-    async def _execute_command_via_agent(
-        self, node: str, vmid: str, command: str
-    ) -> int:
+    async def _execute_command_via_agent(self, node: str, vmid: str, command: str) -> int:
         """Start command execution via QEMU guest agent and return PID."""
         endpoint = self.proxmox.nodes(node).qemu(vmid).agent
         self.logger.debug(f"Using API endpoint: {endpoint}")
@@ -76,9 +72,7 @@ class VMConsoleManager:
         except (TypeError, ValueError) as err:
             raise RuntimeError(f"Unexpected PID value: {exec_result!r}") from err
 
-    async def _get_command_results(
-        self, node: str, vmid: str, pid: int
-    ) -> dict[str, Any]:
+    async def _get_command_results(self, node: str, vmid: str, pid: int) -> dict[str, Any]:
         """Wait for command completion and get results."""
         import asyncio
 
@@ -98,9 +92,7 @@ class VMConsoleManager:
 
         self.logger.info(f"Command completed with status: {console}")
         if not isinstance(console, dict):
-            raise RuntimeError(
-                f"Expected dict response, got {type(console).__name__}: {console!r}"
-            )
+            raise RuntimeError(f"Expected dict response, got {type(console).__name__}: {console!r}")
         return console
 
     def _process_command_response(self, console: Any) -> dict[str, Any]:
@@ -135,9 +127,7 @@ class VMConsoleManager:
             "exit_code": exit_code,
         }
 
-    async def execute_command(
-        self, node: str, vmid: str, command: str
-    ) -> dict[str, Any]:
+    async def execute_command(self, node: str, vmid: str, command: str) -> dict[str, Any]:
         """
         Execute a shell command in a VM via the QEMU guest agent.
 

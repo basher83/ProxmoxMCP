@@ -49,7 +49,7 @@ ProxmoxMCP-specific validations.
 
 ```bash
 # Run core quality checks in parallel for efficiency
-pytest & black . & mypy . & ruff . && wait
+pytest & ruff format . & mypy . & ruff check . && wait
 
 # If any check fails, stop and address issues before proceeding
 echo "Core quality checks completed"
@@ -121,26 +121,26 @@ pytest --lf  # Run only last failed tests
 pytest --maxfail=1  # Stop on first failure for easier debugging
 ```
 
-#### black Formatting Failures
+#### ruff Formatting Failures
 
 ```bash
 # Step 1: Auto-format code (this usually resolves all issues)
-black .
+ruff format .
 
 # Step 2: Verify formatting was applied
 git diff --name-only
 
 # Step 3: Review changes and commit formatting fixes
 git add .
-git commit -m "format: apply black code formatting
+git commit -m "format: apply ruff code formatting
 
-Automated formatting applied by black code formatter.
+Automated formatting applied by ruff formatter.
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
-# Note: black failures are rare and usually indicate file permissions or encoding issues
+# Note: ruff format failures are rare and usually indicate file permissions or encoding issues
 ```
 
 #### mypy Type Checking Failures
@@ -336,8 +336,8 @@ pytest || {
     echo "❌ Tests failed - run 'pytest -v' for details"; exit 1; 
 }
 
-echo "Running black formatter..."
-black . || { echo "❌ Formatting failed"; exit 1; }
+echo "Running ruff formatter..."
+ruff format . || { echo "❌ Formatting failed"; exit 1; }
 
 echo "Running mypy type checker..."
 mypy . || { 
@@ -429,7 +429,7 @@ Use these patterns when setting dependency versions:
 
 # Development tools - broader ranges for flexibility
 "pytest>=7.0.0,<9.0.0"        # Allow multiple major versions
-"black>=23.0.0,<26.0.0"       # Formatting tool compatibility
+"ruff>=0.1.0,<0.13.0"         # Formatting and linting tool
 
 # Security-critical packages - narrower ranges  
 "cryptography>=45.0.0,<46.0.0" # Strict for security updates
@@ -518,7 +518,7 @@ Closes #issue-number"
 "requests==2.32.0"  # Pins to exact version, prevents security updates
 
 # ❌ WRONG: Conflicting constraints
-"black>=24.0.0,<25.0.0"  # When 24.x.x was never released
+"ruff>=99.0.0,<100.0.0"  # When 99.x.x was never released
 
 # ❌ WRONG: Missing upper bounds for major versions
 "pydantic>=2.0.0"  # Could install v3.x.x with breaking changes
@@ -526,7 +526,7 @@ Closes #issue-number"
 # ✅ CORRECT: Research-verified constraints
 "pydantic>=2.0.0,<3.0.0"    # Verified that 2.x.x exists
 "requests>=2.32.0,<3.0.0"   # Allows security updates within v2.x
-"black>=23.0.0,<26.0.0"     # Verified version range exists
+"ruff>=0.1.0,<0.13.0"       # Verified version range exists
 ```
 
 #### ProxmoxMCP-Specific Dependency Considerations
@@ -884,7 +884,7 @@ get_all_coding_preferences # Review for outdated patterns
 
 ```bash
 # Weekly maintenance routine
-pytest && black . && mypy . && ruff .
+pytest && ruff format . && mypy . && ruff check .
 uv pip list --outdated
 docker system prune -f
 ```
@@ -948,7 +948,7 @@ After completing implementation work:
 #### Key Health Indicators
 
 - **Test Coverage**: Maintain >90% coverage for core components
-- **Code Quality**: Zero mypy errors, consistent black formatting
+- **Code Quality**: Zero mypy errors, consistent ruff formatting
 - **Documentation Currency**: No references to non-existent files or outdated patterns
 - **Memory Accuracy**: Stored coding preferences reflect current implementation patterns
 - **Security Posture**: No exposed secrets, current security practices documented
