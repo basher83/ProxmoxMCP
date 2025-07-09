@@ -12,9 +12,7 @@ class ProxmoxComponents:
     """Reusable UI components for formatted output."""
 
     @staticmethod
-    def _calculate_column_widths(
-        headers: List[str], rows: List[List[str]]
-    ) -> List[int]:
+    def _calculate_column_widths(headers: List[str], rows: List[List[str]]) -> List[int]:
         widths = [len(header) for header in headers]
         for row in rows:
             for i, cell in enumerate(row):
@@ -24,18 +22,12 @@ class ProxmoxComponents:
 
     @staticmethod
     def _build_title_section(title: str, total_width: int) -> List[str]:
-        title_str = ProxmoxColors.colorize(
-            title, ProxmoxColors.CYAN, ProxmoxColors.BOLD
-        )
+        title_str = ProxmoxColors.colorize(title, ProxmoxColors.CYAN, ProxmoxColors.BOLD)
         padding = (total_width - len(title) - 2) // 2
         title_separator = "+" + "-" * (total_width - 2) + "+"
         return [
             title_separator,
-            "|"
-            + " " * padding
-            + title_str
-            + " " * (total_width - padding - len(title) - 2)
-            + "|",
+            "|" + " " * padding + title_str + " " * (total_width - padding - len(title) - 2) + "|",
             title_separator,
         ]
 
@@ -46,7 +38,7 @@ class ProxmoxComponents:
             "|"
             + "|".join(
                 f" {ProxmoxColors.colorize(h, ProxmoxColors.CYAN):<{w}} "
-                for h, w in zip(headers, widths)
+                for h, w in zip(headers, widths, strict=False)
             )
             + "|"
         )
@@ -56,23 +48,18 @@ class ProxmoxComponents:
     def _format_row_lines(row: List[str], widths: List[int]) -> List[str]:
         row_cell_lines = [str(cell).split("\n") for cell in row]
         max_lines = max(len(lines) for lines in row_cell_lines)
-        padded_cells = [
-            lines + [""] * (max_lines - len(lines)) for lines in row_cell_lines
-        ]
+        padded_cells = [lines + [""] * (max_lines - len(lines)) for lines in row_cell_lines]
 
         lines = []
         for i in range(max_lines):
             line_parts = [
-                f" {padded_cells[col_idx][i]:<{widths[col_idx]}} "
-                for col_idx in range(len(widths))
+                f" {padded_cells[col_idx][i]:<{widths[col_idx]}} " for col_idx in range(len(widths))
             ]
             lines.append("|" + "|".join(line_parts) + "|")
         return lines
 
     @staticmethod
-    def create_table(
-        headers: List[str], rows: List[List[str]], title: Optional[str] = None
-    ) -> str:
+    def create_table(headers: List[str], rows: List[List[str]], title: Optional[str] = None) -> str:
         widths = ProxmoxComponents._calculate_column_widths(headers, rows)
         total_width = sum(widths) + len(widths) + 1
         separator = "+" + "+".join("-" * (w + 2) for w in widths) + "+"
@@ -164,9 +151,7 @@ class ProxmoxComponents:
             formatted_items = []
             for i, (key, val) in enumerate(row):
                 key_str = ProxmoxColors.colorize(f"{key}:", ProxmoxColors.CYAN)
-                formatted_items.append(
-                    f"{key_str:<{key_widths[i] + 10}} {val:<{val_widths[i]}}"
-                )
+                formatted_items.append(f"{key_str:<{key_widths[i] + 10}} {val:<{val_widths[i]}}")
             result.append("  ".join(formatted_items))
 
         return "\n".join(result)
