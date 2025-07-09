@@ -13,7 +13,7 @@ The tools handle both basic and detailed node information retrieval,
 with fallback mechanisms for partial data availability.
 """
 
-from typing import List
+from typing import Any, Dict, List
 
 from mcp.types import TextContent as Content
 
@@ -62,45 +62,44 @@ class NodeTools(ProxmoxTool):
             RuntimeError: If the cluster-wide node query fails
         """
         try:
-            result = self.proxmox.nodes.get()
-            nodes = []
-
-            # Get detailed info for each node
-            for node in result:
-                node_name = node["node"]
-                try:
-                    # Get detailed status for each node
-                    status = self.proxmox.nodes(node_name).status.get()
-                    nodes.append(
-                        {
-                            "node": node_name,
-                            "status": node["status"],
-                            "uptime": status.get("uptime", 0),
-                            "maxcpu": status.get("cpuinfo", {}).get("cpus", "N/A"),
-                            "memory": {
-                                "used": status.get("memory", {}).get("used", 0),
-                                "total": status.get("memory", {}).get("total", 0),
-                            },
-                        }
-                    )
-                except Exception:
-                    # Fallback to basic info if detailed status fails
-                    nodes.append(
-                        {
-                            "node": node_name,
-                            "status": node["status"],
-                            "uptime": 0,
-                            "maxcpu": "N/A",
-                            "memory": {
-                                "used": node.get("maxmem", 0) - node.get("mem", 0),
-                                "total": node.get("maxmem", 0),
-                            },
-                        }
-                    )
-            return self._format_response(nodes, "nodes")
+            node_list = self.proxmox.nodes.get()
+            detailed_nodes = [self._get_node_details(node) for node in node_list]
+            return self._format_response(detailed_nodes, "nodes")
         except Exception as e:
             self._handle_error("get nodes", e)
             return []
+
+    def _get_node_details(self, node: Dict[str, Any]) -> Dict[str, Any]:
+        """Fetch detailed or fallback status info for a node."""
+        node_name = node["node"]
+        try:
+            status = self.proxmox.nodes(node_name).status.get()
+            return self._format_node_info(node, status)
+        except Exception:
+            return self._format_node_info(node, None)
+
+    def _format_node_info(
+        self, node: Dict[str, Any], status: Dict[str, Any] | None
+    ) -> Dict[str, Any]:
+        """Format node status for output, with fallback support."""
+        return {
+            "node": node["node"],
+            "status": node["status"],
+            "uptime": status.get("uptime", 0) if status else 0,
+            "maxcpu": status.get("cpuinfo", {}).get("cpus", "N/A") if status else "N/A",
+            "memory": {
+                "used": (
+                    status.get("memory", {}).get("used", 0)
+                    if status
+                    else node.get("maxmem", 0) - node.get("mem", 0)
+                ),
+                "total": (
+                    status.get("memory", {}).get("total", 0)
+                    if status
+                    else node.get("maxmem", 0)
+                ),
+            },
+        }
 
     def get_node_status(self, node: str) -> List[Content]:
         """Get detailed status information for a specific node.

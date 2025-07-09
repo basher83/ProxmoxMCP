@@ -14,7 +14,7 @@ The tools implement fallback mechanisms for scenarios where
 detailed VM information might be temporarily unavailable.
 """
 
-from typing import Any, List
+from typing import Any, Dict, List
 
 from mcp.types import TextContent as Content
 
@@ -81,49 +81,60 @@ class VMTools(ProxmoxTool):
         """
         try:
             result = []
-            nodes = self.proxmox.nodes.get()
-
-            for node in nodes:
-                node_name = node["node"]
-                try:
-                    vms = self.proxmox.nodes(node_name).qemu.get()
-
-                    vm_configs = {}
-                    for vm in vms:
-                        vmid = vm["vmid"]
-                        try:
-                            config = self.proxmox.nodes(node_name).qemu(vmid).config.get()
-                            vm_configs[vmid] = config
-                        except Exception:
-                            vm_configs[vmid] = None
-
-                    for vm in vms:
-                        vmid = vm["vmid"]
-                        config = vm_configs.get(vmid)
-
-                        vm_data = {
-                            "vmid": vmid,
-                            "name": vm["name"],
-                            "status": vm["status"],
-                            "node": node_name,
-                            "cpus": config.get("cores", "N/A") if config else "N/A",
-                            "memory": {
-                                "used": vm.get("mem", 0),
-                                "total": vm.get("maxmem", 0),
-                            },
-                        }
-                        result.append(vm_data)
-
-                except Exception as e:
-                    self.logger.warning(f"Failed to get VMs for node {node_name}: {e}")
-                    continue
-
+            for node_name in self._get_all_nodes():
+                vms = self._get_vms_for_node(node_name)
+                result.extend(vms)
             return self._format_response(result, "vms")
         except Exception as e:
             self._handle_error("get VMs", e)
             return []
 
-    async def execute_command(self, node: str, vmid: str, command: str) -> List[Content]:
+    def _get_all_nodes(self) -> List[str]:
+        """Retrieve a list of all node names in the cluster."""
+        return [node["node"] for node in self.proxmox.nodes.get()]
+
+    def _get_vms_for_node(self, node_name: str) -> List[Dict[str, Any]]:
+        """Fetch VM details for a specific node, with config fallback and error isolation."""
+        try:
+            vms = self.proxmox.nodes(node_name).qemu.get()
+            configs = self._get_vm_configs(node_name, [vm["vmid"] for vm in vms])
+            return [
+                self._format_vm(vm, configs.get(vm["vmid"]), node_name) for vm in vms
+            ]
+        except Exception as e:
+            self.logger.warning(f"Failed to get VMs for node {node_name}: {e}")
+            return []
+
+    def _get_vm_configs(self, node_name: str, vmids: List[int]) -> Dict[int, Any]:
+        """Batch fetch VM config data with fallback."""
+        configs = {}
+        for vmid in vmids:
+            try:
+                config = self.proxmox.nodes(node_name).qemu(vmid).config.get()
+                configs[vmid] = config
+            except Exception:
+                configs[vmid] = None
+        return configs
+
+    def _format_vm(
+        self, vm: Dict[str, Any], config: Dict[str, Any] | None, node_name: str
+    ) -> Dict[str, Any]:
+        """Format VM data, using fallback values when config is unavailable."""
+        return {
+            "vmid": vm["vmid"],
+            "name": vm["name"],
+            "status": vm["status"],
+            "node": node_name,
+            "cpus": config.get("cores", "N/A") if config else "N/A",
+            "memory": {
+                "used": vm.get("mem", 0),
+                "total": vm.get("maxmem", 0),
+            },
+        }
+
+    async def execute_command(
+        self, node: str, vmid: str, command: str
+    ) -> List[Content]:
         """Execute a command in a VM via QEMU guest agent.
 
         Uses the QEMU guest agent to execute commands within a running VM.

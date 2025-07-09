@@ -13,7 +13,7 @@ The tools implement fallback mechanisms for scenarios where
 detailed storage information might be temporarily unavailable.
 """
 
-from typing import List
+from typing import Any, Dict, List
 
 from mcp.types import TextContent as Content
 
@@ -64,43 +64,37 @@ class StorageTools(ProxmoxTool):
             RuntimeError: If the cluster-wide storage query fails
         """
         try:
-            result = self.proxmox.storage.get()
-            storage = []
-
-            for store in result:
-                # Get detailed storage info including usage
-                try:
-                    status = (
-                        self.proxmox.nodes(store.get("node", "localhost"))
-                        .storage(store["storage"])
-                        .status.get()
-                    )
-                    storage.append(
-                        {
-                            "storage": store["storage"],
-                            "type": store["type"],
-                            "content": store.get("content", []),
-                            "status": ("online" if store.get("enabled", True) else "offline"),
-                            "used": status.get("used", 0),
-                            "total": status.get("total", 0),
-                            "available": status.get("avail", 0),
-                        }
-                    )
-                except Exception:
-                    # If detailed status fails, add basic info
-                    storage.append(
-                        {
-                            "storage": store["storage"],
-                            "type": store["type"],
-                            "content": store.get("content", []),
-                            "status": ("online" if store.get("enabled", True) else "offline"),
-                            "used": 0,
-                            "total": 0,
-                            "available": 0,
-                        }
-                    )
-
-            return self._format_response(storage, "storage")
+            all_storage = self.proxmox.storage.get()
+            detailed_storage = [
+                self._get_storage_details(store) for store in all_storage
+            ]
+            return self._format_response(detailed_storage, "storage")
         except Exception as e:
             self._handle_error("get storage", e)
             return []
+
+    def _get_storage_details(self, store: Dict[str, Any]) -> Dict[str, Any]:
+        """Fetch detailed storage usage or fallback to basic info."""
+        storage_name = store["storage"]
+        storage_type = store["type"]
+        storage_node = store.get("node", "localhost")
+
+        try:
+            status = self.proxmox.nodes(storage_node).storage(storage_name).status.get()
+            return self._format_storage(store, status)
+        except Exception:
+            return self._format_storage(store, None)
+
+    def _format_storage(
+        self, store: Dict[str, Any], status: Dict[str, Any] | None
+    ) -> Dict[str, Any]:
+        """Format storage data for response output."""
+        return {
+            "storage": store["storage"],
+            "type": store["type"],
+            "content": store.get("content", []),
+            "status": "online" if store.get("enabled", True) else "offline",
+            "used": status.get("used", 0) if status else 0,
+            "total": status.get("total", 0) if status else 0,
+            "available": status.get("avail", 0) if status else 0,
+        }
