@@ -94,9 +94,7 @@ class NodeTools(ProxmoxTool):
                     else node.get("maxmem", 0) - node.get("mem", 0)
                 ),
                 "total": (
-                    status.get("memory", {}).get("total", 0)
-                    if status
-                    else node.get("maxmem", 0)
+                    status.get("memory", {}).get("total", 0) if status else node.get("maxmem", 0)
                 ),
             },
         }

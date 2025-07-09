@@ -13,7 +13,7 @@ The tools implement fallback mechanisms for scenarios where
 detailed container information might be temporarily unavailable.
 """
 
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from mcp.types import TextContent as Content
 
@@ -32,7 +32,6 @@ class ContainerTools(ProxmoxTool):
     Implements fallback mechanisms for scenarios where detailed
     container information might be temporarily unavailable.
     """
-
 
     def get_containers(self) -> List[Content]:
         """List all LXC containers across the cluster with detailed status.

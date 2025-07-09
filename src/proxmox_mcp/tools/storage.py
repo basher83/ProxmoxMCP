@@ -65,9 +65,7 @@ class StorageTools(ProxmoxTool):
         """
         try:
             all_storage = self.proxmox.storage.get()
-            detailed_storage = [
-                self._get_storage_details(store) for store in all_storage
-            ]
+            detailed_storage = [self._get_storage_details(store) for store in all_storage]
             return self._format_response(detailed_storage, "storage")
         except Exception as e:
             self._handle_error("get storage", e)

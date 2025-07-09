@@ -98,9 +98,7 @@ class VMTools(ProxmoxTool):
         try:
             vms = self.proxmox.nodes(node_name).qemu.get()
             configs = self._get_vm_configs(node_name, [vm["vmid"] for vm in vms])
-            return [
-                self._format_vm(vm, configs.get(vm["vmid"]), node_name) for vm in vms
-            ]
+            return [self._format_vm(vm, configs.get(vm["vmid"]), node_name) for vm in vms]
         except Exception as e:
             self.logger.warning(f"Failed to get VMs for node {node_name}: {e}")
             return []
@@ -132,9 +130,7 @@ class VMTools(ProxmoxTool):
             },
         }
 
-    async def execute_command(
-        self, node: str, vmid: str, command: str
-    ) -> List[Content]:
+    async def execute_command(self, node: str, vmid: str, command: str) -> List[Content]:
         """Execute a command in a VM via QEMU guest agent.
 
         Uses the QEMU guest agent to execute commands within a running VM.
