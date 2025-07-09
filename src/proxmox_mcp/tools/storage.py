@@ -76,7 +76,6 @@ class StorageTools(ProxmoxTool):
     def _get_storage_details(self, store: Dict[str, Any]) -> Dict[str, Any]:
         """Fetch detailed storage usage or fallback to basic info."""
         storage_name = store["storage"]
-        storage_type = store["type"]
         storage_node = store.get("node", "localhost")
 
         try:

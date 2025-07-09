@@ -13,7 +13,6 @@ The tools implement fallback mechanisms for scenarios where
 detailed container information might be temporarily unavailable.
 """
 
-from typing import List
 from typing import List, Dict, Any
 
 from mcp.types import TextContent as Content
