@@ -15,13 +15,17 @@ fi
 # Format Python files with ruff
 if [[ "$FILE_PATH" == *.py ]]; then
     echo "🎨 Auto-formatting Python file with Ruff..."
-    ruff format "$FILE_PATH" 2>/dev/null || {
-        echo "⚠️  Ruff formatting failed - file may have syntax errors"
-    }
+    if ! ruff format "$FILE_PATH"; then
+        echo "❌ Ruff formatting failed – fix the reported issues before continuing."
+        exit 1
+    fi
     
     # Run ruff fixes
     echo "🔧 Running Ruff auto-fixes..."
-    ruff check "$FILE_PATH" --fix --quiet 2>/dev/null || true
+    if ! ruff check "$FILE_PATH" --fix; then
+        echo "❌ Ruff check failed – fix the reported issues before continuing."
+        exit 1
+    fi
 fi
 
 # Validate JSON files
