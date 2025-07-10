@@ -87,7 +87,23 @@ respectful and considerate of others when contributing to the project.
    pip install -e ".[dev]"
    ```
 
-5. Configure your Proxmox connection:
+5. Install pre-commit hooks:
+
+   ```bash
+   pre-commit install
+   ```
+
+   This sets up automatic code quality checks that run before each commit.
+   The hooks include:
+   - Ruff formatting and linting
+   - Type checking with mypy
+   - Security scanning with bandit and safety
+   - Markdown formatting validation
+
+   Note: Pre-commit will automatically install required tools in isolated
+   environments, so you don't need to install them globally.
+
+6. Configure your Proxmox connection:
 
    ```bash
    cp proxmox-config/config.example.json proxmox-config/config.json
