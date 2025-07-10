@@ -100,7 +100,7 @@ Run all required quality checks in the PR environment:
 
 ```bash
 # Core quality checks (required for all PRs)
-pytest && black . && mypy .
+pytest && ruff format . && mypy . && ruff check .
 
 # ProxmoxMCP-specific validation
 export PROXMOX_MCP_CONFIG="proxmox-config/config.json"

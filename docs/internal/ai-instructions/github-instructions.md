@@ -257,7 +257,7 @@ Before committing ProxmoxMCP changes, verify with:
 
 ```bash
 # Run all quality checks
-pytest && black . && mypy .
+pytest && ruff format . && mypy . && ruff check .
 
 # Test MCP server startup
 export PROXMOX_MCP_CONFIG="proxmox-config/config.json"
