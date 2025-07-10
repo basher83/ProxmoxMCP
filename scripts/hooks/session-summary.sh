@@ -55,7 +55,7 @@ fi
 echo "" >> "$SUMMARY_FILE"
 echo "Recommendations:" >> "$SUMMARY_FILE"
 if [ "$UNCOMMITTED" -gt 0 ]; then
-    echo "  1. Run quality checks: pytest && black . && mypy . && ruff ." >> "$SUMMARY_FILE"
+    echo "  1. Run quality checks: pytest && ruff format . && mypy . && ruff check ." >> "$SUMMARY_FILE"
     echo "  2. Commit your changes with descriptive message" >> "$SUMMARY_FILE"
 fi
 

@@ -12,11 +12,11 @@ if [ -z "$FILE_PATH" ] || [ ! -f "$FILE_PATH" ]; then
     exit 0
 fi
 
-# Format Python files with black
+# Format Python files with ruff
 if [[ "$FILE_PATH" == *.py ]]; then
-    echo "🎨 Auto-formatting Python file with Black..."
-    black "$FILE_PATH" 2>/dev/null || {
-        echo "⚠️  Black formatting failed - file may have syntax errors"
+    echo "🎨 Auto-formatting Python file with Ruff..."
+    ruff format "$FILE_PATH" 2>/dev/null || {
+        echo "⚠️  Ruff formatting failed - file may have syntax errors"
     }
     
     # Run ruff fixes

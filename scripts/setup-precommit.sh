@@ -43,7 +43,6 @@ uv run pre-commit run mixed-line-ending --all-files || true
 
 # Format code
 echo "🎨 Formatting code..."
-uv run black .
 uv run ruff format .
 
 # Check complexity (informational)
