@@ -27,20 +27,6 @@
         "https://gitmcp.io/docs"
       ]
     },
-    "serena": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena-mcp-server",
-        "--context",
-        "ide-assistant",
-        "--project",
-        "/workspaces/ProxmoxMCP"
-      ],
-      "env": {}
-    },
     "codacy": {
       "command": "npx",
       "args": [
