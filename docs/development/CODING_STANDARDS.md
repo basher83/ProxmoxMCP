@@ -31,7 +31,7 @@ Codacy "Default coding standard" configuration.
 Our coding standards are automatically enforced using:
 
 - **Type Checking**: `mypy` (strict mode)
-- **Code Formatting**: `black` (88 character line limit)
+- **Code Formatting**: `ruff` (88 character line limit)
 - **Linting**: `ruff` + `pylint`
 - **Security Analysis**: `bandit` + `semgrep`
 - **Complexity Analysis**: `lizard`
@@ -42,8 +42,7 @@ Our coding standards are automatically enforced using:
 ### Current Status ✅
 
 - **mypy**: All type annotation issues resolved (Issue #39 ✅)
-- **black**: Code formatting standardized
-- **ruff**: Configured but disabled in Codacy
+- **ruff**: Code formatting and linting standardized
 - **bandit**: Active security scanning
 - **semgrep**: Advanced security pattern detection
 - **lizard**: Complexity monitoring
@@ -90,7 +89,7 @@ def get_vm_status(vm_id, node):
 
 ### Automatic Formatting
 
-- **Line Length**: 88 characters (Black standard)
+- **Line Length**: 88 characters (Python standard)
 - **String Quotes**: Prefer double quotes
 - **Trailing Commas**: Required in multi-line structures
 
@@ -467,11 +466,11 @@ Our pre-commit configuration ensures code quality:
 ```yaml
 # .pre-commit-config.yaml (current)
 repos:
-  - repo: https://github.com/psf/black
-    rev: 23.12.1
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.1.8
     hooks:
-      - id: black
-        language_version: python3.11
+      - id: ruff-format
+        name: ruff format
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.1.8
@@ -542,7 +541,7 @@ Many issues can be automatically fixed:
 
 ```bash
 # Format code
-black .
+ruff format .
 
 # Fix lint issues
 ruff --fix .
