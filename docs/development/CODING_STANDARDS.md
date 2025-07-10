@@ -28,31 +28,34 @@ Codacy "Default coding standard" configuration.
 
 ### Enforcement Tools
 
-Our coding standards are automatically enforced using:
+Our coding standards are automatically enforced using pre-commit hooks:
 
-- **Type Checking**: `mypy` (strict mode)
-- **Code Formatting**: `ruff` (88 character line limit)
-- **Linting**: `ruff` + `pylint`
-- **Security Analysis**: `bandit` + `semgrep`
-- **Complexity Analysis**: `lizard`
-- **Multi-tool Analysis**: `prospector`
+- **Type Checking**: `mypy` (strict mode with type stubs)
+- **Code Formatting**: `ruff format` (line length enforced)
+- **Linting**: `ruff check` (comprehensive Python linting)
+- **Security Analysis**: `bandit` (Python security issues) + `safety` (dependency vulnerabilities)
+- **YAML Validation**: `yamllint` (YAML file linting)
+- **Docker Security**: `hadolint` (Dockerfile best practices)
+- **Shell Scripts**: `shellcheck` (shell script validation)
+- **General Checks**: trailing whitespace, file size limits, JSON/YAML syntax
+- **Complexity Analysis**: `radon` (via manual complexity-check hook)
 
 ## Tool Configuration
 
 ### Current Status ✅
 
 - **mypy**: All type annotation issues resolved (Issue #39 ✅)
-- **ruff**: Code formatting and linting standardized
-- **bandit**: Active security scanning
-- **semgrep**: Advanced security pattern detection
-- **lizard**: Complexity monitoring
-- **pylint**: 96 patterns enabled in Codacy
+- **ruff**: Code formatting and linting standardized (replaces black, isort, flake8, pylint)
+- **bandit**: Active security scanning for Python vulnerabilities
+- **safety**: Dependency vulnerability checking
+- **Complexity monitoring**: Via radon in pre-commit (manual stage)
 
 ### Recommended Actions
 
-1. Enable Ruff in Codacy to complement existing tools
-2. Address current security violations flagged by Bandit/Semgrep
-3. Refactor methods exceeding complexity thresholds
+1. Run `pre-commit install` to enable automated checks
+2. Address any security violations flagged by Bandit
+3. Check dependencies with `safety check` for vulnerabilities
+4. Run complexity analysis with `pre-commit run complexity-check --hook-stage manual`
 
 ## Type Safety & Annotations
 
@@ -93,7 +96,7 @@ def get_vm_status(vm_id, node):
 - **String Quotes**: Prefer double quotes
 - **Trailing Commas**: Required in multi-line structures
 
-### Pylint Style Rules (Currently Enforced)
+### Style Rules (Enforced by Ruff)
 
 ```python
 # ✅ Good - No trailing whitespace
@@ -125,7 +128,7 @@ for i in range(len(items)):
 
 ### 🚨 Critical Security Issues (Currently in Codebase)
 
-Based on Bandit and Semgrep findings, the following patterns must be avoided:
+Based on Bandit security scanning, the following patterns must be avoided:
 
 #### Subprocess Security
 
@@ -169,10 +172,10 @@ def validate_vm_id(vm_id: str) -> str:
 
 ## Complexity & Design Limits
 
-### Lizard Complexity Thresholds (Currently Enforced)
+### Complexity Thresholds (Monitored via Radon)
 
 - **Maximum lines per method**: 50 lines
-- **Maximum cyclomatic complexity**: 8
+- **Maximum cyclomatic complexity**: 8 (grade C or better)
 - **Maximum parameters per function**: 6
 
 ### Examples
