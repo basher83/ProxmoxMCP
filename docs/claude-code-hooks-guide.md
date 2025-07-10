@@ -73,7 +73,7 @@ Example blocked patterns:
 
 **Post-Edit Format** (`post-edit-format.sh`)
 
-- Automatically formats Python files with Black
+- Automatically formats Python files with Ruff
 - Runs Ruff auto-fixes
 - Validates JSON syntax
 - Provides file-specific reminders
@@ -146,7 +146,7 @@ The hooks will:
 
 1. Check current file syntax
 2. Remind about ProxmoxTool inheritance
-3. Auto-format with Black after edit
+3. Auto-format with Ruff after edit
 4. Run Ruff fixes
 5. Remind to register the tool
 

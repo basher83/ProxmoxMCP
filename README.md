@@ -368,9 +368,9 @@ For more advanced configuration, see the comments in the provided `docker-compos
 After activating your virtual environment:
 
 - Run tests: `pytest`
-- Format code: `black .`
+- Format code: `ruff format .`
 - Type checking: `mypy .`
-- Lint: `ruff .`
+- Lint: `ruff check .`
 
 For enhanced development workflow with Taskfile (recommended):
 
@@ -389,7 +389,7 @@ This project includes Claude Code hooks for automated quality checks and securit
 **Features:**
 
 - **Security validation**: Blocks dangerous commands and warns about credential exposure
-- **Auto-formatting**: Automatically runs Black and Ruff fixes after code edits
+- **Auto-formatting**: Automatically runs Ruff formatting and fixes after code edits
 - **Markdown linting**: Validates markdown files using `.markdownlint.jsonc` configuration
 - **Quality reports**: Generates comprehensive reports after running tests
 - **Command logging**: Tracks all executed commands for debugging

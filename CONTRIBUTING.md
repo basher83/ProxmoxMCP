@@ -140,16 +140,15 @@ respectful and considerate of others when contributing to the project.
 
 We use the following tools for code formatting and linting:
 
-- [Black](https://black.readthedocs.io/) for code formatting
-- [isort](https://pycqa.github.io/isort/) for import sorting
-- [flake8](https://flake8.pycqa.org/) for linting
+- [Ruff](https://docs.astral.sh/ruff/) for code formatting and linting
+- [mypy](https://mypy.readthedocs.io/) for type checking
 
 You can run these tools with:
 
 ```bash
-black src tests
-isort src tests
-flake8 src tests
+ruff format src tests
+ruff check src tests
+mypy src tests
 ```
 
 ## Testing
