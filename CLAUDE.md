@@ -2,18 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-# Additional Instructions
-
-- memory workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/memory-instructions.md
-- context workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/context-instructions.md
-- github workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/github-instructions.md
-- issue creation workflow
-  @/workspaces/ProxmoxMCP/docs/ai-instructions/issue-creation-instructions.md
-- issue resolution workflow
-  @/workspaces/ProxmoxMCP/docs/ai-instructions/issue-resolution-instructions.md
-- pr workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/pr-instructions.md
-- milestone workflow @/workspaces/ProxmoxMCP/docs/ai-instructions/milestone-instructions.md
-
 ## Development Commands
 
 ### Environment Setup
@@ -135,10 +123,6 @@ git add .
 git commit -m "format: apply ruff code formatting
 
 Automated formatting applied by ruff formatter.
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
 
 # Note: ruff format failures are rare and usually indicate file permissions or encoding issues
 ```
@@ -930,7 +914,7 @@ add_coding_preference(
 
 Before starting any analysis or implementation:
 
-1. **Current State Verification**: Use LS, Glob, and Grep tools to verify actual codebase structure
+1. **Current State Verification**: Use eza, fd, Glob, and Grep tools to verify actual codebase structure
 2. **Reference Validation**: Check that all file references and paths are current and accurate
 3. **Component Status**: Verify component descriptions match actual implementation state
 4. **Integration Points**: Validate that described integration patterns still exist and function
@@ -955,7 +939,6 @@ After completing implementation work:
 
 ## Memories
 
-- "When tasked are completed you must commit changes to github"
 - When submitting PR reviews with complex text containing special shell characters, it's better to:
   1. Use simpler review text, or
   2. Escape special characters properly, or

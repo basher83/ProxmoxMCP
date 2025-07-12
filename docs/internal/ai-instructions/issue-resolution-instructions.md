@@ -85,7 +85,7 @@ Run all quality checks before committing:
 
 ```bash
 # Required quality checks
-pytest && black . && mypy .
+pytest && ruff format . && mypy . && ruff check .
 
 # Additional validation for ProxmoxMCP
 export PROXMOX_MCP_CONFIG="proxmox-config/config.json"

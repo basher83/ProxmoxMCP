@@ -100,7 +100,7 @@ Run all required quality checks in the PR environment:
 
 ```bash
 # Core quality checks (required for all PRs)
-pytest && black . && mypy .
+pytest && ruff format . && mypy . && ruff check .
 
 # ProxmoxMCP-specific validation
 export PROXMOX_MCP_CONFIG="proxmox-config/config.json"
@@ -192,7 +192,7 @@ docker compose build && docker compose up --build -d
 - [ ] Security review completed without issues
 - [ ] Performance impact assessed and acceptable
 - [ ] Backward compatibility maintained or breaking changes documented
-- [ ] Code quality checks pass (pytest, black, mypy)
+- [ ] Code quality checks pass (pytest, ruff format, mypy, ruff check)
 - [ ] Integration tests with Proxmox API successful
 - [ ] Commit messages follow project standards
 
@@ -324,7 +324,7 @@ Before approving any PR, verify:
 - [ ] Performance impact assessed
 - [ ] Backward compatibility maintained
 - [ ] Commit messages follow project standards
-- [ ] All quality checks passing (pytest, black, mypy)
+- [ ] All quality checks passing (pytest, ruff format, mypy, ruff check)
 - [ ] Breaking changes documented with migration guidance
 - [ ] Component-specific validation completed
 

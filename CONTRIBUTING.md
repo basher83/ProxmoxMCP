@@ -87,7 +87,23 @@ respectful and considerate of others when contributing to the project.
    pip install -e ".[dev]"
    ```
 
-5. Configure your Proxmox connection:
+5. Install pre-commit hooks:
+
+   ```bash
+   pre-commit install
+   ```
+
+   This sets up automatic code quality checks that run before each commit.
+   The hooks include:
+   - Ruff formatting and linting
+   - Type checking with mypy
+   - Security scanning with bandit and safety
+   - Markdown formatting validation
+
+   Note: Pre-commit will automatically install required tools in isolated
+   environments, so you don't need to install them globally.
+
+6. Configure your Proxmox connection:
 
    ```bash
    cp proxmox-config/config.example.json proxmox-config/config.json
@@ -140,16 +156,15 @@ respectful and considerate of others when contributing to the project.
 
 We use the following tools for code formatting and linting:
 
-- [Black](https://black.readthedocs.io/) for code formatting
-- [isort](https://pycqa.github.io/isort/) for import sorting
-- [flake8](https://flake8.pycqa.org/) for linting
+- [Ruff](https://docs.astral.sh/ruff/) for code formatting and linting
+- [mypy](https://mypy.readthedocs.io/) for type checking
 
 You can run these tools with:
 
 ```bash
-black src tests
-isort src tests
-flake8 src tests
+ruff format src tests
+ruff check src tests
+mypy src tests
 ```
 
 ## Testing

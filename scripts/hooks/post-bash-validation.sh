@@ -32,8 +32,8 @@ if echo "$COMMAND" | grep -q "mypy"; then
     fi
 fi
 
-if echo "$COMMAND" | grep -q "black"; then
-    echo "🎨 Code formatted with Black"
+if echo "$COMMAND" | grep -q "ruff format"; then
+    echo "🎨 Code formatted with Ruff"
 fi
 
 if echo "$COMMAND" | grep -q "ruff"; then

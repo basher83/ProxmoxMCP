@@ -37,17 +37,6 @@
 * [📋 Repository Review](repository-review.md)
 * [⚡ Efficiency Analysis](EFFICIENCY_ANALYSIS_REPORT.md)
 
-## Internal Documentation
-
-* [🤖 AI Instructions](internal/ai-instructions/)
-  * [💾 Memory Management](internal/ai-instructions/memory-instructions.md)
-  * [🔍 Context Research](internal/ai-instructions/context-instructions.md)
-  * [🐙 GitHub Workflows](internal/ai-instructions/github-instructions.md)
-  * [📝 Issue Creation](internal/ai-instructions/issue-creation-instructions.md)
-  * [🔧 Issue Resolution](internal/ai-instructions/issue-resolution-instructions.md)
-  * [🔄 PR Management](internal/ai-instructions/pr-instructions.md)
-  * [🎯 Milestone Management](internal/ai-instructions/milestone-instructions.md)
-
 ## Project Files
 
 * [⚖️ License](../LICENSE)

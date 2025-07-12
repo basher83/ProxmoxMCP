@@ -6,13 +6,13 @@
 
 ```bash
 # Run all quality checks sequentially
-pytest && black . && mypy . && ruff .
+pytest && ruff format . && mypy . && ruff check .
 
 # Or individually
 pytest          # Run test suite
-black .         # Code formatting
+ruff format .   # Code formatting
 mypy .          # Type checking
-ruff .          # Linting and import sorting
+ruff check .    # Linting and import sorting
 ```
 
 ### Development Environment

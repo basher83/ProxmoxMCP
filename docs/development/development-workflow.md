@@ -39,16 +39,15 @@ contributors.
 
 **Tools Used**:
 
-- **black**: Python code formatting
-- **ruff**: Linting and import sorting with auto-fix
-- **mypy**: Type checking (informational)
+- **ruff**: Python code formatting and linting
+- **mypy**: Type checking
 
 **Process**:
 
 1. Sets up Python 3.10 environment
 2. Installs UV package manager with caching
 3. Creates virtual environment and installs dev dependencies
-4. Runs black formatter with fallback to auto-fix mode
+4. Runs ruff formatter with fallback to auto-fix mode
 5. Runs ruff with `--fix` flag for linting and import organization
 6. Runs mypy for type checking validation
 7. Commits any fixes directly to the PR branch via autofix.ci
@@ -89,7 +88,7 @@ contributors.
 
 - **Runtime**: ubuntu-latest  
 - **Python Version**: 3.9 (note: should be updated to 3.10 for consistency)
-- **Tools**: pytest, black, mypy
+- **Tools**: pytest, ruff, mypy
 - **Process**: Runs full quality check suite
 
 **Integration**: Uses `mcp__github__add_pull_request_review_comment` for inline feedback.
@@ -107,7 +106,7 @@ contributors.
 1. **Notification**: Adds comment explaining that Claude Code will work on the issue
 2. **Environment Setup**: Python 3.10, UV package manager, project dependencies
 3. **Implementation**: Claude Code analyzes requirements and implements solution
-4. **Quality Assurance**: Runs pytest, black, mypy to ensure code quality
+4. **Quality Assurance**: Runs pytest, ruff format, mypy, and ruff check to ensure code quality
 5. **Branch Management**: Creates new branch for the work
 6. **Pull Request**: Automatically creates PR when implementation is complete
 
@@ -137,7 +136,7 @@ contributors.
 - **Ecosystem**: pip
 - **Grouping Strategy**:
   - **Production**: proxmoxer, pydantic, fastmcp (minor/patch only)
-  - **Development**: pytest*, black, mypy, ruff (minor/patch only)
+  - **Development**: pytest*, ruff, mypy (minor/patch only)
 - **Major Version Protection**: Critical dependencies are protected from major updates
 - **Labels**: `dependencies`, `python`
 - **Assignee**: @basher83
@@ -166,14 +165,15 @@ contributors.
 
 ### Code Quality Stack
 
-#### Black (Code Formatting)
+#### Ruff (Code Formatting & Linting)
 
-- **Version**: 23.x
-- **Configuration**: Inherits line length from ruff (100 characters)
-- **Usage**: `black .`
+- **Version**: 0.1.x
+- **Configuration**: Line length 88 characters (Python standard)
+- **Formatting Usage**: `ruff format .`
+- **Linting Usage**: `ruff check . --fix`
 - **Integration**: Automatic via autofix.ci workflow
 
-#### Ruff (Linting & Import Sorting)
+#### Ruff Features
 
 - **Version**: 0.1.x
 - **Rules**: E (errors), F (pyflakes), B (bugbear), I (import sorting)
@@ -225,13 +225,13 @@ uv pip install -e ".[dev]"
 ```bash
 # Run individual tools
 pytest          # Run tests
-black .         # Format code
+ruff format .   # Format code
 mypy .          # Type checking
 ruff check .    # Linting
 ruff check . --fix  # Fix linting issues
 
 # Combined quality check (recommended)
-pytest && black . && mypy . && ruff check .
+pytest && ruff format . && mypy . && ruff check .
 ```
 
 ### CI Quality Gates
@@ -275,7 +275,7 @@ pre-commit install
 ### Code Standards
 
 - **Python Version**: 3.10+
-- **Code Style**: Black formatting (100 character line length)
+- **Code Style**: Ruff formatting (88 character line length)
 - **Import Organization**: Automated via ruff isort
 - **Type Hints**: Required for all functions and methods
 - **Testing**: Pytest with async support
@@ -327,7 +327,7 @@ Co-authored-by: Name <email@example.com>
 
 #### Quality Checks Failing
 
-- Run checks locally first: `pytest && black . && mypy .`
+- Run checks locally first: `pytest && ruff format . && mypy . && ruff check .`
 - Check for Python version mismatch (should be 3.10+)
 - Verify all dev dependencies are installed
 

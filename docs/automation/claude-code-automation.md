@@ -57,7 +57,7 @@ The workflow requires the following permissions:
 
 - **Python Version**: The workflow uses Python 3.10+ (required for MCP SDK compatibility)
 - **Package Manager**: Uses `uv` for fast dependency installation
-- **Development Tools**: Includes pytest, black, mypy, and ruff for quality checks
+- **Development Tools**: Includes pytest, ruff, and mypy for quality checks
 
 ### Workflow Configuration
 
@@ -151,7 +151,7 @@ Add support for VM snapshot management in the Proxmox MCP server.
 
 **Quality checks fail:**
 
-- The workflow runs: `pytest && black . && mypy .`
+- The workflow runs: `pytest && ruff format . && mypy . && ruff check .`
 - Claude Code will attempt to fix issues automatically
 - Manual intervention may be needed for complex conflicts
 - Check individual tool logs for specific failures
@@ -206,7 +206,7 @@ When an issue is assigned to trigger the automation, the following steps occur:
 3. **Claude Code Implementation**
    - Analyzes issue requirements and codebase
    - Implements solution following project patterns
-   - Runs quality checks: `pytest && black . && mypy .`
+   - Runs quality checks: `pytest && ruff format . && mypy . && ruff check .`
    - Creates meaningful commits with proper messages
 
 4. **Pull Request Creation**
@@ -220,7 +220,7 @@ When an issue is assigned to trigger the automation, the following steps occur:
 The workflow automatically runs these checks:
 
 - **pytest**: All test suites must pass
-- **black**: Code formatting compliance
+- **ruff**: Code formatting and linting compliance
 - **mypy**: Type checking validation
 - **Project patterns**: Follows existing code conventions
 
