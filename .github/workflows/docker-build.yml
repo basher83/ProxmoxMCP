@@ -106,6 +106,7 @@ jobs:
           path: sbom.spdx.json
           retention-days: 30
       - name: Run Trivy vulnerability scanner
+        if: github.event_name != 'pull_request'
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
@@ -117,7 +118,7 @@ jobs:
           scanners: 'vuln,secret,config'
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: github.event_name != 'pull_request' && always()
         with:
           sarif_file: 'trivy-results.sarif'
           category: 'trivy-container-scan'
