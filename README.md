@@ -3,6 +3,8 @@
 ## 🚀 Proxmox Manager - Proxmox MCP Server
 
 [![autofix enabled](https://shields.io/badge/autofix.ci-yes-success)](https://autofix.ci)
+[![Docker Build](https://github.com/basher83/ProxmoxMCP/actions/workflows/docker-build.yml/badge.svg)](https://github.com/basher83/ProxmoxMCP/actions/workflows/docker-build.yml)
+[![Container Registry](https://img.shields.io/badge/container-ghcr.io-blue)](https://ghcr.io/basher83/proxmox-mcp)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/fcb0843f9b1a45a586b0a5426d0a09c0)](https://app.codacy.com/gh/basher83/ProxmoxMCP/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/basher83/ProxmoxMCP?utm_source=oss&utm_medium=github&utm_campaign=basher83%2FProxmoxMCP&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/w/basher83/ProxmoxMCP">

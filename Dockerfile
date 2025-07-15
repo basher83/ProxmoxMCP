@@ -5,6 +5,13 @@
 ARG PYTHON_VERSION=3.10
 ARG BUILD_ENV=production
 
+# CI/CD build arguments
+ARG BUILDKIT_INLINE_CACHE=1
+ARG VERSION=dev
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE
+ARG MCP_SDK_VERSION=v1.8.0
+
 # ---- Base image (for both builder and final) ----
 FROM python:${PYTHON_VERSION}-slim AS base
 
@@ -52,7 +59,7 @@ RUN --mount=type=cache,target=$PIP_CACHE_DIR \
 
 # Install the MCP SDK from GitHub with specific version (package name is 'mcp')
 RUN --mount=type=cache,target=$PIP_CACHE_DIR \
-    .venv/bin/pip install git+https://github.com/modelcontextprotocol/python-sdk.git@v1.8.0#egg=mcp
+    .venv/bin/pip install git+https://github.com/modelcontextprotocol/python-sdk.git@${MCP_SDK_VERSION}#egg=mcp
 
 # Copy source code - we'll use PYTHONPATH instead of installing the package
 COPY --link src/ ./src/
@@ -79,6 +86,18 @@ RUN mkdir -p /app/proxmox-config /app/logs && \
 # Set environment variables for venv and Python path
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH=/app/src
+
+# Add comprehensive OCI labels using build arguments
+LABEL org.opencontainers.image.version="${VERSION}"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.title="ProxmoxMCP"
+LABEL org.opencontainers.image.description="Model Context Protocol server for Proxmox VE management"
+LABEL org.opencontainers.image.url="https://github.com/basher83/ProxmoxMCP"
+LABEL org.opencontainers.image.documentation="https://the-mothership.gitbook.io/proxmox-mcp/"
+LABEL org.opencontainers.image.source="https://github.com/basher83/ProxmoxMCP"
+LABEL org.opencontainers.image.vendor="ProxmoxMCP Project"
+LABEL org.opencontainers.image.licenses="MIT"
 
 # Set workdir and switch to non-root user
 WORKDIR /app
