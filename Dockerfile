@@ -27,6 +27,9 @@ WORKDIR /app
 # ---- Builder stage ----
 FROM base AS builder
 
+# Re-declare build arguments needed in this stage
+ARG MCP_SDK_VERSION=v1.8.0
+
 # Install build dependencies (for pip, venv, and system packages needed for build)
 # Note: System packages not pinned to avoid dependency conflicts (Hadolint DL3008)
 RUN --mount=type=cache,target=/root/.cache/apt \
