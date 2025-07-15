@@ -16,9 +16,9 @@ The hook aims to increase development speed while maintaining safety.
 """
 
 import json
+from pathlib import Path
 import re
 import sys
-from pathlib import Path
 from typing import Any
 
 
