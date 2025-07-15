@@ -1,25 +1,62 @@
 ---
-allowed-tools: Bash, Read
-description: Load context for a new agent session by analyzing codebase structure and README
+allowed-tools: Bash, Read, Grep, Glob
+description: Prime the agent with codebase context using activity-first analysis
 ---
 
-# Prime
+# Prime v2
 
-This command loads essential context for a new agent session by examining the codebase structure and reading the
-project README.
+This command loads essential context by analyzing what's actively being developed then understanding structure.
 
 ## Instructions
 
-- Run `git ls-files` to understand the codebase structure and file organization
-- Read the README.md to understand the project purpose, setup instructions, and key information
-- Provide a concise overview of the project based on the gathered context
+Phase 1 - Activity Analysis:
+
+**You MUST run all commands in the Context section below before proceeding.**
+
+- Identify recently modified files to understand what's actively being worked on
+- Detect the tech stack and dependencies
+- Find entry points and main files
+- Check for available scripts and commands
+
+Phase 2 - Structure Analysis:
+
+- Understand the codebase organization with git-aware tree view
+- Read key documentation
+- Provide a concise, actionable overview
 
 ## Context
 
-- Extract the essential documentation - what the project is, how to install it, usage examples:
-  !`cat README.md 2>/dev/null | head -100 | rg "^(#|-)|.*(install|pip|npm|cargo|Usage:|Getting Started:|Quick Start:|Example:)" | head -40 || (echo "No README. Let me look around..." && ls -la && fd -e py -e js -e go | head -10)`
+### 🔥 Recent Activity (What's Alive)
 
-- Codebase structure and last 30 days of modified code:
-  !`fd -e py -e js -e ts -e go -e rs -t f --changed-within 30d --exec stat -c '%Y %s %n' {} \; | sort -rn | head -20 | while read -r timestamp size path; do printf '%s %12s %s\n' "$(date -d @$timestamp '+%Y-%m-%d %H:%M')" "$size" "$path"; done && echo -e "\n=== STRUCTURE ===" && (command -v tree >/dev/null && tree -L 2 -I '.git|node_modules|.venv|__pycache__' --dirsfirst 2>/dev/null | head -25 || fd -t d -d 2 | head -30)`
+Recent modifications showing active development: !`fd --type f --exclude .git --exclude node_modules --exclude .venv --exclude __pycache__ --exclude target --exclude dist | head -80 | xargs ls -laht 2>/dev/null | head -40`
+
+### 📚 Tech Stack Detection
+
+Package files and dependencies: !`ls -1 *.{json,toml,xml,gradle,rb,txt,lock,mod,sum} 2>/dev/null | rg -i "package|pyproject|Cargo|go\\.mod|pom|Gemfile|requirements|composer|mix\\.exs" | head -10`
+
+### 🚀 Entry Points
+
+Main application files: !`fd -t f -d 3 "(main|index|app|__main__|server|start|run)\\.(py|js|ts|go|rs|java|rb|ex|php)" --exclude node_modules --exclude .venv | head -10`
+
+### 🛠️ Available Commands
+
+Package scripts: !`(rg '"scripts"' package.json -A 20 2>/dev/null | rg '^\s+"[^"]+":' | head -10) || (rg "\\[tool\\.poetry\\.scripts\\]|\\[project\\.scripts\\]" pyproject.toml -A 10 2>/dev/null) || (rg "^[a-z-]+:" Makefile 2>/dev/null | head -10) || echo "No obvious command definitions found"`
+
+### 📂 Project Structure
+
+Git-aware tree with modifications: !`eza -la --tree --git --git-ignore --icons --sort=modified --level=2 --no-user --no-permissions`
+
+### 📊 Quick Stats
+
+File counts by type: !`fd -t f --exclude .git --exclude node_modules --exclude .venv | rg -o "\\.[^.]+$" | sort | uniq -c | sort -rn | head -10`
+
+### 📖 Documentation
 
 - Project README: @README.md
+- Architecture details: @ARCHITECTURE.md  
+- Recent changes: @CHANGELOG.md
+
+### 🔍 Additional Context
+
+- Git remote info: !`git remote -v 2>/dev/null | head -2`
+- Recent commits: !`git log --oneline -10 2>/dev/null`
