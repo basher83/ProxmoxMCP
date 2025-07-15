@@ -89,7 +89,7 @@ class TestCommandSecurity:
     def test_empty_command_handling(self):
         """Test handling of empty commands."""
         validator = CommandValidator()
-        
+
         result = validator.validate_command("")
         assert result == ""
 
