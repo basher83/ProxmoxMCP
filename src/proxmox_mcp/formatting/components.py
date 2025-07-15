@@ -12,87 +12,67 @@ class ProxmoxComponents:
     """Reusable UI components for formatted output."""
 
     @staticmethod
-    def create_table(headers: List[str], rows: List[List[str]], title: Optional[str] = None) -> str:
-        """Create an ASCII table with optional title.
-
-        Args:
-            headers: List of column headers
-            rows: List of row data
-            title: Optional table title
-
-        Returns:
-            Formatted table string
-        """
-        # Calculate column widths considering multi-line content
+    def _calculate_column_widths(headers: List[str], rows: List[List[str]]) -> List[int]:
         widths = [len(header) for header in headers]
         for row in rows:
             for i, cell in enumerate(row):
-                cell_lines = str(cell).split("\n")
-                max_line_length = max(len(line) for line in cell_lines)
+                max_line_length = max(len(line) for line in str(cell).split("\n"))
                 widths[i] = max(widths[i], max_line_length)
+        return widths
 
-        # Create separator line
+    @staticmethod
+    def _build_title_section(title: str, total_width: int) -> List[str]:
+        title_str = ProxmoxColors.colorize(title, ProxmoxColors.CYAN, ProxmoxColors.BOLD)
+        padding = (total_width - len(title) - 2) // 2
+        title_separator = "+" + "-" * (total_width - 2) + "+"
+        return [
+            title_separator,
+            "|" + " " * padding + title_str + " " * (total_width - padding - len(title) - 2) + "|",
+            title_separator,
+        ]
+
+    @staticmethod
+    def _build_table_headers(headers: List[str], widths: List[int]) -> List[str]:
         separator = "+" + "+".join("-" * (w + 2) for w in widths) + "+"
-
-        # Calculate total width for title
-        total_width = sum(widths) + len(widths) + 1
-
-        # Build table
-        result = []
-
-        # Add title if provided
-        if title:
-            # Center the title
-            title_str = ProxmoxColors.colorize(title, ProxmoxColors.CYAN, ProxmoxColors.BOLD)
-            padding = (total_width - len(title) - 2) // 2  # -2 for the border chars
-            title_separator = "+" + "-" * (total_width - 2) + "+"
-            result.extend(
-                [
-                    title_separator,
-                    "|"
-                    + " " * padding
-                    + title_str
-                    + " " * (total_width - padding - len(title) - 2)
-                    + "|",
-                    title_separator,
-                ]
-            )
-
-        # Add headers
         header = (
             "|"
             + "|".join(
                 f" {ProxmoxColors.colorize(h, ProxmoxColors.CYAN):<{w}} "
-                for w, h in zip(widths, headers, strict=False)
+                for h, w in zip(headers, widths, strict=False)
             )
             + "|"
         )
-        result.extend([separator, header, separator])
+        return [separator, header, separator]
 
-        # Add rows with multi-line cell support
-        for row in rows:
-            # Split each cell into lines
-            row_cell_lines: List[List[str]] = [str(cell).split("\n") for cell in row]
-            max_lines = max(len(lines) for lines in row_cell_lines)
+    @staticmethod
+    def _format_row_lines(row: List[str], widths: List[int]) -> List[str]:
+        row_cell_lines = [str(cell).split("\n") for cell in row]
+        max_lines = max(len(lines) for lines in row_cell_lines)
+        padded_cells = [lines + [""] * (max_lines - len(lines)) for lines in row_cell_lines]
 
-            # Pad cells with fewer lines
-            padded_cells: List[List[str]] = []
-            for cell_line_list in row_cell_lines:
-                lines_copy = list(cell_line_list)  # Create a copy
-                if len(lines_copy) < max_lines:
-                    lines_copy.extend([""] * (max_lines - len(lines_copy)))
-                padded_cells.append(lines_copy)
+        lines = []
+        for i in range(max_lines):
+            line_parts = [
+                f" {padded_cells[col_idx][i]:<{widths[col_idx]}} " for col_idx in range(len(widths))
+            ]
+            lines.append("|" + "|".join(line_parts) + "|")
+        return lines
 
-            # Create row strings for each line
-            for line_idx in range(max_lines):
-                line_parts: List[str] = []
-                for col_idx, cell_lines in enumerate(padded_cells):
-                    line = cell_lines[line_idx]
-                    line_parts.append(f" {line:<{widths[col_idx]}} ")
-                result.append("|" + "|".join(line_parts) + "|")
+    @staticmethod
+    def create_table(headers: List[str], rows: List[List[str]], title: Optional[str] = None) -> str:
+        widths = ProxmoxComponents._calculate_column_widths(headers, rows)
+        total_width = sum(widths) + len(widths) + 1
+        separator = "+" + "+".join("-" * (w + 2) for w in widths) + "+"
 
-            # Add separator after each row except the last
-            if row != rows[-1]:
+        result = []
+        if title:
+            result.extend(ProxmoxComponents._build_title_section(title, total_width))
+
+        result.extend(ProxmoxComponents._build_table_headers(headers, widths))
+
+        for idx, row in enumerate(rows):
+            result.extend(ProxmoxComponents._format_row_lines(row, widths))
+            if idx < len(rows) - 1:
                 result.append(separator)
 
         result.append(separator)

@@ -13,7 +13,7 @@ The tools implement fallback mechanisms for scenarios where
 detailed container information might be temporarily unavailable.
 """
 
-from typing import List
+from typing import Any, Dict, List
 
 from mcp.types import TextContent as Content
 
@@ -67,46 +67,51 @@ class ContainerTools(ProxmoxTool):
             RuntimeError: If the cluster-wide container query fails
         """
         try:
-            result = []
-            for node in self.proxmox.nodes.get():
-                node_name = node["node"]
-                containers = self.proxmox.nodes(node_name).lxc.get()
-                for container in containers:
-                    vmid = container["vmid"]
-                    # Get container config for CPU cores and template info
-                    try:
-                        config = self.proxmox.nodes(node_name).lxc(vmid).config.get()
-                        result.append(
-                            {
-                                "vmid": vmid,
-                                "name": container["name"],
-                                "status": container["status"],
-                                "node": node_name,
-                                "cpus": config.get("cores", "N/A"),
-                                "memory": {
-                                    "used": container.get("mem", 0),
-                                    "total": container.get("maxmem", 0),
-                                },
-                                "template": config.get("ostemplate", "N/A"),
-                            }
-                        )
-                    except Exception:
-                        # Fallback if can't get config
-                        result.append(
-                            {
-                                "vmid": vmid,
-                                "name": container["name"],
-                                "status": container["status"],
-                                "node": node_name,
-                                "cpus": "N/A",
-                                "memory": {
-                                    "used": container.get("mem", 0),
-                                    "total": container.get("maxmem", 0),
-                                },
-                                "template": "N/A",
-                            }
-                        )
-            return self._format_response(result, "containers")
+            all_containers = []
+            for node_name in self._get_all_nodes():
+                containers = self._get_containers_for_node(node_name)
+                all_containers.extend(containers)
+            return self._format_response(all_containers, "containers")
         except Exception as e:
             self._handle_error("get containers", e)
             return []
+
+    def _get_all_nodes(self) -> List[str]:
+        """Fetch all node names in the Proxmox cluster."""
+        return [node["node"] for node in self.proxmox.nodes.get()]
+
+    def _get_containers_for_node(self, node_name: str) -> List[Dict[str, Any]]:
+        """Retrieve and format all containers on a given node."""
+        containers = self._get_node_containers(node_name)
+        return [self._get_container_details(node_name, container) for container in containers]
+
+    def _get_node_containers(self, node_name: str) -> Any:
+        """Fetch list of LXC containers from a specific node."""
+        return self.proxmox.nodes(node_name).lxc.get()
+
+    def _get_container_details(self, node_name: str, container: Dict[str, Any]) -> Dict[str, Any]:
+        """Retrieve detailed info about a container or fallback to minimal info.
+
+        Tries to fetch config info for CPU and template; falls back if failed.
+        """
+        vmid = container["vmid"]
+        try:
+            config = self.proxmox.nodes(node_name).lxc(vmid).config.get()
+            cpus = config.get("cores", "N/A")
+            template = config.get("ostemplate", "N/A")
+        except Exception:
+            cpus = "N/A"
+            template = "N/A"
+
+        return {
+            "vmid": vmid,
+            "name": container["name"],
+            "status": container["status"],
+            "node": node_name,
+            "cpus": cpus,
+            "memory": {
+                "used": container.get("mem", 0),
+                "total": container.get("maxmem", 0),
+            },
+            "template": template,
+        }

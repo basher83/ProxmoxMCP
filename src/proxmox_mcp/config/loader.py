@@ -15,84 +15,80 @@ like API tokens can be stored encrypted in the configuration file.
 
 import json
 import os
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from ..utils.encryption import TokenEncryption
 from .models import Config
 
 
 def load_config(config_path: Optional[str] = None) -> Config:
-    """Load and validate configuration from JSON file.
+    """Load and validate configuration from a JSON file.
 
-    Performs the following steps:
-    1. Verifies config path is provided (from parameter or environment)
-    2. Loads JSON configuration file
-    3. Decrypts any encrypted tokens (if encryption is enabled)
-    4. Validates required fields are present
-    5. Converts to typed Config object using Pydantic
+    Steps performed:
+    1. Resolve config path (parameter > env variable)
+    2. Load and parse the JSON file
+    3. Decrypt encrypted tokens (if prefixed with 'enc:')
+    4. Validate presence of required fields
+    5. Return typed Config object (via Pydantic)
 
-    Configuration must include:
-    - Proxmox connection settings (host, port, etc.)
-    - Authentication credentials (user, token)
-    - Logging configuration
+    Expected keys:
+    - proxmox: host, port, etc.
+    - auth: user, token_name, token_value (supports decryption)
+    - logging: level, format, etc.
 
-    Token encryption is supported by prefixing encrypted values with 'enc:'.
-    The master key must be provided via PROXMOX_MCP_MASTER_KEY environment variable.
+    Master key for decryption must be in the PROXMOX_MCP_MASTER_KEY env variable.
 
     Args:
-        config_path: Path to the JSON configuration file
-                    If not provided, attempts to get from PROXMOX_MCP_CONFIG environment variable
+        config_path: Optional path to the config JSON file.
+                     Defaults to PROXMOX_MCP_CONFIG env variable.
 
     Returns:
-        Config object containing validated configuration with decrypted tokens:
-        {
-            "proxmox": {
-                "host": "proxmox-host",
-                "port": 8006,
-                ...
-            },
-            "auth": {
-                "user": "username",
-                "token_name": "token-name",
-                "token_value": "decrypted-token-value",  # Automatically decrypted
-                ...
-            },
-            "logging": {
-                "level": "INFO",
-                ...
-            }
-        }
+        A validated and decrypted Config object.
 
     Raises:
-        ValueError: If:
-                 - Config path is not provided and environment variable not set
-                 - JSON is invalid
-                 - Required fields are missing
-                 - Field values are invalid
-                 - Token decryption fails
+        ValueError: If the path is missing, JSON is invalid,
+                    required fields are absent, or decryption fails.
     """
-    if not config_path:
-        config_path = os.environ.get("PROXMOX_MCP_CONFIG")
-        if not config_path:
-            raise ValueError(
-                "Config path must be provided either as parameter or via "
-                "PROXMOX_MCP_CONFIG environment variable"
-            )
+    path = _resolve_config_path(config_path)
+    config_data = _load_json_config(path)
+    _validate_required_fields(config_data)
+    config_data = _decrypt_config_tokens(config_data)
+    return _build_config(config_data)
 
+
+def _resolve_config_path(config_path: Optional[str]) -> str:
+    """Resolve config path from argument or environment."""
+    if config_path:
+        return config_path
+    env_path = os.environ.get("PROXMOX_MCP_CONFIG")
+    if not env_path:
+        raise ValueError("Config path must be provided or set via PROXMOX_MCP_CONFIG.")
+    return env_path
+
+
+def _load_json_config(path: str) -> Any:
+    """Load and parse JSON configuration from file."""
     try:
-        with open(config_path) as f:
-            config_data = json.load(f)
-            if not config_data.get("proxmox", {}).get("host"):
-                raise ValueError("Proxmox host cannot be empty")
-
-            # Decrypt sensitive values if they are encrypted
-            config_data = _decrypt_config_tokens(config_data)
-
-            return Config(**config_data)
+        with open(path) as f:
+            return json.load(f)
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON in config file: {e}") from e
     except Exception as e:
-        raise ValueError(f"Failed to load config: {e}") from e
+        raise ValueError(f"Failed to read config file: {e}") from e
+
+
+def _validate_required_fields(config: Dict[str, Any]) -> None:
+    """Ensure required fields are present in the configuration."""
+    if not config.get("proxmox", {}).get("host"):
+        raise ValueError("Proxmox host cannot be empty")
+
+
+def _build_config(config_data: Dict[str, Any]) -> Config:
+    """Create and return the validated Config object."""
+    try:
+        return Config(**config_data)
+    except Exception as e:
+        raise ValueError(f"Invalid configuration structure: {e}") from e
 
 
 def _decrypt_config_tokens(config_data: dict) -> dict:

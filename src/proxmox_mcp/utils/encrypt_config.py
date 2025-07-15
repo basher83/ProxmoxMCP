@@ -361,32 +361,29 @@ def rotate_master_key(config_path: str, new_key: Optional[str] = None) -> None:
         new_key: Optional new master key. If not provided, will generate one.
     """
     try:
-        print(f"🔄 Starting key rotation for: {config_path}")
-        print()
+        print(f"🔄 Starting key rotation for: {config_path}\n")
 
-        # Validate environment and get old key
         old_key = _validate_rotation_environment(config_path)
 
-        # Create backup
         print("💾 Creating backup...")
         backup_path = create_backup(config_path)
         print(f"✅ Backup created: {backup_path}")
 
-        # Handle new key generation or validation
         new_key = _handle_new_key_generation(new_key)
 
-        # Perform the actual token rotation
         rotated_fields = _perform_token_rotation(config_path, old_key, new_key)
 
-        # Display summary and next steps
         _display_rotation_summary(config_path, backup_path, rotated_fields)
 
-        # Offer to clear terminal for security
         clear_terminal_if_requested()
 
     except Exception as e:
-        print(f"❌ Error during key rotation: {e}")
-        sys.exit(1)
+        _handle_rotation_error(e)
+
+
+def _handle_rotation_error(e: Exception) -> None:
+    print(f"❌ Error during key rotation: {e}")
+    sys.exit(1)
 
 
 def _find_config_files(directory: str) -> List[str]:
@@ -523,45 +520,48 @@ def _display_bulk_summary(
 
 
 def rotate_master_key_all(directory: str, new_key: Optional[str] = None) -> None:
-    """Rotate master key for all encrypted configuration files in a directory.
-
-    Args:
-        directory: Path to directory containing configuration files
-        new_key: Optional new master key. If not provided, will generate one.
-    """
+    """Rotate master key for all encrypted configuration files in a directory."""
     try:
-        # Find all configuration files
         config_files = _find_config_files(directory)
-
-        # Prepare for bulk rotation
         new_key = _prepare_bulk_rotation(new_key)
 
-        print(f"🔄 Starting bulk key rotation in: {directory}")
-        print(f"   Found {len(config_files)} configuration files")
-        print()
+        _announce_bulk_rotation(directory, config_files)
 
-        successful_rotations: List[str] = []
-        failed_rotations: List[tuple[str, str]] = []
+        success, failure = _rotate_all_configs(config_files, new_key)
 
-        # Process each file
-        for config_file in config_files:
-            if _process_single_config(config_file, new_key):
-                successful_rotations.append(config_file)
-            else:
-                # Error details already printed by _process_single_config
-                failed_rotations.append((config_file, "Processing failed"))
-            print()
+        _display_bulk_summary(success, failure)
 
-        # Display results summary
-        _display_bulk_summary(successful_rotations, failed_rotations)
-
-        # Offer to clear terminal for security if any files were rotated
-        if successful_rotations:
+        if success:
             clear_terminal_if_requested()
 
     except Exception as e:
-        print(f"❌ Error during bulk key rotation: {e}")
-        sys.exit(1)
+        _handle_bulk_rotation_error(e)
+
+
+def _announce_bulk_rotation(directory: str, config_files: List[str]) -> None:
+    print(f"🔄 Starting bulk key rotation in: {directory}")
+    print(f"   Found {len(config_files)} configuration files\n")
+
+
+def _rotate_all_configs(
+    config_files: List[str], new_key: str
+) -> tuple[List[str], List[tuple[str, str]]]:
+    successful_rotations: List[str] = []
+    failed_rotations: List[tuple[str, str]] = []
+
+    for config_file in config_files:
+        if _process_single_config(config_file, new_key):
+            successful_rotations.append(config_file)
+        else:
+            failed_rotations.append((config_file, "Processing failed"))
+        print()
+
+    return successful_rotations, failed_rotations
+
+
+def _handle_bulk_rotation_error(e: Exception) -> None:
+    print(f"❌ Error during bulk key rotation: {e}")
+    sys.exit(1)
 
 
 def _setup_argument_parser() -> argparse.ArgumentParser:

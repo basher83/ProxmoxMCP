@@ -17,7 +17,7 @@ The logging system supports:
 
 import logging
 import os
-from typing import List, Union
+from typing import List, Optional
 
 from ..config.models import LoggingConfig
 
@@ -26,72 +26,62 @@ def setup_logging(config: LoggingConfig) -> logging.Logger:
     """Configure and initialize logging system.
 
     Sets up a comprehensive logging system with:
-    - File logging (if configured):
-      * Handles relative/absolute paths
-      * Uses configured log level
-      * Applies custom format
-
-    - Console logging:
-      * Always enabled for errors
-      * Ensures critical issues are visible
-
-    - Handler Management:
-      * Removes existing handlers
-      * Configures new handlers
-      * Sets up formatters
+    - File logging (if configured)
+    - Console logging for errors
+    - Removes existing handlers and installs new ones
 
     Args:
         config: Logging configuration containing:
-               - Log level (e.g., "INFO", "DEBUG")
-               - Format string
-               - Optional log file path
+            - level: Log level (e.g., "INFO")
+            - format: Log format string
+            - file: Optional log file path
 
     Returns:
-        Configured logger instance for "proxmox-mcp"
-        with appropriate handlers and formatting
-
-    Example config:
-        {
-            "level": "INFO",
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-            "file": "/path/to/log/file.log"  # Optional
-        }
+        Logger instance for "proxmox-mcp"
     """
-    # Convert relative path to absolute
-    log_file = config.file
-    if log_file and not os.path.isabs(log_file):
-        log_file = os.path.join(os.getcwd(), log_file)
+    log_file = _resolve_log_path(config.file)
+    handlers = _create_logging_handlers(config, log_file)
+    _configure_logger(handlers, config.level, config.format)
 
-    # Create handlers
-    handlers: List[Union[logging.FileHandler, logging.StreamHandler]] = []
+    return logging.getLogger("proxmox-mcp")
+
+
+def _resolve_log_path(path: Optional[str]) -> Optional[str]:
+    """Resolve relative log file path to absolute."""
+    if path and not os.path.isabs(path):
+        return os.path.join(os.getcwd(), path)
+    return path
+
+
+def _create_logging_handlers(
+    config: LoggingConfig, log_file: Optional[str]
+) -> List[logging.Handler]:
+    """Create file and console handlers with appropriate log levels."""
+    handlers: List[logging.Handler] = []
 
     if log_file:
         file_handler = logging.FileHandler(log_file)
         file_handler.setLevel(getattr(logging, config.level.upper()))
         handlers.append(file_handler)
 
-    # Console handler for errors only
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.ERROR)
     handlers.append(console_handler)
 
-    # Configure formatters
-    formatter = logging.Formatter(config.format)
-    for handler in handlers:
-        handler.setFormatter(formatter)
+    return handlers
 
-    # Configure root logger
+
+def _configure_logger(handlers: List[logging.Handler], level: str, fmt: str) -> None:
+    """Apply formatters, clear existing handlers, and set up new ones."""
+    formatter = logging.Formatter(fmt)
     root_logger = logging.getLogger()
-    root_logger.setLevel(getattr(logging, config.level.upper()))
+    root_logger.setLevel(getattr(logging, level.upper()))
 
-    # Remove any existing handlers
-    for handler in list(root_logger.handlers):  # type: ignore[assignment]
-        root_logger.removeHandler(handler)
+    # Remove old handlers
+    for h in list(root_logger.handlers):  # type: ignore[assignment]
+        root_logger.removeHandler(h)
 
     # Add new handlers
-    for handler in handlers:
-        root_logger.addHandler(handler)
-
-    # Create and return server logger
-    logger = logging.getLogger("proxmox-mcp")
-    return logger
+    for h in handlers:
+        h.setFormatter(formatter)
+        root_logger.addHandler(h)
