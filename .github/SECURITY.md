@@ -75,10 +75,38 @@ When using ProxmoxMCP, please follow these security guidelines:
 
 ### Known Security Considerations
 
-- **Command Execution**: VM commands are executed via QEMU Guest Agent
+- **Command Execution**: VM commands are executed via QEMU Guest Agent with validation and sanitization
 - **API Access**: Requires Proxmox API token with appropriate permissions
 - **Network Access**: Needs network access to Proxmox server
 - **Configuration**: Sensitive data in configuration files should be protected
+
+### VM Command Security
+
+ProxmoxMCP implements comprehensive security controls for VM command execution:
+
+#### Command Validation
+- All VM commands are validated before execution
+- Commands are sanitized using `shlex` to prevent injection attacks
+- Dangerous patterns and shell operators are blocked by default
+- Command length limits are enforced (default: 500 characters)
+
+#### Security Features
+- **Pattern Blocking**: Dangerous commands like `rm -rf /`, `dd`, `sudo` are blocked
+- **Shell Operator Restrictions**: Operators like `|`, `&`, `;`, `$(`, `>` are blocked
+- **Command Whitelisting**: Optional whitelist of allowed commands
+- **Input Sanitization**: All commands are parsed and sanitized using `shlex`
+- **Audit Logging**: All executed commands are logged for security audit
+
+#### Configuration Options
+- Customize allowed commands via whitelist in `CommandSecurityConfig`
+- Configure timeout limits for command execution
+- Enable/disable shell operators based on security requirements
+- Add custom blocked patterns for organization-specific security policies
+
+#### Security Logging
+- All executed commands are logged with VM ID, node, and sanitized command
+- Failed validation attempts are logged with detailed error messages
+- Security events are logged to `proxmox-mcp.command-security` logger
 
 ### Security Updates
 
