@@ -40,7 +40,7 @@ Proxmox virtual infrastructure through simple, secure commands.
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 
-2. **Create your Proxmox config** (e.g., `~/proxmox-config.json`):
+1. **Create your Proxmox config** (e.g., `~/proxmox-config.json`):
 
    ```json
    {
@@ -52,7 +52,7 @@ Proxmox virtual infrastructure through simple, secure commands.
    }
    ```
 
-3. **Add to your MCP client settings**:
+1. **Add to your MCP client settings**:
 
    ```json
    {
@@ -106,12 +106,12 @@ Proxmox virtual infrastructure through simple, secure commands.
 ## ⚙️ Proxmox API Token Setup
 
 1. Log into your Proxmox web interface
-2. Navigate to **Datacenter → Permissions → API Tokens**
-3. Click **Add** and create a new token:
+1. Navigate to **Datacenter → Permissions → API Tokens**
+1. Click **Add** and create a new token:
    - **User**: Select user (e.g., `root@pam`)
    - **Token ID**: Enter a name (e.g., `mcp-token`)
    - **Privilege Separation**: Uncheck for full access
-4. Copy the displayed token value - you won't see it again!
+1. Copy the displayed token value - you won't see it again!
 
 > **Note**: Set `"verify_ssl": false` in your config if using self-signed certificates.
 

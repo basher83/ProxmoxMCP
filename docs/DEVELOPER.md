@@ -21,7 +21,7 @@ This guide provides detailed information for developers working on ProxmoxMCP.
    cd ProxmoxMCP
    ```
 
-2. **Configure Git** (for contributors):
+1. **Configure Git** (for contributors):
 
    ```bash
    cp example.gitconfig .git/config
@@ -29,7 +29,7 @@ This guide provides detailed information for developers working on ProxmoxMCP.
    git config user.email "your.email@example.com"
    ```
 
-3. **Create virtual environment**:
+1. **Create virtual environment**:
 
    ```bash
    uv venv
@@ -38,7 +38,7 @@ This guide provides detailed information for developers working on ProxmoxMCP.
    .\.venv\Scripts\Activate.ps1  # Windows
    ```
 
-4. **Install development dependencies**:
+1. **Install development dependencies**:
 
    ```bash
    uv pip install -e ".[dev]"
@@ -142,7 +142,7 @@ class TestNodeTools:
     @pytest.fixture
     def node_tools(self, mock_proxmox):
         return NodeTools(mock_proxmox)
-    
+
     def test_get_nodes(self, node_tools):
         result = node_tools.get_nodes()
         assert len(result) > 0
@@ -163,9 +163,9 @@ class TestNodeTools:
    git checkout -b feature/your-feature-name
    ```
 
-2. **Make your changes** following our coding standards
+1. **Make your changes** following our coding standards
 
-3. **Run quality checks**:
+1. **Run quality checks**:
 
    ```bash
    task pre-commit
@@ -173,13 +173,13 @@ class TestNodeTools:
    pytest && ruff format . && mypy . && ruff check .
    ```
 
-4. **Commit with descriptive message**:
+1. **Commit with descriptive message**:
 
    ```bash
    git commit -m "feat: add new feature description"
    ```
 
-5. **Push and create PR**:
+1. **Push and create PR**:
 
    ```bash
    git push origin feature/your-feature-name
@@ -221,13 +221,14 @@ python -m proxmox_mcp.server
 ## Release Process
 
 1. Update version in `pyproject.toml`
-2. Update CHANGELOG.md
-3. Create a git tag: `git tag v0.1.0`
-4. Push tag: `git push origin v0.1.0`
-5. GitHub Actions will build and publish
+1. Update CHANGELOG.md
+1. Create a git tag: `git tag v0.1.0`
+1. Push tag: `git push origin v0.1.0`
+1. GitHub Actions will build and publish
 
 ## Additional Resources
 
 - [MCP SDK Documentation](https://github.com/modelcontextprotocol/sdk)
 - [Proxmoxer Documentation](https://proxmoxer.github.io/docs/)
 - [Pydantic Documentation](https://docs.pydantic.dev/)
+
