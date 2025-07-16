@@ -17,6 +17,8 @@ The module implements a robust command execution system with:
 import logging
 from typing import Any
 
+from ...utils.command_security import create_secure_command_validator
+
 
 class VMConsoleManager:
     """Manager class for VM console operations.
@@ -42,6 +44,7 @@ class VMConsoleManager:
         """
         self.proxmox = proxmox_api
         self.logger = logging.getLogger("proxmox-mcp.vm-console")
+        self.command_validator = create_secure_command_validator()
 
     def _validate_vm_for_execution(self, node: str, vmid: str) -> None:
         """Validate that VM exists and is running for command execution."""
@@ -56,10 +59,20 @@ class VMConsoleManager:
         self.logger.debug(f"Using API endpoint: {endpoint}")
 
         try:
-            self.logger.debug(f"Executing command via agent: {command}")
-            exec_result = endpoint("exec").post(command=command)
+            # SECURITY: Validate and sanitize command before execution
+            sanitized_command = self.command_validator.validate_command(command)
+
+            self.logger.debug(f"Executing sanitized command via agent: {sanitized_command}")
+            exec_result = endpoint("exec").post(command=sanitized_command)
             self.logger.debug(f"Raw exec response: {exec_result}")
-            self.logger.info(f"Command started with result: {exec_result}")
+
+            self.logger.info(
+                f"Command executed - VM: {vmid}, Node: {node}, Command: {sanitized_command}"
+            )
+
+        except ValueError as e:
+            self.logger.error(f"Command validation failed for VM {vmid}: {e}")
+            raise ValueError(f"Command validation failed: {e}") from e
         except Exception as e:
             self.logger.error(f"Failed to start command: {str(e)}")
             raise RuntimeError(f"Failed to start command: {str(e)}") from e
