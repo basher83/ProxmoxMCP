@@ -15,6 +15,7 @@ like API tokens can be stored encrypted in the configuration file.
 
 import json
 import os
+import re
 from typing import Any, Dict, Optional
 
 from ..utils.encryption import TokenEncryption
@@ -27,9 +28,10 @@ def load_config(config_path: Optional[str] = None) -> Config:
     Steps performed:
     1. Resolve config path (parameter > env variable)
     2. Load and parse the JSON file
-    3. Decrypt encrypted tokens (if prefixed with 'enc:')
-    4. Validate presence of required fields
-    5. Return typed Config object (via Pydantic)
+    3. Expand environment variables (${VAR} syntax)
+    4. Decrypt encrypted tokens (if prefixed with 'enc:')
+    5. Validate presence of required fields
+    6. Return typed Config object (via Pydantic)
 
     Expected keys:
     - proxmox: host, port, etc.
@@ -51,6 +53,7 @@ def load_config(config_path: Optional[str] = None) -> Config:
     """
     path = _resolve_config_path(config_path)
     config_data = _load_json_config(path)
+    config_data = _expand_environment_variables(config_data)
     _validate_required_fields(config_data)
     config_data = _decrypt_config_tokens(config_data)
     return _build_config(config_data)
@@ -75,6 +78,81 @@ def _load_json_config(path: str) -> Any:
         raise ValueError(f"Invalid JSON in config file: {e}") from e
     except Exception as e:
         raise ValueError(f"Failed to read config file: {e}") from e
+
+
+def _expand_environment_variables(config_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Expand environment variables in configuration values.
+    
+    Supports ${VAR} syntax for environment variable substitution.
+    Variables can have default values using ${VAR:-default} syntax.
+    
+    Args:
+        config_data: Configuration dictionary to process
+        
+    Returns:
+        Configuration dictionary with expanded environment variables
+        
+    Raises:
+        ValueError: If required environment variables are missing
+    """
+    def expand_value(value: Any) -> Any:
+        """Recursively expand environment variables in a value."""
+        if isinstance(value, str):
+            return _expand_string_variables(value)
+        elif isinstance(value, dict):
+            return {k: expand_value(v) for k, v in value.items()}
+        elif isinstance(value, list):
+            return [expand_value(item) for item in value]
+        else:
+            return value
+    
+    return expand_value(config_data)
+
+
+def _expand_string_variables(value: str) -> str:
+    """Expand environment variables in a string value.
+    
+    Supports patterns:
+    - ${VAR} - Required variable, fails if not set
+    - ${VAR:-default} - Optional variable with default value
+    - ${VAR:?error_message} - Required variable with custom error message
+    
+    Args:
+        value: String that may contain variable references
+        
+    Returns:
+        String with variables expanded
+        
+    Raises:
+        ValueError: If required variables are missing
+    """
+    # Pattern to match ${VAR}, ${VAR:-default}, ${VAR:?message}
+    pattern = r'\$\{([^}:]+)(?::([?-])([^}]*))?\}'
+    
+    def replace_var(match):
+        var_name = match.group(1)
+        operator = match.group(2)  # '-' for default, '?' for error
+        default_or_error = match.group(3) or ""
+        
+        env_value = os.environ.get(var_name)
+        
+        if env_value is not None:
+            return env_value
+        elif operator == '-':
+            # Use default value
+            return default_or_error
+        elif operator == '?':
+            # Custom error message
+            error_msg = default_or_error or f"Environment variable {var_name} is required"
+            raise ValueError(f"Missing environment variable: {error_msg}")
+        else:
+            # Required variable without default
+            raise ValueError(
+                f"Missing required environment variable: {var_name}. "
+                f"Set the variable or use ${{{var_name}:-default}} syntax for a default value."
+            )
+    
+    return re.sub(pattern, replace_var, value)
 
 
 def _validate_required_fields(config: Dict[str, Any]) -> None:

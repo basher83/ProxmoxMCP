@@ -73,7 +73,7 @@ class ContainerTools(ProxmoxTool):
                 all_containers.extend(containers)
             return self._format_response(all_containers, "containers")
         except Exception as e:
-            self._handle_error("get containers", e)
+            self._handle_error("get containers", e, resource_type="container")
             return []
 
     def _get_all_nodes(self) -> List[str]:

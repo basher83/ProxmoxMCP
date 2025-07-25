@@ -68,7 +68,7 @@ class StorageTools(ProxmoxTool):
             detailed_storage = [self._get_storage_details(store) for store in all_storage]
             return self._format_response(detailed_storage, "storage")
         except Exception as e:
-            self._handle_error("get storage", e)
+            self._handle_error("get storage", e, resource_type="storage")
             return []
 
     def _get_storage_details(self, store: Dict[str, Any]) -> Dict[str, Any]:

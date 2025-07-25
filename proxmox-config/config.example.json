@@ -1,18 +1,18 @@
 {
     "proxmox": {
-        "host": "your-proxmox-host-ip",
-        "port": 8006,
-        "verify_ssl": true,
+        "host": "${PROXMOX_HOST}",
+        "port": "${PROXMOX_PORT:-8006}",
+        "verify_ssl": "${PROXMOX_VERIFY_SSL:-true}",
         "service": "PVE"
     },
     "auth": {
-        "user": "username@pve",
-        "token_name": "your-token-name",
-        "token_value": "your-token-value"
+        "user": "${PROXMOX_USER:-mcp@pve}",
+        "token_name": "${PROXMOX_TOKEN_NAME}",
+        "token_value": "${PROXMOX_TOKEN_VALUE}"
     },
     "logging": {
-        "level": "DEBUG",
+        "level": "${LOG_LEVEL:-INFO}",
         "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        "file": "proxmox_mcp.log"
+        "file": "${LOG_FILE:-proxmox_mcp.log}"
     }
 }

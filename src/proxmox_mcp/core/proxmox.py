@@ -5,7 +5,7 @@ This module handles the core Proxmox API integration, providing:
 - Secure API connection setup and management
 - Token-based authentication
 - Connection testing and validation
-- Error handling for API operations
+- Structured error handling with ProxmoxMCP exceptions
 
 The ProxmoxManager class serves as the central point for all Proxmox API
 interactions, ensuring consistent connection handling and authentication
@@ -18,6 +18,7 @@ from typing import Any, Dict
 from proxmoxer import ProxmoxAPI
 
 from ..config.models import AuthConfig, ProxmoxConfig
+from ..exceptions import map_proxmox_error
 
 
 class ProxmoxManager:
@@ -103,7 +104,18 @@ class ProxmoxManager:
             return api
         except Exception as e:
             self.logger.error(f"Failed to connect to Proxmox: {e}")
-            raise RuntimeError(f"Failed to connect to Proxmox: {e}") from e
+            # Map to structured exception with connection context
+            mapped_exception = map_proxmox_error(
+                error=e,
+                operation="connect_to_proxmox",
+                resource_type="proxmox_api"
+            )
+            mapped_exception.context.update({
+                "host": self.config["host"],
+                "port": self.config["port"],
+                "ssl_verification": self.config["verify_ssl"]
+            })
+            raise mapped_exception from e
 
     def get_api(self) -> ProxmoxAPI:
         """Get the initialized Proxmox API instance.

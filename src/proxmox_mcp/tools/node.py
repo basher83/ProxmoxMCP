@@ -66,7 +66,7 @@ class NodeTools(ProxmoxTool):
             detailed_nodes = [self._get_node_details(node) for node in node_list]
             return self._format_response(detailed_nodes, "nodes")
         except Exception as e:
-            self._handle_error("get nodes", e)
+            self._handle_error("get nodes", e, resource_type="node")
             return []
 
     def _get_node_details(self, node: Dict[str, Any]) -> Dict[str, Any]:
@@ -137,5 +137,5 @@ class NodeTools(ProxmoxTool):
             result = self.proxmox.nodes(node).status.get()
             return self._format_response((node, result), "node_status")
         except Exception as e:
-            self._handle_error(f"get status for node {node}", e)
+            self._handle_error(f"get status for node {node}", e, resource_type="node", resource_id=node)
             return []

@@ -76,5 +76,5 @@ class ClusterTools(ProxmoxTool):
             }
             return self._format_response(status, "cluster")
         except Exception as e:
-            self._handle_error("get cluster status", e)
+            self._handle_error("get cluster status", e, resource_type="cluster")
             return []

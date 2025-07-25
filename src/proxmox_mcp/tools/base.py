@@ -4,7 +4,7 @@ Base classes and utilities for Proxmox MCP tools.
 This module provides the foundation for all Proxmox MCP tools, including:
 - Base tool class with common functionality
 - Response formatting utilities
-- Error handling mechanisms
+- Structured error handling with ProxmoxMCP exceptions
 - Logging setup
 
 All tool implementations inherit from the ProxmoxTool base class to ensure
@@ -17,17 +17,18 @@ from typing import Any, Callable, Dict, List, Optional
 from mcp.types import TextContent as Content
 from proxmoxer import ProxmoxAPI
 
+from ..exceptions import ProxmoxMCPError, map_proxmox_error
 from ..formatting import ProxmoxTemplates
 
 
 class ProxmoxTool:
-    """Base class for Proxmox MCP tools.
+    """Base class for Proxmox MCP tools with structured exception handling.
 
     This class provides common functionality used by all Proxmox tool implementations:
     - Proxmox API access
     - Standardized logging
     - Response formatting
-    - Error handling
+    - Structured error handling with ProxmoxMCP exceptions
 
     All tool classes should inherit from this base class to ensure consistent
     behavior and error handling across the MCP server.
@@ -104,30 +105,49 @@ class ProxmoxTool:
             return ProxmoxTemplates.node_status(data[0], data[1])
         return ProxmoxTemplates.node_status("unknown", data if isinstance(data, dict) else {})
 
-    def _handle_error(self, operation: str, error: Exception) -> None:
-        """Handle and log errors from Proxmox operations.
+    def _handle_error(self, operation: str, error: Exception, 
+                     resource_type: str = "", resource_id: str = "") -> None:
+        """Handle and log errors from Proxmox operations with structured exceptions.
 
         Provides standardized error handling across all tools by:
         - Logging errors with appropriate context
-        - Categorizing errors into specific exception types
-        - Converting Proxmox-specific errors into standard Python exceptions
+        - Mapping generic exceptions to structured ProxmoxMCP exceptions
+        - Preserving error context for debugging and monitoring
+        - Ensuring consistent error reporting across all tools
 
         Args:
             operation: Description of the operation that failed (e.g., "get node status")
             error: The exception that occurred during the operation
+            resource_type: Type of resource involved (e.g., "vm", "node", "storage")
+            resource_id: ID of the resource involved (e.g., VM ID, node name)
 
         Raises:
-            ValueError: For invalid input, missing resources, or permission issues
-            RuntimeError: For unexpected errors or API failures
+            ProxmoxMCPError: Appropriate structured exception based on error analysis
         """
-        error_msg = str(error)
-        self.logger.error(f"Failed to {operation}: {error_msg}")
-
-        if "not found" in error_msg.lower():
-            raise ValueError(f"Resource not found: {error_msg}")
-        if "permission denied" in error_msg.lower():
-            raise ValueError(f"Permission denied: {error_msg}")
-        if "invalid" in error_msg.lower():
-            raise ValueError(f"Invalid input: {error_msg}")
-
-        raise RuntimeError(f"Failed to {operation}: {error_msg}")
+        # Don't re-wrap ProxmoxMCP exceptions
+        if isinstance(error, ProxmoxMCPError):
+            self.logger.error(f"Operation '{operation}' failed: {error}")
+            raise error
+        
+        # Map generic exceptions to structured ProxmoxMCP exceptions
+        mapped_exception = map_proxmox_error(
+            error=error,
+            operation=operation,
+            resource_type=resource_type,
+            resource_id=resource_id
+        )
+        
+        # Add tool-specific context
+        mapped_exception.context.update({
+            "tool_class": self.__class__.__name__,
+            "proxmox_api_available": self.proxmox is not None
+        })
+        
+        # Log with structured context
+        self.logger.error(
+            f"Tool operation failed: {operation}. "
+            f"Error: {mapped_exception.error_code} - {mapped_exception.message}",
+            extra={"error_context": mapped_exception.context}
+        )
+        
+        raise mapped_exception from error

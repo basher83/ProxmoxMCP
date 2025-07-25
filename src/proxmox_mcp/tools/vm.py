@@ -86,7 +86,7 @@ class VMTools(ProxmoxTool):
                 result.extend(vms)
             return self._format_response(result, "vms")
         except Exception as e:
-            self._handle_error("get VMs", e)
+            self._handle_error("get VMs", e, resource_type="vm")
             return []
 
     def _get_all_nodes(self) -> List[str]:
@@ -169,5 +169,5 @@ class VMTools(ProxmoxTool):
             )
             return [Content(type="text", text=formatted)]
         except Exception as e:
-            self._handle_error(f"execute command on VM {vmid}", e)
+            self._handle_error(f"execute command on VM {vmid}", e, resource_type="vm", resource_id=vmid)
             return []
