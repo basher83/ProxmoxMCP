@@ -1,4 +1,4 @@
-Add new Proxmox MCP tool: $ARGUMENTS
+# Add new Proxmox MCP tool: $ARGUMENTS
 
 Follow the established patterns in your ProxmoxMCP architecture:
 
