@@ -169,5 +169,7 @@ class VMTools(ProxmoxTool):
             )
             return [Content(type="text", text=formatted)]
         except Exception as e:
-            self._handle_error(f"execute command on VM {vmid}", e, resource_type="vm", resource_id=vmid)
+            self._handle_error(
+                f"execute command on VM {vmid}", e, resource_type="vm", resource_id=vmid
+            )
             return []

@@ -49,6 +49,7 @@ Git-aware tree with modifications: !`eza -la --tree --git --git-ignore --icons -
 ### 📊 Quick Stats
 
 File counts by type: !`fd -t f --exclude .git --exclude node_modules --exclude .venv | rg -o "\\.[^.]+$" | sort | uniq -c | sort -rn | head -10`
+
 ### 📖 Documentation
 
 - Project README: @README.md

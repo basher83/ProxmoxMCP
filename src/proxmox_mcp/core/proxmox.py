@@ -106,15 +106,15 @@ class ProxmoxManager:
             self.logger.error(f"Failed to connect to Proxmox: {e}")
             # Map to structured exception with connection context
             mapped_exception = map_proxmox_error(
-                error=e,
-                operation="connect_to_proxmox",
-                resource_type="proxmox_api"
+                error=e, operation="connect_to_proxmox", resource_type="proxmox_api"
             )
-            mapped_exception.context.update({
-                "host": self.config["host"],
-                "port": self.config["port"],
-                "ssl_verification": self.config["verify_ssl"]
-            })
+            mapped_exception.context.update(
+                {
+                    "host": self.config["host"],
+                    "port": self.config["port"],
+                    "ssl_verification": self.config["verify_ssl"],
+                }
+            )
             raise mapped_exception from e
 
     def get_api(self) -> ProxmoxAPI:

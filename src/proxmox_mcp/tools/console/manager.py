@@ -20,8 +20,8 @@ import logging
 import os
 from typing import Any
 
-from ...exceptions import ProxmoxSecurityError, ProxmoxResourceUnavailableError, map_proxmox_error
-from .security import VMCommandSecurityValidator, CommandSecurityError, SecurityPolicy
+from ...exceptions import ProxmoxResourceUnavailableError, ProxmoxSecurityError, map_proxmox_error
+from .security import CommandSecurityError, SecurityPolicy, VMCommandSecurityValidator
 
 
 class VMConsoleManager:
@@ -48,7 +48,7 @@ class VMConsoleManager:
         """
         self.proxmox = proxmox_api
         self.logger = logging.getLogger("proxmox-mcp.vm-console")
-        
+
         # Initialize security validator with policy from environment
         security_policy = os.environ.get("PROXMOX_MCP_SECURITY_POLICY", "standard")
         try:
@@ -70,17 +70,14 @@ class VMConsoleManager:
                     resource_type="vm",
                     resource_id=vmid,
                     reason="vm_not_running",
-                    context={"node": node, "vm_status": vm_status["status"]}
+                    context={"node": node, "vm_status": vm_status["status"]},
                 )
         except ProxmoxResourceUnavailableError:
             raise
         except Exception as e:
             # VM doesn't exist or other API error
             mapped_exception = map_proxmox_error(
-                error=e,
-                operation="validate_vm_status",
-                resource_type="vm",
-                resource_id=vmid
+                error=e, operation="validate_vm_status", resource_type="vm", resource_id=vmid
             )
             mapped_exception.context["node"] = node
             raise mapped_exception from e
@@ -213,7 +210,9 @@ class VMConsoleManager:
             try:
                 validated_command = self.security_validator.validate_command(command)
                 if validated_command != command:
-                    self.logger.info(f"Command sanitized for VM {vmid}: '{command}' -> '{validated_command}'")
+                    self.logger.info(
+                        f"Command sanitized for VM {vmid}: '{command}' -> '{validated_command}'"
+                    )
                     command = validated_command
             except CommandSecurityError as e:
                 self.logger.error(f"Security violation for VM {vmid}: {e}")
@@ -225,8 +224,8 @@ class VMConsoleManager:
                         "node": node,
                         "vmid": vmid,
                         "command": e.command,
-                        "security_policy": self.security_validator.policy.value
-                    }
+                        "security_policy": self.security_validator.policy.value,
+                    },
                 ) from e
 
             self._validate_vm_for_execution(node, vmid)
@@ -247,15 +246,11 @@ class VMConsoleManager:
         except Exception as e:
             # Map generic exceptions to structured ProxmoxMCP exceptions
             mapped_exception = map_proxmox_error(
-                error=e,
-                operation="execute_vm_command",
-                resource_type="vm",
-                resource_id=vmid
+                error=e, operation="execute_vm_command", resource_type="vm", resource_id=vmid
             )
-            mapped_exception.context.update({
-                "node": node,
-                "command": command[:50] + "..." if len(command) > 50 else command
-            })
+            mapped_exception.context.update(
+                {"node": node, "command": command[:50] + "..." if len(command) > 50 else command}
+            )
             self.logger.error(f"Command execution failed on VM {vmid}: {mapped_exception}")
             raise mapped_exception from e
 

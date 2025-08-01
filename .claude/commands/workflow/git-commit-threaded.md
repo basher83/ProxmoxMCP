@@ -142,7 +142,7 @@ Based on the changes shown above:
 4. Handle pre-commit failures gracefully
 5. Provide clear summary of results
 
-Remember: Each commit should be atomic and logical. The parallel agents help analyze faster, but commits remain 
+Remember: Each commit should be atomic and logical. The parallel agents help analyze faster, but commits remain
 sequential to avoid conflicts.
 
 **IMPORTANT**: Do NOT push commits to remote. The user will review all commits before pushing.

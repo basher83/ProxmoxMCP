@@ -231,4 +231,3 @@ python -m proxmox_mcp.server
 - [MCP SDK Documentation](https://github.com/modelcontextprotocol/sdk)
 - [Proxmoxer Documentation](https://proxmoxer.github.io/docs/)
 - [Pydantic Documentation](https://docs.pydantic.dev/)
-

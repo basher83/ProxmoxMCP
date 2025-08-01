@@ -82,19 +82,20 @@ def _load_json_config(path: str) -> Any:
 
 def _expand_environment_variables(config_data: Dict[str, Any]) -> Dict[str, Any]:
     """Expand environment variables in configuration values.
-    
+
     Supports ${VAR} syntax for environment variable substitution.
     Variables can have default values using ${VAR:-default} syntax.
-    
+
     Args:
         config_data: Configuration dictionary to process
-        
+
     Returns:
         Configuration dictionary with expanded environment variables
-        
+
     Raises:
         ValueError: If required environment variables are missing
     """
+
     def expand_value(value: Any) -> Any:
         """Recursively expand environment variables in a value."""
         if isinstance(value, str):
@@ -105,43 +106,43 @@ def _expand_environment_variables(config_data: Dict[str, Any]) -> Dict[str, Any]
             return [expand_value(item) for item in value]
         else:
             return value
-    
+
     return expand_value(config_data)
 
 
 def _expand_string_variables(value: str) -> str:
     """Expand environment variables in a string value.
-    
+
     Supports patterns:
     - ${VAR} - Required variable, fails if not set
     - ${VAR:-default} - Optional variable with default value
     - ${VAR:?error_message} - Required variable with custom error message
-    
+
     Args:
         value: String that may contain variable references
-        
+
     Returns:
         String with variables expanded
-        
+
     Raises:
         ValueError: If required variables are missing
     """
     # Pattern to match ${VAR}, ${VAR:-default}, ${VAR:?message}
-    pattern = r'\$\{([^}:]+)(?::([?-])([^}]*))?\}'
-    
+    pattern = r"\$\{([^}:]+)(?::([?-])([^}]*))?\}"
+
     def replace_var(match):
         var_name = match.group(1)
         operator = match.group(2)  # '-' for default, '?' for error
         default_or_error = match.group(3) or ""
-        
+
         env_value = os.environ.get(var_name)
-        
+
         if env_value is not None:
             return env_value
-        elif operator == '-':
+        elif operator == "-":
             # Use default value
             return default_or_error
-        elif operator == '?':
+        elif operator == "?":
             # Custom error message
             error_msg = default_or_error or f"Environment variable {var_name} is required"
             raise ValueError(f"Missing environment variable: {error_msg}")
@@ -151,7 +152,7 @@ def _expand_string_variables(value: str) -> str:
                 f"Missing required environment variable: {var_name}. "
                 f"Set the variable or use ${{{var_name}:-default}} syntax for a default value."
             )
-    
+
     return re.sub(pattern, replace_var, value)
 
 

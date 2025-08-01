@@ -105,8 +105,9 @@ class ProxmoxTool:
             return ProxmoxTemplates.node_status(data[0], data[1])
         return ProxmoxTemplates.node_status("unknown", data if isinstance(data, dict) else {})
 
-    def _handle_error(self, operation: str, error: Exception, 
-                     resource_type: str = "", resource_id: str = "") -> None:
+    def _handle_error(
+        self, operation: str, error: Exception, resource_type: str = "", resource_id: str = ""
+    ) -> None:
         """Handle and log errors from Proxmox operations with structured exceptions.
 
         Provides standardized error handling across all tools by:
@@ -128,26 +129,25 @@ class ProxmoxTool:
         if isinstance(error, ProxmoxMCPError):
             self.logger.error(f"Operation '{operation}' failed: {error}")
             raise error
-        
+
         # Map generic exceptions to structured ProxmoxMCP exceptions
         mapped_exception = map_proxmox_error(
-            error=error,
-            operation=operation,
-            resource_type=resource_type,
-            resource_id=resource_id
+            error=error, operation=operation, resource_type=resource_type, resource_id=resource_id
         )
-        
+
         # Add tool-specific context
-        mapped_exception.context.update({
-            "tool_class": self.__class__.__name__,
-            "proxmox_api_available": self.proxmox is not None
-        })
-        
+        mapped_exception.context.update(
+            {
+                "tool_class": self.__class__.__name__,
+                "proxmox_api_available": self.proxmox is not None,
+            }
+        )
+
         # Log with structured context
         self.logger.error(
             f"Tool operation failed: {operation}. "
             f"Error: {mapped_exception.error_code} - {mapped_exception.message}",
-            extra={"error_context": mapped_exception.context}
+            extra={"error_context": mapped_exception.context},
         )
-        
+
         raise mapped_exception from error
