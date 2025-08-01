@@ -12,18 +12,19 @@
   },
   "MD013": {
     // Line length - be more permissive for documentation
-    "line_length": 120,
+    "line_length": 150,
     "headers": false,
     "code_blocks": false,
     "tables": false
   },
   "MD024": {
-    // Multiple headers with same content
-    "allow_different_nesting": true
+    // Multiple headers with same content - allow for milestone planning docs
+    "allow_different_nesting": true,
+    "siblings_only": true
   },
   "MD029": {
     // Ordered list item prefix - use consistent numbering
-    "style": "ordered"
+    "style": "one_or_ordered"
   },
   "MD033": {
     // Allow inline HTML for badges, details, etc.
@@ -37,6 +38,10 @@
       "sub",
       "sup"
     ]
+  },
+  "MD036": {
+    // No emphasis as heading - be more permissive for internal docs
+    "punctuation": ".,;:!?"
   },
   "MD041": {
     // First line in file should be a top level header
