@@ -137,5 +137,7 @@ class NodeTools(ProxmoxTool):
             result = self.proxmox.nodes(node).status.get()
             return self._format_response((node, result), "node_status")
         except Exception as e:
-            self._handle_error(f"get status for node {node}", e, resource_type="node", resource_id=node)
+            self._handle_error(
+                f"get status for node {node}", e, resource_type="node", resource_id=node
+            )
             return []
