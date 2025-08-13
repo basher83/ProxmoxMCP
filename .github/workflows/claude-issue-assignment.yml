@@ -2,8 +2,6 @@ name: Claude Code Issue Assignment
 
 on:
   workflow_dispatch:
-  # issues:
-    # types: [assigned]
 
 jobs:
   claude-issue-handler:
