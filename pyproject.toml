@@ -44,7 +44,7 @@ dev = [
     "pytest-cov>=4.0.0,<8.0.0",
 
     # Code formatting and linting
-    "ruff>=0.1.0,<0.14.0",
+    "ruff>=0.1.0,<0.15.0",
 
     # Type checking
     "mypy>=1.0.0,<2.0.0",
