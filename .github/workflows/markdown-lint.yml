@@ -43,7 +43,7 @@ jobs:
           echo "✅ Report generated"
 
       - name: 📄 Upload Lint Report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: markdown-lint-report
           path: markdown-lint-report.txt
@@ -157,7 +157,7 @@ jobs:
           cat markdown-summary.md
 
       - name: 📄 Upload Summary
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: markdown-quality-summary
           path: markdown-summary.md
