@@ -5,6 +5,12 @@
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/basher83/ProxmoxMCP?utm_source=oss&utm_medium=github&utm_campaign=basher83%2FProxmoxMCP&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/w/basher83/ProxmoxMCP">
 
+> [!WARNING]
+> **⚠️ ARCHIVED - NO LONGER MAINTAINED ⚠️**
+>
+> This repository is deprecated and no longer supported. No further updates, bug fixes, or security patches will be provided.
+> Please consider using alternative solutions for Proxmox MCP integration.
+
 ![ProxmoxMCP](https://github.com/user-attachments/assets/e32ab79f-be8a-420c-ab2d-475612150534)
 
 A Model Context Protocol (MCP) server that enables AI assistants like Claude to manage
